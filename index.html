@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<!-- <link href="/Content/bootstrap.min.css" rel="stylesheet" /> -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="/Content/HalcoLoader_V2.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link href="https://ctrz.halconet.com.mx/Assets/Template/Dashboard/assets/plugins/fontawesome-free/css/all.min.css"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="css/disenoDevExtreme.css">
+	<!-- <link rel="stylesheet" href="https://ctrz.halconet.com.mx/Content/devExtreme/dx.material.orange.light.compact.css">
+ -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+	<script language="JScript" src="https://ctrz.halconet.com.mx/Scripts/linq.js"></script>
+	<link rel="stylesheet" href="css/dx.material.orange.light.compact.css">
+
+	<script src="https://ctrz.halconet.com.mx/Scripts/DevExtreme/jszip.js"></script>
+	<script src="https://ctrz.halconet.com.mx/Scripts/DevExtreme/jszip.min.js"></script>
+	<script src="https://ctrz.halconet.com.mx/Scripts/devextreme/dx-quill.min.js"></script>
+	<script type="text/javascript" src="https://ctrz.halconet.com.mx/Scripts/DevExtreme/dx.all.js"></script>
+	<!--  <script src="https://ctrz.halconet.com.mx/JS/DX_devextreme-license.js"></script> -->
+	<script src="https://ctrz.halconet.com.mx/Scripts/devextreme/localization/dx.messages.es.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.4.0/polyfill.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.0.1/exceljs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+	<script src="https://ctrz.halconet.com.mx/JS/Fetch.js"></script>
+	<script src="https://ctrz.halconet.com.mx/JS/DX_GenericFunctions.js"></script>
+
+	<style>
+		/* Establece el estilo a los encabezados de la tabla */
+		.dx-datagrid-headers .dx-datagrid-table .dx-row>td {
+			background-color: #44546a;
+			color: white;
+			text-align: left !important;
+		}
+
+		/* mueve los iconos de filtro a la derecha */
+		.dx-datagrid .dx-column-indicators {
+			float: right !important;
+		}
+
+		/* establece el estilo a los filtros del encabezado */
+		.dx-datagrid .dx-datagrid-table .dx-datagrid-filter-row>td {
+			background-color: #fff;
+		}
+
+		/* establece el color al colocar el puntero sobre el encabezado */
+		.dx-datagrid-headers .dx-datagrid-table .dx-row>td .dx-sort,
+		.dx-datagrid-headers .dx-datagrid-table .dx-row>td .dx-sort-indicator,
+		.dx-datagrid-headers .dx-datagrid-table .dx-row>td:hover .dx-datagrid-text-content {
+			color: white !important;
+		}
+
+		.dx-datagrid-headers .dx-datagrid-table .dx-row>td:hover:not(.dx-command-select):not(.dx-command-expand):not(.dx-editor-cell):not(.dx-command-edit):not(.dx-datagrid-group-space) {
+			background-color: #44546a !important;
+		}
+
+		/* cambia el padding de la fila */
+		.dx-datagrid .dx-row>td {
+			padding-top: 5px;
+			padding-left: 10px;
+			padding-bottom: 5px;
+			padding-right: 10px;
+		}
+
+		/* establece el estilo del icono del encabezado */
+		.dx-datagrid .dx-header-filter,
+		.dx-datagrid .dx-sort-down,
+		.dx-datagrid .dx-sort-up,
+		.dx-datagrid-container .dx-header-filter,
+		.dx-datagrid-container .dx-sort-down,
+		.dx-datagrid-container .dx-sort-up {
+			color: white;
+		}
+
+		/* establece el estilo para la flecha de indicador de orden */
+		.dx-datagrid-headers .dx-datagrid-table .dx-row>td:hover .dx-sort {
+			color: white;
+			float: right !important;
+		}
+
+		.dx-datagrid-nowrap,
+		.dx-datagrid-nowrap .dx-header-row>td>.dx-datagrid-text-content {
+			white-space: break-spaces !important;
+			padding: 0px;
+		}
+
+		.dx-datagrid-table,
+		.dx-datagrid-table-fixed {
+			white-space: nowrap !important;
+		}
+
+		.dx-datagrid .dx-row>td {
+			font-size: 12px !important;
+		}
+
+		.dx-datagrid .dx-datagrid-table .dx-header-row>td {
+			padding: .5em .6em .4em .6em !important;
+			font-weight: 400 !important;
+			font-family: Roboto, sans-serif !important;
+			font-size: 12px !important;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<div id="ContainerBody" style="display: none;">
+		<div class="module-title">
+			<div class="line"></div>
+			<strong id="titleModule"> </strong>
+			<div class="line bottom"></div>
+		</div>
+
+		<div class="content">
+
+			<div id="container-view" class="container-fluid">
+
+
+				<script src="https://ctrz.halconet.com.mx/Scripts/xlsx.full.min.js"></script>
+				<script src="https://ctrz.halconet.com.mx/Scripts/DevExtreme/exceljs.min.js"></script>
+				<fieldset class="p-3">
+					<legend> <span class="material-icons"> filter_list </span></legend>
+					<div class="row">
+						<div class="col-lg-2 col-sm-12 mb-2">
+							<b>Ingresa factor:</b>
+							<div id="dtFactor"></div>
+						</div>
+
+						<div class="col-lg-2 col-sm-12 mb-2">
+							<b>Costo Combustible:</b>
+							<div id="dtCombustible"></div>
+						</div>
+						<div class="col-lg-2 col-sm-12 mb-2">
+							<b>Tipo Calculo:</b>
+							<div id="dtTipoCalculo"></div>
+						</div>
+						<div class="col-lg-3 col-sm-12 mb-2">
+							<b>Carga Documento:</b>
+							<div id="fileUploaderContainer" style="display: none;"></div>
+						</div>
+						<div class="col-lg-1 col-sm-12 mb-2">
+							<div id="btnInfoTemplate"></div>
+						</div>
+
+					</div>
+				</fieldset>
+				<div class="container-info">
+					<div id="gridContainerSiniestro"></div>
+				</div>
+				<div id="divInfoTemplate">
+					<table id="idtableTemplate">
+						<thead id="tableEncabezado">
+							<tr>
+								<th style="width: 10%;" class="valoresTabla">Origen</th>
+								<th style="width: 10%;" class="valoresTabla">Destino</th>
+								<th style="width: 10%;" class="valoresTabla">Marca</th>
+								<th style="width: 10%;" class="valoresTabla">Modelo</th>
+
+								<th style="width: 10%;" class="valoresTabla">Consumo</th>
+								<th style="width: 20%;" class="valoresTabla">Numero_ejes</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="valoresTabla">Texto plano</td>
+								<td class="valoresTabla">Texto plano</td>
+								<td class="valoresTabla">Texto plano</td>
+								<td class="valoresTabla">Texto plano</td>
+								<td class="valoresTabla">Número decimal</td>
+								<td class="valoresTabla">Número entero</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<style>
+					.dx-popup-content {
+						overflow-y: auto;
+						overflow-x: auto;
+					}
+
+					#idtableTemplate {
+						width: 100%;
+						border-collapse: collapse;
+					}
+
+					#tableEncabezado {
+						background-color: aliceblue
+					}
+
+					.valoresTabla {
+						border: 1px solid black;
+						padding: 8px;
+						text-align: left;
+					}
+
+					.red {
+						color: red !important;
+					}
+				</style>
+
+				<script>
+					/*-------- Variables globales data */
+
+					var dtTipoCalculo = null;
+					var dtFactor = 1;
+					var dtCombustible = null;
+
+					var dataEmpresasGlobal = [];
+					var dataAlmacenesGlobal = [];
+					var modalCargaTemplate;
+					var dataArchivosDescarga;
+					var dataPrincipal;
+					var empresaDescarga;
+					var isMobile = false;
+					var compUploadTemplate = {
+						multiple: false, // Permitir cargar un solo archivo a la vez
+						accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel", // Aceptar solo archivos Excel
+						onValueChanged: function (e) {
+							let dtFactor = $("#dtFactor").dxNumberBox("instance").option("value");
+							let dtCombustible = $("#dtCombustible").dxNumberBox("instance").option("value");
+							try {
+								// Obtener el valor seleccionado utilizando el método option
+
+								if (dtFactor === null || dtFactor <= 0) {
+									throw "Debes ingresar un factor mayor a 0";
+								}
+								if (dtCombustible === null || dtCombustible <= 0) {
+									throw "Debes ingresar un precio de combustible mayor a 0";
+								}
+							} catch (error) {
+								let message = error;
+								DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+								//console.log(error);
+
+							}
+
+							if (dtFactor > 0 && dtCombustible > 0) {
+								var files = e.value;
+								if (files.length > 0) {
+									var reader = new FileReader();
+									reader.onload = function (e) {
+										var data = e.target.result;
+										// Convertir el contenido del archivo Excel a JSON
+										var workbook = XLSX.read(data, { type: 'binary' });
+										var sheetName = workbook.SheetNames[0];
+										var worksheet = workbook.Sheets[sheetName];
+										var excelData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+										let excelValido = validarArrayTemplate(excelData);
+										if (excelValido) {
+											obtenerFacturasTemplate(excelData);
+										}
+									};
+									reader.readAsBinaryString(files[0]);
+
+								}
+							}
+						}
+					}
+
+					$(document).ready(() => {
+
+						halcoloaderActive();
+						// Obtener el user-agent del navegador
+						var userAgent = navigator.userAgent;
+						// Verificar si el user-agent indica un dispositivo móvil
+						isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+						//alert(isMobile);
+						$("#titleModule").text("Calculo Traslado");
+
+						$("#dtCombustible").dxNumberBox({
+							value: 0.00, // Valor inicial con decimales
+							min: 20.00, // Límite mínimo
+							max: 100.00, // Límite máximo
+							step: 0.01, // Incremento en pasos de 0.01
+							showSpinButtons: true, // Mostrar botones de incremento/decremento
+							format: "#,##0.00", // Formato con dos decimales
+							onValueChanged: function (e) {
+								console.log("Valor cambiado a: ", e.value);
+								dtCombustible = e.value;
+								ocultarUpload();
+							}
+						});
+						$("#dtFactor").dxNumberBox({
+							value: 1.00, // Valor inicial con decimales
+							min: 1.00, // Límite mínimo
+							max: 100.00, // Límite máximo
+							step: 0.01, // Incremento en pasos de 0.01
+							showSpinButtons: true, // Mostrar botones de incremento/decremento
+							format: "#,##0.00", // Formato con dos decimales
+							onValueChanged: function (e) {
+								console.log("Valor cambiado a: ", e.value);
+								dtFactor = e.value;
+								ocultarUpload();
+							}
+						});
+
+						$("#dtTipoCalculo").dxSelectBox({
+
+							valueExpr: 'value',
+							displayExpr: 'name',
+							dataSource: [
+								{ name: "Camiones", value: 1 },
+								{ name: "Automóviles", value: 2 },
+							], // Opciones de la lista
+							placeholder: "Selecciona una opción", // Texto por defecto
+							onValueChanged: function (e) {
+								dtTipoCalculo = e.value;
+								ocultarUpload();
+
+							}
+						});
+
+						// Inicializamos el dxPopup para usarlo como modal
+						$("#myModal").dxPopup({
+							visible: false,  // El popup comienza oculto
+							showTitle: true,
+							title: "Ver URL",
+							width: "80%",
+							height: "80%",
+							dragEnabled: true, // Habilitar arrastre del modal
+							closeOnOutsideClick: true // Cierra el popup si se hace clic fuera
+						});
+
+						generarGridSiniestros([], [], [], "#gridContainerSiniestro", "Siniestro", (isMobile) ? 10 : 260, (isMobile) ? 30 : 30);
+
+
+						$("#fileUploaderContainer").dxFileUploader(compUploadTemplate);
+						let confModalInfoTemplate = GeneratePopUp("Información estructura template");
+						confModalInfoTemplate.width = (isMobile) ? "90%" : "90%";
+						confModalInfoTemplate.height = (isMobile) ? "21%" : "30%";
+						var modalInfoTemplate = $("#divInfoTemplate").dxPopup(confModalInfoTemplate).dxPopup("instance");
+						let btnInfo = GenerateButton("+", "default");
+						btnInfo.onClick = (e) => {
+							modalInfoTemplate.show();
+						}
+						$("#btnInfoTemplate").dxButton(btnInfo);
+						//btnDescargarArchivos
+						let btnDescarga = GenerateButton("Descargar", "default");
+						btnDescarga.icon = "download";
+						btnDescarga.onClick = (e) => {
+							DescargarArchivo();
+						}
+
+						/* ----------- */
+						//getFiltros();
+						/* ----------- */
+						setTimeout(function () {
+							let miDiv = document.getElementById("ContainerBody");
+							miDiv.style.display = "initial"; // Esto restablecerá el display a su valor predeterminado (por ejemplo, "block" para un <div>)
+							// Restaurar el scroll
+
+							halcoloaderRemove();
+						}, 8000);  // 2000 milisegundos = 2 segundos
+
+					});
+					getFiltros = () => {
+						getFiltrosAsync();
+					}
+					getFiltrosAsync = async () => {
+						try {
+							halcoloaderActive();
+							let params = {}
+							let response = await postData('/Reportes/FiltrosReporteSiniestros', params);
+							dataEmpresasGlobal = response.Empresas;
+							dataAlmacenesGlobal = response.Almacenes;
+							$("#selectedBoxEmpresa").dxSelectBox("instance").option("dataSource", dataEmpresasGlobal);
+							$("#dtCombustible").dxSelectBox("instance").option("dataSource", dataAlmacenesGlobal);
+
+							halcoloaderRemove();
+						} catch (e) {
+							halcoloaderRemove();
+						}
+					}
+					generarGridSiniestros = (data, itemsColumn, itemsSum, nameGrid, nameExcel, MinusHeight = 250, MinusWidth = 30) => {
+						console.log(data);
+						let _OpcionesDataGrid = GenerateDataGrid(data, itemsColumn, nameExcel);
+						itemsSumGlobal = GridSumaryGenerator(itemsSum);
+						console.log(_OpcionesDataGrid.columns);
+						// Crear configuración de columnas para DevExtreme
+						let configuracionColumnas = _OpcionesDataGrid.columns.map(columna => {
+							// Especificar el tipo de dato y el formato para las columnas de cantidad
+							let tipoDato = "string";
+							let formato = "";
+							let alignment = "center"
+							let allowEditing = false;
+							let visible = true;
+							let fixed = false; // Fija esta columna
+							if (["Precio_Combustible", "Costo_Combustible", "Alimentos", "Salario_Operador", "Hotel", "Placas_Urbanos", "Casetas_Peajes", "Transporte_Origen", "Transporte_Destino", "Taxis_UBER", "Total_Extra", "Material_Bono_Extra", "Costo_Ferry", "Utilidad", "SubTotal", "IVA", "Retencion", "Total_Persona", "Total_Empresa"].includes(columna)) {
+								tipoDato = "number";
+								formato = {
+									type: "currency",
+									precision: 2,
+									currency: "MXN"
+								};
+								alignment = "right";
+							}
+							if (columna == "Kilometros" || columna == "Precio_Combustible" || columna == "Factor" || columna == "Casetas_Peajes" || columna == "Transporte_Origen" || columna == "Transporte_Destino" || columna == "Taxis_UBER" || columna == "Total_Extra" || columna == "Material_Bono_Extra" || columna == "Costo_Ferry") {
+								allowEditing = true;
+							}
+
+							if (columna == "Ruta_Google_Maps") {
+								visible = false;
+							}
+
+							if (["Origen", "Destino", "Automovil"].includes(columna)) {
+								fixed = true;
+							}
+
+							return {
+								dataField: columna,
+								caption: columna.replace(/_/g, " "),
+								width: 160,
+								dataType: tipoDato,
+								format: formato,
+								alignment: alignment,
+								allowEditing: allowEditing,
+								visible: visible,
+								fixed: fixed
+							};
+						});
+
+						if (data.length > 0) {
+							configuracionColumnas.push({
+								"caption": "Ruta",
+								"width": 150,
+								"datatype": "string",
+								"alignment": "center",
+								"allowEditing": false,
+								"allowHiding": true,
+								"cellTemplate": function (container, options) {
+									$('<button>')
+										.addClass('btn btn-primary btn-sm')
+										.html('<i class="fas fa-route icon"></i> Visualizar ruta') // Ícono y texto del botón
+										.on('click', function () {
+											const url = options.data.Ruta_Google_Maps;
+											if (url) {
+												// Abre el enlace en una nueva pestaña
+												window.open(url, '_blank');
+											} else {
+												alert("No se encontró la ruta.");
+											}
+										})
+										.appendTo(container);
+								}
+							});
+						}
+
+
+						_OpcionesDataGrid.columns = configuracionColumnas;
+
+
+						console.log(_OpcionesDataGrid);
+
+						_OpcionesDataGrid.onCellPrepared = function (e) {
+							try {
+
+								var facturaProveedorValue = e.data.Factura_Proveedor;
+								var dataField = e.column.dataField;
+
+								if (dataField == "Kilometros" || dataField == "Precio_Combustible" || dataField == "Factor" || dataField == "Casetas_Peajes" || dataField == "Transporte_Origen" || dataField == "Transporte_Destino" || dataField == "Taxis_UBER" || dataField == "Total_Extra" || dataField == "Material_Bono_Extra" || dataField == "Costo_Ferry") {
+
+									e.cellElement.css({
+										"background-color": "silver",
+										"color": "black"
+									});
+								}
+
+							} catch (e) {
+
+							}
+
+						}
+						/* _OpcionesDataGrid.onExporting = function (e) {
+							//exportToExcel(dataPrincipal, "Reporte_Siniestros.xlsx"); // Reemplaza con el nombre deseado
+							//e.cancel = true; // Cancelar la exportación predeterminada de DevExtreme
+						} */
+
+						_OpcionesDataGrid.onRowUpdating = function (e) {
+							console.log("Datos antes de la actualización:", e.oldData);
+							console.log("Datos nuevos:", e.newData);
+
+							// Obtener los valores actualizados o mantener los valores anteriores
+							let kilometros = e.newData.Kilometros !== undefined ? e.newData.Kilometros : e.oldData.Kilometros;
+							let precioCombustible = e.newData.Precio_Combustible !== undefined ? e.newData.Precio_Combustible : e.oldData.Precio_Combustible;
+							let consumo = e.newData.Consumo !== undefined ? e.newData.Consumo : e.oldData.Consumo;
+							let costoCombustible = precioCombustible * (kilometros / consumo);
+							// Calcular el costo de combustible
+							e.newData.Costo_Combustible = costoCombustible
+
+							let diasTraslado = Math.ceil(kilometros / 650);
+							e.newData.Dias_Traslado = diasTraslado;
+
+							let alimentos = 300 * (diasTraslado + 1);
+							e.newData.Alimentos = alimentos;
+
+							let salarioOperador = 450 * (diasTraslado);
+							e.newData.Salario_Operador = salarioOperador;
+
+							let hotel = (diasTraslado > 1 ? (diasTraslado - 1) * 400 : 0) + 800;
+							e.newData.Hotel = hotel;
+
+							let placasUrbanos = 50 + (40 * diasTraslado);
+							e.newData.Placas_Urbanos = placasUrbanos;
+
+							let casetasPeajes = e.newData.Casetas_Peajes !== undefined ? e.newData.Casetas_Peajes : e.oldData.Casetas_Peajes;
+							let transporteOrigen = e.newData.Transporte_Origen !== undefined ? e.newData.Transporte_Origen : e.oldData.Transporte_Origen;
+							let transporteDestino = e.newData.Transporte_Destino !== undefined ? e.newData.Transporte_Destino : e.oldData.Transporte_Destino;
+							let taxisUBER = e.newData.Taxis_UBER !== undefined ? e.newData.Taxis_UBER : e.oldData.Taxis_UBER;
+							let totalExtra = e.newData.Total_Extra !== undefined ? e.newData.Total_Extra : e.oldData.Total_Extra;
+							let materialBonoExtra = e.newData.Material_Bono_Extra !== undefined ? e.newData.Material_Bono_Extra : e.oldData.Material_Bono_Extra;
+							let costoFerry = e.newData.Costo_Ferry !== undefined ? e.newData.Costo_Ferry : e.oldData.Costo_Ferry;
+							let factor = e.newData.Factor !== undefined ? e.newData.Factor : e.oldData.Factor;
+
+							let utilidad = ((costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry) * 0.18) * factor;
+							e.newData.Utilidad = utilidad;
+
+							let subTotal = (costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry) + utilidad;
+							e.newData.SubTotal = subTotal;
+
+							e.newData.IVA = subTotal * 0.16;
+
+							e.newData.Retencion = subTotal * 0.04;
+							e.newData.Total_Persona = (subTotal + (subTotal * 0.16)) * 1.1
+							e.newData.Total_Empresa = (subTotal + (subTotal * 0.16) - (subTotal * 0.04)) * 1.1
+							//console.log("Nuevo valor de Costo_Combustible:", e.newData.Costo_Combustible);
+
+							// Actualizar el registro en el DataGrid
+							e.component.getDataSource().store().update(e.key, e.newData)  // e.key es la clave primaria (ID)
+								.then(function () {
+									e.component.refresh();  // Refresca el DataGrid para reflejar los cambios
+									//alert('Registro actualizado con cálculo realizado');
+								})
+
+						}
+						$(nameGrid).dxDataGrid(_OpcionesDataGrid);
+						ResizeGridExtreme(nameGrid, MinusHeight, MinusWidth);
+					}
+
+					/* 	function exportToExcel(data, fileName) {
+							var headers = Object.keys(data[0]);
+							// Crear libro y hoja de trabajo con ExcelJS
+							var workbook = new ExcelJS.Workbook();
+							var worksheet = workbook.addWorksheet("Sheet1");
+							// Configurar ancho predeterminado de 100px para las primeras 16384 columnas
+							var defaultColumnWidth = 20;
+							var columnsToSetWidth = Math.min(headers.length, 16384);
+							for (var i = 1; i <= columnsToSetWidth; i++) {
+								worksheet.getColumn(i).width = defaultColumnWidth;
+							}
+							// Agregar encabezados de columna con color de fondo gris claro
+							var headerRow = worksheet.addRow(headers);
+							headerRow.eachCell({ includeEmpty: true }, function (cell) {
+								cell.fill = {
+									type: "pattern",
+									pattern: "solid",
+									fgColor: { argb: "DDDDDD" } // Gris claro
+								};
+							});
+							// Agregar datos al libro
+							data.forEach(function (rowData) {
+								var row = worksheet.addRow(Object.values(rowData));
+								// Obtener el índice de la columna "Articulo_proveedor"
+								var columnIndex = headers.indexOf("Articulo_proveedor") + 1;
+								// Verificar si Factura_Proveedor es null, undefined o vacío y aplicar estilo de fondo rojo a la celda
+								var facturaProveedorValue = rowData["Factura_Proveedor"];
+								if (!facturaProveedorValue || facturaProveedorValue.trim() === "") {
+									var cell = row.getCell(columnIndex);
+									cell.fill = {
+										type: "pattern",
+										pattern: "solid",
+										fgColor: { argb: "FF0000" } // Rojo
+									};
+								}
+							});
+							// Agregar filtros
+							worksheet.autoFilter = {
+								from: {
+									row: 1,
+									column: 1
+								},
+								to: {
+									row: 1,
+									column: headers.length
+								}
+							};
+							// Crear un blob y descargar el archivo
+							workbook.xlsx.writeBuffer().then(function (buffer) {
+								var blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+								var link = document.createElement("a");
+								link.href = URL.createObjectURL(blob);
+								link.download = fileName || "ExportedData.xlsx"; // Nombre del archivo predeterminado si no se proporciona
+								link.click();
+							});
+						}
+			 */
+
+					validarArrayTemplate = (array) => {
+						try {
+
+							console.log(array)
+							// Definimos la estructura esperada para cada objeto
+							const estructuraEsperada = {
+								"Origen": "string",
+								"Destino": "string",
+								"Marca": "string",
+								"Modelo": "string",
+								"Consumo": "number",
+								"Numero_ejes": "number"
+							};
+							 // Validamos que el array tenga solo 6 columnas
+							 if (Object.keys(estructuraEsperada).length !== 6) {
+								throw "El template debe tener solo 6 columnas";
+								return false;
+							}
+
+							// Recorremos cada objeto del array
+							for (let i = 0; i < array.length; i++) {
+								const obj = array[i];
+
+								// Validamos que el objeto tenga las claves correctas
+								for (let clave in estructuraEsperada) {
+									if (!(clave in obj)) {
+										throw `Falta la clave '${clave}' en el registro ${i}`;
+										return false;
+									}
+
+									// Validamos que el tipo de cada valor sea el correcto
+									if (typeof obj[clave] !== estructuraEsperada[clave]) {
+										throw `El tipo de dato de la clave '${clave}' en el registro ${i} es incorrecto. Se esperaba '${estructuraEsperada[clave]}', pero se obtuvo '${typeof obj[clave]}'`;
+										return false;
+									}
+
+									// Validamos que "Origen" tenga una coma
+									if (!obj["Origen"].includes(",")) {
+										throw `El campo 'Origen' en el registro ${i} debe contener esta estructura (municipio, estado)`;
+										return false;
+									}
+
+									// Validamos que "Destino" tenga una coma
+									if (!obj["Destino"].includes(",")) {
+										throw `El campo 'Destino' en el registro ${i} debe contener esta estructura (municipio, estado)`;
+										return false;
+									}
+
+								}
+							}
+							// Si todos los objetos son válidos
+							//console.log("Todos los objetos son válidos.");
+
+							return true;
+						} catch (error) {
+							let message = error;
+							DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+							return false;
+						}
+					}
+
+
+					obtenerFacturasTemplate = (excelData) => {
+						obtenerFacturasTemplateAsync(excelData);
+					}
+
+
+					const obtenerFacturasTemplateAsync = async (excelData) => {
+						halcoloaderActive();
+						// URL de la API (ajústala a tu necesidad)
+						const urlAPI = 'https://pasarelaconwait-response.onrender.com/ventas/generate-cotizacion-preliminar-camiones';
+
+						// Array de promesas que contendrá las solicitudes HTTP
+						const promesas = excelData.map(async (objeto) => {
+
+							let obj_calculo = {
+								"origen": objeto.Origen,
+								"destino": objeto.Destino,
+								"marca": objeto.Marca,
+								"modelo": objeto.Modelo,
+								"numero_cilindros": 0,
+								"consumo": objeto.Consumo,
+								"numero_ejes": objeto.Numero_ejes,
+								"precio_combustible": dtCombustible,
+								"factor": dtFactor
+							}
+							let obj_calculoReturn = {
+								"Origen": objeto.Origen,
+								"Destino": objeto.Destino,
+								"Automovil": objeto.Marca + ' ' + objeto.Modelo,
+								"Consumo": objeto.Consumo,
+								"Ejes": objeto.Numero_ejes,
+								"Precio_Combustible": dtCombustible,
+								"Factor": dtFactor
+							}
+							try {
+								// Realizamos la solicitud POST enviando el objeto como cuerpo
+								const respuesta = await fetch(urlAPI, {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json',
+									},
+									body: JSON.stringify(obj_calculo), // Convertimos el objeto a JSON
+								});
+
+								// Comprobamos si la respuesta fue exitosa
+								if (!respuesta.ok) {
+
+									throw new Error(`Error al hacer la solicitud para ${objeto.Origen} a ${objeto.Destino}`);
+
+								}
+								// Si la respuesta es exitosa, obtenemos los datos
+								const datos = await respuesta.json();
+								return datos;
+								console.log(`Respuesta para ${objeto.Origen} a ${objeto.Destino}:`, datos);
+
+							} catch (error) {
+								return obj_calculoReturn;
+								console.log(`Error al procesar la solicitud para ${objeto.Origen} a ${objeto.Destino}:`, error);
+
+							}
+						});
+
+						// Usamos Promise.all para esperar que todas las promesas se resuelvan
+						try {
+
+							console.log(promesas);
+
+							const resultados = await Promise.all(promesas);
+
+							if (resultados.length > 0) {
+								$("#fileUploaderContainer").dxFileUploader("dispose");
+								$("#fileUploaderContainer").dxFileUploader(compUploadTemplate);
+								console.log('Resultados de todas las peticiones:', resultados);
+
+								let llaves = [
+									"Origen",
+									"Destino",
+									"Automovil",
+									"Puntos_Intermedios_Asignados",
+									"Precio_Combustible",
+									"Factor",
+									"Kilometros",
+									"Consumo",
+									"Tipo_Consumo",
+									"Dias_Traslado",
+									"Costo_Combustible",
+									"Alimentos",
+									"Salario_Operador",
+									"Hotel",
+									"Placas_Urbanos",
+									"Casetas_Peajes",
+									"Transporte_Origen",
+									"Transporte_Destino",
+									"Taxis_UBER",
+									"Total_Extra",
+									"Material_Bono_Extra",
+									"Costo_Ferry",
+									"Utilidad",
+									"SubTotal",
+									"IVA",
+									"Retencion",
+									"Total_Persona",
+									"Total_Empresa",
+									"Ruta_Google_Maps"
+								]
+
+								//Object.keys(resultados[0]);
+
+								//console.log(llaves);
+								let columnsSum = []
+
+								generarGridSiniestros(resultados, llaves, columnsSum, "#gridContainerSiniestro", "Reporte Descarga", (isMobile) ? 10 : 350, (isMobile) ? 30 : 30);
+
+							}
+
+							halcoloaderRemove();
+
+						} catch (error) {
+							generarGridSiniestros([], [], [], "#gridContainerSiniestro", "Siniestro", (isMobile) ? 10 : 260, (isMobile) ? 30 : 30);
+							$("#fileUploaderContainer").dxFileUploader("dispose");
+							$("#fileUploaderContainer").dxFileUploader(compUploadTemplate);
+							halcoloaderRemove();
+							console.error('Hubo un error al realizar las peticiones:', error);
+
+						}
+					};
+
+					ocultarUpload = () => {
+						if (dtFactor >= 1 && dtTipoCalculo == 1 && dtCombustible > 0) {
+							// Mostrar una alerta con el valor seleccionado
+							let miDiv = document.getElementById("fileUploaderContainer");
+							miDiv.style.display = "initial"; // Esto restablecerá el display a su valor predeterminado (por ejemplo, "block" para un <div>)
+							// Restaurar el scroll
+						} else {
+							let miDiv = document.getElementById("fileUploaderContainer");
+							miDiv.style.display = "none"; // Esto restablecerá el display a su valor predeterminado (por ejemplo, "block" para un <div>)
+						}
+					}
+					/* DescargarArchivo = () => {
+						download();
+					}
+					download = async () => {
+						$(location).attr('href', '/Reportes/DownloadArchivosSiniestros');
+					} */
+				</script>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="halcoloader h-letras"></div>
+
+
+	<!-- DevExtreme dxPopup Modal -->
+	<div id="myModal" class="dx-popup">
+		<div id="modalContent">
+			<iframe id="modalIframe" src="" width="100%" height="400px"></iframe>
+		</div>
+	</div>
+
+	<script src="js/Load.js"></script>
+
+	<script>
+		DevExpress.localization.locale('es-MX');
+		DevExpress.config({ defaultCurrency: 'MXN' });
+		// Función para abrir el modal con la URL proporcionada
+
+	</script>
+
+
+
+
+
+
+</html>
