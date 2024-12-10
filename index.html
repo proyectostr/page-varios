@@ -106,6 +106,92 @@
 			font-family: Roboto, sans-serif !important;
 			font-size: 12px !important;
 		}
+
+
+
+		.halcoloader {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 10000;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+}
+
+    .halcoloader.active {
+        opacity: 0.9;
+        visibility: visible;
+    }
+
+.halcoloader-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+path#Trazado_1 {
+    stroke: url(#linear-gradient);
+    fill: none;
+    stroke-dasharray: 1800;
+    stroke-dasharray: 2855;
+    opacity: 10;
+    animation: animationThree 2.5s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
+}
+
+
+#Trazado_3,
+#Trazado_4,
+#Trazado_5,
+#Trazado_6 {
+    animation: animationOne .8s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
+}
+
+
+#Trazado_7,
+#Trazado_8 {
+    animation: animationOne .8s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
+}
+
+@keyframes animationOne {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes animationTwo {
+    0% {
+        opacity: 0;
+        fill: #fff;
+    }
+
+    100% {
+        opacity: 100;
+        fill: url(#linear-gradient-2);
+    }
+}
+
+@keyframes animationThree {
+    0% {
+        opacity: 0;
+        fill: none;
+        stroke-dashoffset: 0;
+    }
+   
+    100% {
+        opacity: 10;
+        stroke-dashoffset: 2855;
+    }
+}
+
 	</style>
 
 </head>
