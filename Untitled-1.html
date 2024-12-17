@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ventana Emergente</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Botón para abrir el modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#envioDeCorreo">
+  Abrir Ventana
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="envioDeCorreo" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- Título centrado -->
+        <h5 class="modal-title w-100 text-center" id="modalLabel">Formulario de Envío</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Campos de entrada -->
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control validar-campo" id="nombre" placeholder="Ingresa tu nombre" data-error="Por favor, ingresa tu nombre.">
+          <div class="invalid-feedback">Por favor, ingresa tu nombre.</div>
+        </div>
+        <div class="mb-3">
+          <label for="correo" class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control validar-campo" id="correo" placeholder="Ingresa tu correo" data-error="Por favor, ingresa un correo válido.">
+          <div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
+        </div>
+        <div class="mb-3">
+          <label for="telefono" class="form-label">Teléfono</label>
+          <input type="tel" class="form-control validar-campo" id="telefono" placeholder="Ingresa tu teléfono" data-error="Por favor, ingresa tu teléfono.">
+          <div class="invalid-feedback">Por favor, ingresa tu teléfono.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnEnviar">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Botón de envío
+  const btnEnviar = document.getElementById('btnEnviar');
+
+  // Manejo del clic en el botón "Enviar"
+  btnEnviar.addEventListener('click', () => {
+    const campos = document.querySelectorAll('.validar-campo'); // Selecciona todos los campos a validar
+    let esValido = true;
+
+    // Iterar sobre los campos y validarlos
+    for (let campo of campos) {
+      if (!campo.value.trim() || (campo.type === 'email' && !campo.value.includes('@'))) {
+        campo.classList.add('is-invalid'); // Marca el campo como inválido
+        campo.nextElementSibling.textContent = campo.getAttribute('data-error'); // Actualiza el mensaje de error
+        esValido = false;
+      } else {
+        campo.classList.remove('is-invalid'); // Elimina el estado de inválido
+        campo.classList.add('is-valid'); // Marca el campo como válido
+      }
+    }
+
+    if (esValido) {
+      alert('Formulario enviado con éxito!');
+      
+      // Limpia los campos y elimina las clases de validación
+      for (let campo of campos) {
+        campo.value = '';
+        campo.classList.remove('is-valid');
+        campo.classList.remove('is-invalid');
+      }
+
+      // Cierra el modal
+      const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
+      modal.hide();
+    }
+  });
+</script>
+
+</body>
+</html>

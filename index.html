@@ -6,6 +6,7 @@
 	<!-- <link href="/Content/bootstrap.min.css" rel="stylesheet" /> -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
 		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="/Content/HalcoLoader_V2.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -110,88 +111,87 @@
 
 
 		.halcoloader {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-    z-index: 10000;
-    overflow: hidden;
-    visibility: hidden;
-    opacity: 0;
-}
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			background-color: #fff;
+			z-index: 10000;
+			overflow: hidden;
+			visibility: hidden;
+			opacity: 0;
+		}
 
-    .halcoloader.active {
-        opacity: 0.9;
-        visibility: visible;
-    }
+		.halcoloader.active {
+			opacity: 0.9;
+			visibility: visible;
+		}
 
-.halcoloader-logo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+		.halcoloader-logo {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
 
-path#Trazado_1 {
-    stroke: url(#linear-gradient);
-    fill: none;
-    stroke-dasharray: 1800;
-    stroke-dasharray: 2855;
-    opacity: 10;
-    animation: animationThree 2.5s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
-}
-
-
-#Trazado_3,
-#Trazado_4,
-#Trazado_5,
-#Trazado_6 {
-    animation: animationOne .8s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
-}
+		path#Trazado_1 {
+			stroke: url(#linear-gradient);
+			fill: none;
+			stroke-dasharray: 1800;
+			stroke-dasharray: 2855;
+			opacity: 10;
+			animation: animationThree 2.5s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
+		}
 
 
-#Trazado_7,
-#Trazado_8 {
-    animation: animationOne .8s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
-}
+		#Trazado_3,
+		#Trazado_4,
+		#Trazado_5,
+		#Trazado_6 {
+			animation: animationOne .8s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
+		}
 
-@keyframes animationOne {
-    0% {
-        opacity: 0;
-    }
 
-    100% {
-        opacity: 1;
-    }
-}
+		#Trazado_7,
+		#Trazado_8 {
+			animation: animationOne .8s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
+		}
 
-@keyframes animationTwo {
-    0% {
-        opacity: 0;
-        fill: #fff;
-    }
+		@keyframes animationOne {
+			0% {
+				opacity: 0;
+			}
 
-    100% {
-        opacity: 100;
-        fill: url(#linear-gradient-2);
-    }
-}
+			100% {
+				opacity: 1;
+			}
+		}
 
-@keyframes animationThree {
-    0% {
-        opacity: 0;
-        fill: none;
-        stroke-dashoffset: 0;
-    }
-   
-    100% {
-        opacity: 10;
-        stroke-dashoffset: 2855;
-    }
-}
+		@keyframes animationTwo {
+			0% {
+				opacity: 0;
+				fill: #fff;
+			}
 
+			100% {
+				opacity: 100;
+				fill: url(#linear-gradient-2);
+			}
+		}
+
+		@keyframes animationThree {
+			0% {
+				opacity: 0;
+				fill: none;
+				stroke-dashoffset: 0;
+			}
+
+			100% {
+				opacity: 10;
+				stroke-dashoffset: 2855;
+			}
+		}
 	</style>
 
 </head>
@@ -224,17 +224,21 @@ path#Trazado_1 {
 							<b>Costo Combustible:</b>
 							<div id="dtCombustible"></div>
 						</div>
-						<div class="col-lg-2 col-sm-12 mb-2">
+						<div class="col-lg-2 col-sm-12 mb-2" style="display: none;">
 							<b>Tipo Calculo:</b>
 							<div id="dtTipoCalculo"></div>
 						</div>
 						<div class="col-lg-3 col-sm-12 mb-2">
 							<b>Carga Documento:</b>
-							<div id="fileUploaderContainer" style="display: none;"></div>
+							<div id="fileUploaderContainer" style="display: initial;"></div>
 						</div>
 						<div class="col-lg-1 col-sm-12 mb-2">
 							<div id="btnInfoTemplate"></div>
 						</div>
+						<div class="col-lg-3 col-sm-12 mb-3">
+							<div id="btnInfoCalculoUnitario"></div>
+						</div>
+
 
 					</div>
 				</fieldset>
@@ -245,13 +249,14 @@ path#Trazado_1 {
 					<table id="idtableTemplate">
 						<thead id="tableEncabezado">
 							<tr>
-								<th style="width: 10%;" class="valoresTabla">Origen</th>
-								<th style="width: 10%;" class="valoresTabla">Destino</th>
-								<th style="width: 10%;" class="valoresTabla">Marca</th>
-								<th style="width: 10%;" class="valoresTabla">Modelo</th>
+								<th style="width: 10%;" class="valoresTabla">origen</th>
+								<th style="width: 10%;" class="valoresTabla">destino</th>
+								<th style="width: 10%;" class="valoresTabla">marca</th>
+								<th style="width: 10%;" class="valoresTabla">modelo</th>
 
-								<th style="width: 10%;" class="valoresTabla">Consumo</th>
-								<th style="width: 20%;" class="valoresTabla">Numero_ejes</th>
+								<th style="width: 10%;" class="valoresTabla">consumo</th>
+								<th style="width: 20%;" class="valoresTabla">numero_ejes</th>
+								<th style="width: 20%;" class="valoresTabla">tipo_Consumo</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -262,6 +267,7 @@ path#Trazado_1 {
 								<td class="valoresTabla">Texto plano</td>
 								<td class="valoresTabla">Número decimal</td>
 								<td class="valoresTabla">Número entero</td>
+								<td class="valoresTabla" style="width: 20%;">texto plano</td>
 							</tr>
 						</tbody>
 					</table>
@@ -294,6 +300,20 @@ path#Trazado_1 {
 
 				<script>
 					/*-------- Variables globales data */
+					var guid_envio_mod = '';
+					var id_envio_mod = -1;
+					var precio_Combustible_mod = null;
+					var factor_mod = null;
+					var kilometros_mod = null;
+					var casetas_Peajes_mod = null;
+					var transporte_Origen_mod = null;
+					var transporte_Destino_mod = null;
+					var taxis_UBER_mod = null;
+					var total_Extra_mod = null;
+					var material_Bono_Extra_mod = null;
+					var costo_ferry_mod = null;
+
+
 
 					var dtTipoCalculo = null;
 					var dtFactor = 1;
@@ -341,7 +361,7 @@ path#Trazado_1 {
 										var excelData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
 										let excelValido = validarArrayTemplate(excelData);
 										if (excelValido) {
-											obtenerFacturasTemplate(excelData);
+											obtenerFacturasTemplate(excelData, 1);
 										}
 									};
 									reader.readAsBinaryString(files[0]);
@@ -363,7 +383,7 @@ path#Trazado_1 {
 
 						$("#dtCombustible").dxNumberBox({
 							value: 0.00, // Valor inicial con decimales
-							min: 20.00, // Límite mínimo
+							min: 0.00, // Límite mínimo
 							max: 100.00, // Límite máximo
 							step: 0.01, // Incremento en pasos de 0.01
 							showSpinButtons: true, // Mostrar botones de incremento/decremento
@@ -371,7 +391,7 @@ path#Trazado_1 {
 							onValueChanged: function (e) {
 								console.log("Valor cambiado a: ", e.value);
 								dtCombustible = e.value;
-								ocultarUpload();
+								//ocultarUpload();
 							}
 						});
 						$("#dtFactor").dxNumberBox({
@@ -384,7 +404,7 @@ path#Trazado_1 {
 							onValueChanged: function (e) {
 								console.log("Valor cambiado a: ", e.value);
 								dtFactor = e.value;
-								ocultarUpload();
+								//ocultarUpload();
 							}
 						});
 
@@ -399,7 +419,7 @@ path#Trazado_1 {
 							placeholder: "Selecciona una opción", // Texto por defecto
 							onValueChanged: function (e) {
 								dtTipoCalculo = e.value;
-								ocultarUpload();
+								//ocultarUpload();
 
 							}
 						});
@@ -428,6 +448,29 @@ path#Trazado_1 {
 							modalInfoTemplate.show();
 						}
 						$("#btnInfoTemplate").dxButton(btnInfo);
+
+						let btnInfoCotizacionUnitaria = GenerateButton("Calculo Unitario", "default");
+						btnInfoCotizacionUnitaria.onClick = (e) => {
+							const campos = document.querySelectorAll('.validar-campo-formulario-datos'); // Selecciona todos los campos a validar
+							for (let campo of campos) {
+								campo.value = '';
+								campo.classList.remove('is-valid');
+								campo.classList.remove('is-invalid');
+								if (campo.id === 'factor' || campo.name === 'factor') {
+									campo.value = dtFactor; // Asignar valor por defecto
+								}
+
+								if (campo.id === 'precio_combustible' || campo.name === 'precio_combustible') {
+									campo.value = dtCombustible; // Asignar valor por defecto
+								}
+
+							}
+							var modalButton = document.getElementById('exampleModal');
+							var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+							myModal.show();
+						}
+						$("#btnInfoCalculoUnitario").dxButton(btnInfoCotizacionUnitaria);
+
 						//btnDescargarArchivos
 						let btnDescarga = GenerateButton("Descargar", "default");
 						btnDescarga.icon = "download";
@@ -488,11 +531,14 @@ path#Trazado_1 {
 								};
 								alignment = "right";
 							}
+							if (["Factor"].includes(columna)) {
+								tipoDato = "number";
+							}
 							if (columna == "Kilometros" || columna == "Precio_Combustible" || columna == "Factor" || columna == "Casetas_Peajes" || columna == "Transporte_Origen" || columna == "Transporte_Destino" || columna == "Taxis_UBER" || columna == "Total_Extra" || columna == "Material_Bono_Extra" || columna == "Costo_Ferry") {
 								allowEditing = true;
 							}
 
-							if (columna == "Ruta_Google_Maps") {
+							if (["Total_Porcentaje", "Consumo_Utilidad", "Salario_Operador_Por_Dia", "Hotel_Extra", "Dias_Extra_Calculo", "Ruta_Google_Maps", "Id", "Guid"].includes(columna)) {
 								visible = false;
 							}
 
@@ -537,6 +583,49 @@ path#Trazado_1 {
 										.appendTo(container);
 								}
 							});
+
+							configuracionColumnas.push({
+								"caption": "Ruta",
+								"width": 150,
+								"datatype": "string",
+								"alignment": "center",
+								"allowEditing": false,
+								"allowHiding": true,
+								"cellTemplate": function (container, options) {
+									$('<button data-bs-toggle="modal" data-bs-target="#envioDeCorreo">')
+										.addClass('btn btn-primary btn-sm ')
+										.html('<i class="fas fa-paper-plane icon"></i> Enviar correo') // Ícono y texto del botón
+										.on('click', function () {
+											
+											guid_envio_mod = options.data.Guid;
+											id_envio_mod = options.data.Id;
+											console.log(options.data);
+
+										    precio_Combustible_mod = options.data.Precio_Combustible;
+											factor_mod = options.data.Factor;
+											kilometros_mod = options.data.Kilometros;
+											casetas_Peajes_mod = options.data.Casetas_Peajes;
+											transporte_Origen_mod = options.data.Transporte_Origen;
+											transporte_Destino_mod = options.data.Transporte_Destino;
+											taxis_UBER_mod = options.data.Taxis_UBER;
+											total_Extra_mod = options.data.Total_Extra;
+											material_Bono_Extra_mod = options.data.Material_Bono_Extra;
+											costo_ferry_mod = options.data.Costo_Ferry;
+
+											const campos = document.querySelectorAll('.validar-campo'); // Selecciona todos los campos a validar
+											for (let campo of campos) {
+												campo.value = '';
+												campo.classList.remove('is-valid');
+												campo.classList.remove('is-invalid');
+
+												
+
+											}
+										})
+										.appendTo(container);
+								}
+							});
+
 						}
 
 
@@ -577,6 +666,18 @@ path#Trazado_1 {
 							let kilometros = e.newData.Kilometros !== undefined ? e.newData.Kilometros : e.oldData.Kilometros;
 							let precioCombustible = e.newData.Precio_Combustible !== undefined ? e.newData.Precio_Combustible : e.oldData.Precio_Combustible;
 							let consumo = e.newData.Consumo !== undefined ? e.newData.Consumo : e.oldData.Consumo;
+
+							let diasExtraCalculo = e.newData.Dias_Extra_Calculo !== undefined ? e.newData.Dias_Extra_Calculo : e.oldData.Dias_Extra_Calculo;
+
+							let hotelExtra = e.newData.Hotel_Extra !== undefined ? e.newData.Hotel_Extra : e.oldData.Hotel_Extra;
+
+							let totalPorcentaje = e.newData.Total_Porcentaje !== undefined ? e.newData.Total_Porcentaje : e.oldData.Total_Porcentaje;
+
+							let consumoUtilidad = e.newData.Consumo_Utilidad !== undefined ? e.newData.Consumo_Utilidad : e.oldData.Consumo_Utilidad;
+
+							let salarioOperadorPorDia = e.newData.Salario_Operador_Por_Dia !== undefined ? e.newData.Salario_Operador_Por_Dia : e.oldData.Salario_Operador_Por_Dia;
+
+
 							let costoCombustible = precioCombustible * (kilometros / consumo);
 							// Calcular el costo de combustible
 							e.newData.Costo_Combustible = costoCombustible
@@ -584,13 +685,13 @@ path#Trazado_1 {
 							let diasTraslado = Math.ceil(kilometros / 650);
 							e.newData.Dias_Traslado = diasTraslado;
 
-							let alimentos = 300 * (diasTraslado + 1);
+							let alimentos = 300 * (diasTraslado + diasExtraCalculo /*1*/);
 							e.newData.Alimentos = alimentos;
 
-							let salarioOperador = 450 * (diasTraslado);
+							let salarioOperador = /*450*/ salarioOperadorPorDia * (diasTraslado);
 							e.newData.Salario_Operador = salarioOperador;
 
-							let hotel = (diasTraslado > 1 ? (diasTraslado - 1) * 400 : 0) + 800;
+							let hotel = (diasTraslado > 1 ? (diasTraslado - 1) * 400 : 0) + hotelExtra/*800*/;
 							e.newData.Hotel = hotel;
 
 							let placasUrbanos = 50 + (40 * diasTraslado);
@@ -603,19 +704,20 @@ path#Trazado_1 {
 							let totalExtra = e.newData.Total_Extra !== undefined ? e.newData.Total_Extra : e.oldData.Total_Extra;
 							let materialBonoExtra = e.newData.Material_Bono_Extra !== undefined ? e.newData.Material_Bono_Extra : e.oldData.Material_Bono_Extra;
 							let costoFerry = e.newData.Costo_Ferry !== undefined ? e.newData.Costo_Ferry : e.oldData.Costo_Ferry;
+							let costoViolencia = e.newData.Costo_Violencia !== undefined ? e.newData.Costo_Violencia : e.oldData.Costo_Violencia;
 							let factor = e.newData.Factor !== undefined ? e.newData.Factor : e.oldData.Factor;
 
-							let utilidad = ((costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry) * 0.18) * factor;
+							let utilidad = ((costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) * consumoUtilidad /*0.18*/ ) * factor;
 							e.newData.Utilidad = utilidad;
 
-							let subTotal = (costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry) + utilidad;
+							let subTotal = (costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) + utilidad;
 							e.newData.SubTotal = subTotal;
 
 							e.newData.IVA = subTotal * 0.16;
 
 							e.newData.Retencion = subTotal * 0.04;
-							e.newData.Total_Persona = (subTotal + (subTotal * 0.16)) * 1.1
-							e.newData.Total_Empresa = (subTotal + (subTotal * 0.16) - (subTotal * 0.04)) * 1.1
+							e.newData.Total_Persona = (subTotal + (subTotal * 0.16)) * totalPorcentaje; /*1.1*/
+							e.newData.Total_Empresa = (subTotal + (subTotal * 0.16) - (subTotal * 0.04)) * totalPorcentaje; /*1.1*/
 							//console.log("Nuevo valor de Costo_Combustible:", e.newData.Costo_Combustible);
 
 							// Actualizar el registro en el DataGrid
@@ -688,100 +790,174 @@ path#Trazado_1 {
 						}
 			 */
 
+					/* 	validarArrayTemplate = (array) => {
+							try {
+	
+								console.log(array)
+								// Definimos la estructura esperada para cada objeto
+								const estructuraEsperada = {
+									"origen": "string",
+									"destino": "string",
+									"marca": "string",
+									"modelo": "string",
+									"consumo": "number",
+									"numero_ejes": "number",
+									"tipo_consumo": "string"
+								};
+								 // Validamos que el array tenga solo 6 columnas
+								 if (Object.keys(estructuraEsperada).length !== 7) {
+									throw "El template debe tener solo 7 columnas";
+									return false;
+								}
+	
+								// Recorremos cada objeto del array
+								for (let i = 0; i < array.length; i++) {
+									const obj = array[i];
+	
+									// Validamos que el objeto tenga las claves correctas
+									for (let clave in estructuraEsperada) {
+										if (!(clave in obj)) {
+											throw `Falta la clave '${clave}' en el registro ${i}`;
+											return false;
+										}
+	
+										// Validamos que el tipo de cada valor sea el correcto
+										if (typeof obj[clave] !== estructuraEsperada[clave]) {
+											throw `El tipo de dato de la clave '${clave}' en el registro ${i} es incorrecto. Se esperaba '${estructuraEsperada[clave]}', pero se obtuvo '${typeof obj[clave]}'`;
+											return false;
+										}
+	
+										// Validamos que "Origen" tenga una coma
+										if (!obj["Origen"].includes(",")) {
+											throw `El campo 'Origen' en el registro ${i} debe contener esta estructura (municipio, estado)`;
+											return false;
+										}
+	
+										// Validamos que "Destino" tenga una coma
+										if (!obj["Destino"].includes(",")) {
+											throw `El campo 'Destino' en el registro ${i} debe contener esta estructura (municipio, estado)`;
+											return false;
+										}
+	
+									}
+								}
+								// Si todos los objetos son válidos
+								//console.log("Todos los objetos son válidos.");
+	
+								return true;
+							} catch (error) {
+								let message = error;
+								DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+								return false;
+							}
+						}
+	 */
+
+
 					validarArrayTemplate = (array) => {
 						try {
+							console.log(array);
 
-							console.log(array)
 							// Definimos la estructura esperada para cada objeto
 							const estructuraEsperada = {
-								"Origen": "string",
-								"Destino": "string",
-								"Marca": "string",
-								"Modelo": "string",
-								"Consumo": "number",
-								"Numero_ejes": "number"
+								"origen": "string",
+								"destino": "string",
+								"marca": "string",
+								"modelo": "string",
+								"consumo": "number",
+								"numero_ejes": "number",
+								"tipo_consumo": "string"
 							};
-							 // Validamos que el array tenga solo 6 columnas
-							 if (Object.keys(estructuraEsperada).length !== 6) {
-								throw "El template debe tener solo 6 columnas";
-								return false;
+
+							// Validamos que el template tenga exactamente 7 columnas
+							if (Object.keys(estructuraEsperada).length !== 7) {
+								throw "El template debe tener solo 7 columnas";
 							}
 
 							// Recorremos cada objeto del array
 							for (let i = 0; i < array.length; i++) {
 								const obj = array[i];
 
+								// Normalizamos las claves del objeto (convirtiéndolas a minúsculas)
+								const objNormalizado = Object.keys(obj).reduce((acumulador, clave) => {
+									acumulador[clave.toLowerCase()] = obj[clave];
+									return acumulador;
+								}, {});
+
 								// Validamos que el objeto tenga las claves correctas
 								for (let clave in estructuraEsperada) {
-									if (!(clave in obj)) {
+									if (!(clave in objNormalizado)) {
 										throw `Falta la clave '${clave}' en el registro ${i}`;
-										return false;
 									}
 
 									// Validamos que el tipo de cada valor sea el correcto
-									if (typeof obj[clave] !== estructuraEsperada[clave]) {
-										throw `El tipo de dato de la clave '${clave}' en el registro ${i} es incorrecto. Se esperaba '${estructuraEsperada[clave]}', pero se obtuvo '${typeof obj[clave]}'`;
-										return false;
+									if (typeof objNormalizado[clave] !== estructuraEsperada[clave]) {
+										throw `El tipo de dato de la clave '${clave}' en el registro ${i} es incorrecto. Se esperaba '${estructuraEsperada[clave]}', pero se obtuvo '${typeof objNormalizado[clave]}'`;
 									}
 
-									// Validamos que "Origen" tenga una coma
-									if (!obj["Origen"].includes(",")) {
-										throw `El campo 'Origen' en el registro ${i} debe contener esta estructura (municipio, estado)`;
-										return false;
+									// Validamos que "origen" tenga una coma
+									if (clave === "origen" && !objNormalizado[clave].includes(",")) {
+										throw `El campo 'origen' en el registro ${i} debe contener esta estructura (municipio, estado)`;
 									}
 
-									// Validamos que "Destino" tenga una coma
-									if (!obj["Destino"].includes(",")) {
-										throw `El campo 'Destino' en el registro ${i} debe contener esta estructura (municipio, estado)`;
-										return false;
+									// Validamos que "destino" tenga una coma
+									if (clave === "destino" && !objNormalizado[clave].includes(",")) {
+										throw `El campo 'destino' en el registro ${i} debe contener esta estructura (municipio, estado)`;
 									}
-
 								}
 							}
-							// Si todos los objetos son válidos
-							//console.log("Todos los objetos son válidos.");
 
+							// Si todos los objetos son válidos
 							return true;
 						} catch (error) {
 							let message = error;
-							DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+							DevExpress.ui.notify({ message, width: 450 }, "error", 4000);
 							return false;
 						}
+					};
+
+					obtenerFacturasTemplate = (excelData, tipo) => {
+						obtenerFacturasTemplateAsync(excelData, tipo);
 					}
 
 
-					obtenerFacturasTemplate = (excelData) => {
-						obtenerFacturasTemplateAsync(excelData);
-					}
-
-
-					const obtenerFacturasTemplateAsync = async (excelData) => {
+					const obtenerFacturasTemplateAsync = async (excelData, tipo) => {
 						halcoloaderActive();
 						// URL de la API (ajústala a tu necesidad)
-						const urlAPI = 'https://pasarelaconwait-response.onrender.com/ventas/generate-cotizacion-preliminar-camiones';
+						const urlAPI = 'http://localhost:3001/ventas/generate-cotizacion-preliminar-camiones-automoviles';
 
+						console.log(excelData);
 						// Array de promesas que contendrá las solicitudes HTTP
 						const promesas = excelData.map(async (objeto) => {
 
+
+							console.log("conslsssssss", objeto);
+							objeto = Object.keys(objeto).reduce((acc, key) => {
+								acc[key.toLowerCase()] = objeto[key];
+								return acc;
+							}, {});
+
 							let obj_calculo = {
-								"origen": objeto.Origen,
-								"destino": objeto.Destino,
-								"marca": objeto.Marca,
-								"modelo": objeto.Modelo,
+								"origen": objeto.origen,
+								"destino": objeto.destino,
+								"marca": objeto.marca,
+								"modelo": objeto.modelo,
 								"numero_cilindros": 0,
-								"consumo": objeto.Consumo,
-								"numero_ejes": objeto.Numero_ejes,
-								"precio_combustible": dtCombustible,
-								"factor": dtFactor
+								"consumo": objeto.consumo == "" ? -1 : objeto.consumo,
+								"numero_ejes": objeto.numero_ejes,
+								"precio_combustible": tipo == 1 ? dtCombustible : objeto.precio_combustible,
+								"factor": tipo == 1 ? dtFactor : objeto.factor,
+								"tipo_consumo": objeto.tipo_consumo
 							}
 							let obj_calculoReturn = {
-								"Origen": objeto.Origen,
-								"Destino": objeto.Destino,
-								"Automovil": objeto.Marca + ' ' + objeto.Modelo,
-								"Consumo": objeto.Consumo,
-								"Ejes": objeto.Numero_ejes,
-								"Precio_Combustible": dtCombustible,
-								"Factor": dtFactor
+								"Origen": objeto.origen,
+								"Destino": objeto.destino,
+								"Automovil": objeto.marca + ' ' + objeto.modelo,
+								"Consumo": objeto.consumo,
+								"Ejes": objeto.numero_ejes,
+								"Precio_Combustible": tipo == 1 ? dtCombustible : objeto.precio_combustible,
+								"factor": tipo == 1 ? dtFactor : objeto.factor,
+								"tipo_consumo": objeto.tipo_consumo
 							}
 							try {
 								// Realizamos la solicitud POST enviando el objeto como cuerpo
@@ -801,6 +977,11 @@ path#Trazado_1 {
 								}
 								// Si la respuesta es exitosa, obtenemos los datos
 								const datos = await respuesta.json();
+
+								var button = document.querySelector('button.btn.btn-secondary[data-bs-dismiss="modal"]');
+								// Simula un clic en el botón
+								button.click();
+
 								return datos;
 								console.log(`Respuesta para ${objeto.Origen} a ${objeto.Destino}:`, datos);
 
@@ -824,6 +1005,8 @@ path#Trazado_1 {
 								console.log('Resultados de todas las peticiones:', resultados);
 
 								let llaves = [
+									"Id",
+									"Guid",
 									"Origen",
 									"Destino",
 									"Automovil",
@@ -846,13 +1029,19 @@ path#Trazado_1 {
 									"Total_Extra",
 									"Material_Bono_Extra",
 									"Costo_Ferry",
+									"Costo_Violencia",
 									"Utilidad",
 									"SubTotal",
 									"IVA",
 									"Retencion",
 									"Total_Persona",
 									"Total_Empresa",
-									"Ruta_Google_Maps"
+									"Ruta_Google_Maps",
+									"Total_Porcentaje",
+									"Consumo_Utilidad",
+									"Salario_Operador_Por_Dia",
+									"Hotel_Extra",
+									"Dias_Extra_Calculo"
 								]
 
 								//Object.keys(resultados[0]);
@@ -909,6 +1098,134 @@ path#Trazado_1 {
 		</div>
 	</div>
 
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+		data-bs-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title w-100 text-center" id="exampleModalLabel">Formulario de Datos</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="origen" class="form-label">Origen</label>
+						<input type="text" class="form-control validar-campo-formulario-datos" id="origen" value="">
+						<div class="invalid-feedback">El origen debe contener una coma seguida de texto.</div>
+					</div>
+					<div class="mb-3">
+						<label for="destino" class="form-label">Destino</label>
+						<input type="text" class="form-control validar-campo-formulario-datos" id="destino" value="">
+						<div class="invalid-feedback">El destino debe contener una coma seguida de texto.</div>
+					</div>
+					<div class="mb-3">
+						<label for="marca" class="form-label">Marca</label>
+						<input type="text" class="form-control validar-campo-formulario-datos" id="marca" value="">
+						<div class="invalid-feedback">Por favor ingrese la marca.</div>
+					</div>
+					<div class="mb-3">
+						<label for="modelo" class="form-label">Modelo</label>
+						<input type="text" class="form-control validar-campo-formulario-datos" id="modelo" value="">
+						<div class="invalid-feedback">Por favor ingrese el modelo.</div>
+					</div>
+					<div class="mb-3" style="display: none;">
+						<label for="numero_cilindros" class="form-label">Número de Cilindros</label>
+						<input type="number" class="form-control validar-campo-formulario-datos" id="numero_cilindros"
+							value="-1">
+						<div class="invalid-feedback">Por favor ingrese un número mayor a -1 o deje el campo vacío.
+						</div>
+					</div>
+					<div class="mb-3">
+						<label for="consumo" class="form-label">Consumo</label>
+						<input type="number" class="form-control validar-campo-formulario-datos" id="consumo" value="">
+						<div class="invalid-feedback">El consumo debe ser mayor o igual a 1 o estar vacío.</div>
+					</div>
+					<div class="mb-3">
+						<label for="numero_ejes" class="form-label">Número de Ejes</label>
+						<select class="form-select validar-campo-formulario-datos" id="numero_ejes">
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+						</select>
+						<div class="invalid-feedback">Por favor seleccione un número de ejes válido.</div>
+					</div>
+					<div class="mb-3">
+						<label for="precio_combustible" class="form-label">Precio del Combustible</label>
+						<input type="number" class="form-control validar-campo-formulario-datos" id="precio_combustible"
+							value="" step="0.01">
+						<div class="invalid-feedback">Por favor ingrese el precio del combustible.</div>
+					</div>
+					<div class="mb-3">
+						<label for="factor" class="form-label">Factor</label>
+						<input type="number" class="form-control validar-campo-formulario-datos" id="factor" value="1">
+						<div class="invalid-feedback">Por favor ingrese el factor.</div>
+					</div>
+					<div class="mb-3">
+						<label for="tipo_consumo" class="form-label">Tipo de Consumo</label>
+						<select class="form-select validar-campo-formulario-datos" id="tipo_consumo">
+							<option value="" selected disabled>Seleccione un tipo de consumo</option>
+							<option value="consumo bajo">Consumo Bajo</option>
+							<option value="consumo medio">Consumo Medio</option>
+							<option value="consumo alto">Consumo Alto</option>
+							<option value="consumo extra">Consumo Extra</option>
+							<option value="consumo camiones">Consumo Camiones</option>
+						</select>
+						<div class="invalid-feedback">Por favor seleccione un tipo de consumo.</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+					<button type="button" class="btn btn-primary" id="btnGenerar">Generar</button>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="envioDeCorreo" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true"
+		data-bs-backdrop="static" data-bs-keyboard="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<!-- Título centrado -->
+					<h5 class="modal-title w-100 text-center" id="modalLabel">Formulario de Envío</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+				</div>
+				<div class="modal-body">
+					<!-- Campos de entrada -->
+					<div class="mb-3">
+						<label for="nombre" class="form-label">Nombre</label>
+						<input type="text" class="form-control validar-campo" id="nombre"
+							placeholder="Ingresa tu nombre" data-error="Por favor, ingresa tu nombre.">
+						<div class="invalid-feedback">Por favor, ingresa tu nombre.</div>
+					</div>
+					<div class="mb-3">
+						<label for="correo" class="form-label">Correo Electrónico</label>
+						<input type="email" class="form-control validar-campo" id="correo"
+							placeholder="Ingresa tu correo" data-error="Por favor, ingresa un correo válido.">
+						<div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
+					</div>
+					<div class="mb-3">
+						<label for="telefono" class="form-label">Teléfono</label>
+						<input type="tel" class="form-control validar-campo" id="telefono"
+							placeholder="Ingresa tu teléfono" data-error="Por favor, ingresa tu teléfono.">
+						<div class="invalid-feedback">Por favor, ingresa tu teléfono.</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+					<button type="button" class="btn btn-primary" id="btnEnviar">Enviar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 	<script src="js/Load.js"></script>
 
 	<script>
@@ -919,8 +1236,183 @@ path#Trazado_1 {
 	</script>
 
 
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script>
+		document.getElementById('btnGenerar').addEventListener('click', function () {
+			let inputs = document.querySelectorAll('.modal-body .form-control, .modal-body .form-select');
+			let isValid = true;
+			let data = {};
+
+			inputs.forEach(input => {
+				const id = input.id;
+				const value = input.value;
+
+				if ((id === 'origen' || id === 'destino') && (!value.includes(',') || value.split(',')[1].trim() === '')) {
+					input.classList.add('is-invalid');
+					isValid = false;
+				} else if (id === 'consumo' && value !== '' && parseFloat(value) < 1) {
+					input.classList.add('is-invalid');
+					isValid = false;
+				} else if (id === 'numero_ejes' && value === '') {
+					input.classList.add('is-invalid');
+					isValid = false;
+				} else if (id === 'tipo_consumo' && value === '') {
+					input.classList.add('is-invalid');
+					isValid = false;
+				} else if (id === 'marca' && value === '') {
+					input.classList.add('is-invalid');
+					isValid = false;
+				} else if (id === 'modelo' && value === '') {
+					input.classList.add('is-invalid');
+					isValid = false;
+				} else if (id === 'precio_combustible' && value === '') {
+					input.classList.add('is-invalid');
+					isValid = false;
+				}
+				else if (id === 'factor' && value === '') {
+					input.classList.add('is-invalid');
+					isValid = false;
+				}
+				else {
+					input.classList.remove('is-invalid');
+					input.classList.add('is-valid');
+					data[id] = value;
+				}
+			});
+
+			if (isValid) {
+				//   alert('Formulario válido. JSON generado en la consola.');
+
+				data.numero_cilindros = parseInt(data.numero_cilindros, 10); // Convertir a entero
+				data.numero_ejes = parseInt(data.numero_ejes, 10); // Convertir a entero
+				data.precio_combustible = parseFloat(data.precio_combustible); // Convertir a decimal
+				data.factor = parseFloat(data.factor); // Convertir a decimal
+				console.log(data);
+				obtenerFacturasTemplate([data], 2);				
+			} else {
+				let message = 'Por favor completa todos los campos correctamente.'
+				DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+				//alert();
+			}
+		});
 
 
 
+	</script>
+
+	<script>
+		// Botón de envío
+		const btnEnviar = document.getElementById('btnEnviar');
+
+		// Manejo del clic en el botón "Enviar"
+		btnEnviar.addEventListener('click', async () => {
+			const campos = document.querySelectorAll('.validar-campo'); // Selecciona todos los campos a validar
+			let esValido = true;
+
+			// Iterar sobre los campos y validarlos
+			for (let campo of campos) {
+				if (!campo.value.trim() || (campo.type === 'email' && !campo.value.includes('@'))) {
+					campo.classList.add('is-invalid'); // Marca el campo como inválido
+					campo.nextElementSibling.textContent = campo.getAttribute('data-error'); // Actualiza el mensaje de error
+					esValido = false;
+				} else {
+					campo.classList.remove('is-invalid'); // Elimina el estado de inválido
+					campo.classList.add('is-valid'); // Marca el campo como válido
+				}
+			}
+
+			if (esValido) {
+
+
+				const nombre = document.getElementById('nombre').value;
+				const correo = document.getElementById('correo').value;
+				const telefono = document.getElementById('telefono').value;
+
+				//alert('Formulario enviado con éxito!');
+
+
+				const url = 'http://localhost:3001/ventas/envio-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
+				const datos = {
+					tipo_cotizacion: "agendar_cotizacion_ia_preliminar",
+					nombre: nombre, // Datos que se van a enviar
+					correo: correo,
+					telefono:  telefono,
+					tipo_correo: "Envio",
+					guid: guid_envio_mod,
+					id: id_envio_mod,
+					precio_Combustible_mod: precio_Combustible_mod,
+					factor_mod: factor_mod,
+					kilometros_mod: kilometros_mod,
+					casetas_Peajes_mod: casetas_Peajes_mod,
+					transporte_Origen_mod:  transporte_Origen_mod,
+					transporte_Destino_mod: transporte_Destino_mod,
+					taxis_UBER_mod: taxis_UBER_mod,
+					material_Bono_Extra_mod: material_Bono_Extra_mod,
+					costo_ferry_mod: costo_ferry_mod
+
+				};
+
+				try {
+					// Realizar la solicitud POST
+					const response = await fetch(url, {
+						method: 'POST', // Especificar que es una solicitud POST
+						headers: {
+							'Content-Type': 'application/json', // Establecer el tipo de contenido que se enviará
+						},
+						body: JSON.stringify(datos), // Convertir los datos a formato JSON antes de enviarlos
+					});
+
+					// Verificar si la respuesta es exitosa (código de estado 2xx)
+					if (!response.ok) {
+						// Si la respuesta no es exitosa, lanzar un error con el código de estado
+						throw new Error(`Error HTTP: ${response.status}`);
+					}
+
+					// Convertir la respuesta a formato JSON (suponiendo que la API responde con JSON)
+					const responseData = await response.json();
+
+					// Mostrar la respuesta de la API
+					console.log('Respuesta de la API:', responseData);
+					if (responseData.valid) {
+						let ms = "Envio de correo correcto";
+						DevExpress.ui.notify({ ms, width: 450, }, "success", 4000);
+					} else {
+						let ms = responseData.data;
+						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+					}
+
+				} catch (error) {
+					// Manejo de errores
+					if (error.name === 'TypeError') {
+						// Esto ocurre si hay problemas de red o si la URL es incorrecta
+						console.error('Problema de red o URL incorrecta:', error.message);
+					} else if (error.message.startsWith('Error HTTP')) {
+						// Si hubo un error HTTP (código de estado no 2xx)
+						console.error('Hubo un error al enviar los datos:', error.message);
+					} else {
+						// Manejo de otros errores
+						console.error('Error desconocido:', error.message);
+					}
+				}
+
+
+				// Limpia los campos y elimina las clases de validación
+				for (let campo of campos) {
+					campo.value = '';
+					campo.classList.remove('is-valid');
+					campo.classList.remove('is-invalid');
+				}
+
+				// Cierra el modal
+				const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
+				modal.hide();
+			}
+		});
+
+
+	
+
+	</script>
 
 </html>
