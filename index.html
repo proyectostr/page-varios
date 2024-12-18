@@ -256,7 +256,7 @@
 
 								<th style="width: 10%;" class="valoresTabla">consumo</th>
 								<th style="width: 20%;" class="valoresTabla">numero_ejes</th>
-								<th style="width: 20%;" class="valoresTabla">tipo_Consumo</th>
+								<th style="width: 20%;" class="valoresTabla">tipo_consumo</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -617,10 +617,8 @@
 												campo.value = '';
 												campo.classList.remove('is-valid');
 												campo.classList.remove('is-invalid');
-
-												
-
 											}
+											document.getElementById('trasladoPeligroso').checked = false;
 										})
 										.appendTo(container);
 								}
@@ -1216,6 +1214,13 @@
 							placeholder="Ingresa tu teléfono" data-error="Por favor, ingresa tu teléfono.">
 						<div class="invalid-feedback">Por favor, ingresa tu teléfono.</div>
 					</div>
+
+					  <!-- Nuevo checkbox agregado -->
+					  <div class="mb-3 form-check">
+						<input type="checkbox" class="form-check-input" id="trasladoPeligroso">
+						<label class="form-check-label" for="trasladoPeligroso">Traslado Peligroso</label>
+					</div>
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -1328,9 +1333,8 @@
 				const nombre = document.getElementById('nombre').value;
 				const correo = document.getElementById('correo').value;
 				const telefono = document.getElementById('telefono').value;
-
-				//alert('Formulario enviado con éxito!');
-
+// Obtener el checkbox por su id
+				const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
 
 				const url = 'http://localhost:3001/ventas/envio-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
 				const datos = {
@@ -1349,11 +1353,13 @@
 					transporte_Destino_mod: transporte_Destino_mod,
 					taxis_UBER_mod: taxis_UBER_mod,
 					material_Bono_Extra_mod: material_Bono_Extra_mod,
-					costo_ferry_mod: costo_ferry_mod
+					costo_ferry_mod: costo_ferry_mod,
+					traslado_peligroso: trasladoPeligroso
 
 				};
 
 				try {
+					halcoloaderActive();
 					// Realizar la solicitud POST
 					const response = await fetch(url, {
 						method: 'POST', // Especificar que es una solicitud POST
@@ -1375,8 +1381,20 @@
 					// Mostrar la respuesta de la API
 					console.log('Respuesta de la API:', responseData);
 					if (responseData.valid) {
-						let ms = "Envio de correo correcto";
-						DevExpress.ui.notify({ ms, width: 450, }, "success", 4000);
+					halcoloaderRemove();
+						DevExpress.ui.notify("Envio correcto", "success", { width: 450, displayTime: 8000 });
+						// Limpia los campos y elimina las clases de validación
+				for (let campo of campos) {
+					campo.value = '';
+					campo.classList.remove('is-valid');
+					campo.classList.remove('is-invalid');
+				}
+
+				document.getElementById('trasladoPeligroso').checked = false;
+
+				// Cierra el modal
+				const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
+				modal.hide();
 					} else {
 						let ms = responseData.data;
 						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
@@ -1385,28 +1403,28 @@
 				} catch (error) {
 					// Manejo de errores
 					if (error.name === 'TypeError') {
+						let ms = error.message;
 						// Esto ocurre si hay problemas de red o si la URL es incorrecta
+						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
 						console.error('Problema de red o URL incorrecta:', error.message);
 					} else if (error.message.startsWith('Error HTTP')) {
 						// Si hubo un error HTTP (código de estado no 2xx)
+						let ms = error.message;
+						// Esto ocurre si hay problemas de red o si la URL es incorrecta
+						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
 						console.error('Hubo un error al enviar los datos:', error.message);
 					} else {
+						let ms = error.message;
+						// Esto ocurre si hay problemas de red o si la URL es incorrecta
+						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
 						// Manejo de otros errores
 						console.error('Error desconocido:', error.message);
 					}
+					halcoloaderRemove();
 				}
 
 
-				// Limpia los campos y elimina las clases de validación
-				for (let campo of campos) {
-					campo.value = '';
-					campo.classList.remove('is-valid');
-					campo.classList.remove('is-invalid');
-				}
-
-				// Cierra el modal
-				const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
-				modal.hide();
+				
 			}
 		});
 
