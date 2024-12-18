@@ -922,7 +922,7 @@
 					const obtenerFacturasTemplateAsync = async (excelData, tipo) => {
 						halcoloaderActive();
 						// URL de la API (ajústala a tu necesidad)
-						const urlAPI = 'http://localhost:3001/ventas/generate-cotizacion-preliminar-camiones-automoviles';
+						const urlAPI = 'https://pasarelaconwait-response.onrender.com/ventas/generate-cotizacion-preliminar-camiones-automoviles';
 
 						console.log(excelData);
 						// Array de promesas que contendrá las solicitudes HTTP
@@ -1336,7 +1336,7 @@
 // Obtener el checkbox por su id
 				const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
 
-				const url = 'http://localhost:3001/ventas/envio-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
+				const url = 'https://pasarelaconwait-response.onrender.com/ventas/envio-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
 				const datos = {
 					tipo_cotizacion: "agendar_cotizacion_ia_preliminar",
 					nombre: nombre, // Datos que se van a enviar
