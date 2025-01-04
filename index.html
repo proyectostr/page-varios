@@ -522,7 +522,7 @@
 							let allowEditing = false;
 							let visible = true;
 							let fixed = false; // Fija esta columna
-							if (["Precio_Combustible", "Costo_Combustible", "Alimentos", "Salario_Operador", "Hotel", "Placas_Urbanos", "Casetas_Peajes", "Transporte_Origen", "Transporte_Destino", "Taxis_UBER", "Total_Extra", "Material_Bono_Extra", "Costo_Ferry", "Utilidad", "SubTotal", "IVA", "Retencion", "Total_Persona", "Total_Empresa"].includes(columna)) {
+							if (["Precio_Combustible", "Costo_Combustible", "Alimentos", "Salario_Operador", "Hotel", "Placas_Urbanos", "Casetas_Peajes", "Transporte_Origen", "Transporte_Destino", "Taxis_UBER", "Total_Extra", "Material_Bono_Extra", "Costo_Ferry", "Utilidad", "SubTotal", "IVA", "Retencion", "Total_Persona", "Total_Empresa", "Costo_Violencia"].includes(columna)) {
 								tipoDato = "number";
 								formato = {
 									type: "currency",
@@ -922,7 +922,7 @@
 					const obtenerFacturasTemplateAsync = async (excelData, tipo) => {
 						halcoloaderActive();
 						// URL de la API (ajústala a tu necesidad)
-						const urlAPI = 'https://pasarelaconwait-response.onrender.com/ventas/generate-cotizacion-preliminar-camiones-automoviles';
+						const urlAPI = urlEndPoint +'/ventas/generate-cotizacion-preliminar-camiones-automoviles';
 
 						console.log(excelData);
 						// Array de promesas que contendrá las solicitudes HTTP
@@ -1225,6 +1225,7 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 					<button type="button" class="btn btn-primary" id="btnEnviar">Enviar</button>
+					<button type="button" class="btn btn-primary" id="btnGenerarPdf">generar pdf</button>
 				</div>
 			</div>
 		</div>
@@ -1244,6 +1245,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 	<script>
+
+		var urlEndPoint = 'https://pasarelaconwait-response.onrender.com';
+		//var urlEndPoint = 'http://localhost:3001';
 		document.getElementById('btnGenerar').addEventListener('click', function () {
 			let inputs = document.querySelectorAll('.modal-body .form-control, .modal-body .form-select');
 			let isValid = true;
@@ -1293,6 +1297,7 @@
 				data.numero_ejes = parseInt(data.numero_ejes, 10); // Convertir a entero
 				data.precio_combustible = parseFloat(data.precio_combustible); // Convertir a decimal
 				data.factor = parseFloat(data.factor); // Convertir a decimal
+				data.consumo = parseInt(data.consumo); // Convertir a decimal
 				console.log(data);
 				obtenerFacturasTemplate([data], 2);				
 			} else {
@@ -1336,7 +1341,7 @@
 // Obtener el checkbox por su id
 				const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
 
-				const url = 'https://pasarelaconwait-response.onrender.com/ventas/envio-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
+				const url = urlEndPoint + '/ventas/envio-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
 				const datos = {
 					tipo_cotizacion: "agendar_cotizacion_ia_preliminar",
 					nombre: nombre, // Datos que se van a enviar
@@ -1382,8 +1387,10 @@
 					console.log('Respuesta de la API:', responseData);
 					if (responseData.valid) {
 					halcoloaderRemove();
-						DevExpress.ui.notify("Envio correcto", "success", { width: 450, displayTime: 8000 });
-						// Limpia los campos y elimina las clases de validación
+
+					let message = 'PEnvio correcto'
+				    DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+						
 				for (let campo of campos) {
 					campo.value = '';
 					campo.classList.remove('is-valid');
@@ -1405,6 +1412,8 @@
 					if (error.name === 'TypeError') {
 						let ms = error.message;
 						// Esto ocurre si hay problemas de red o si la URL es incorrecta
+
+
 						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
 						console.error('Problema de red o URL incorrecta:', error.message);
 					} else if (error.message.startsWith('Error HTTP')) {
@@ -1428,9 +1437,146 @@
 			}
 		});
 
+	</script>
+
+
+
+<script>
+	// Botón de envío
+	const btnGenerar = document.getElementById('btnGenerarPdf');
+
+	// Manejo del clic en el botón "Enviar"
+	btnGenerar.addEventListener('click', async () => {
+		const campos = document.querySelectorAll('.validar-campo'); // Selecciona todos los campos a validar
+		let esValido = true;
+
+		if (esValido) {
+			const nombre = document.getElementById('nombre').value;
+			const correo = document.getElementById('correo').value;
+			const telefono = document.getElementById('telefono').value;
+// Obtener el checkbox por su id
+			const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
+
+			const url = urlEndPoint +'/ventas/pdf-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
+			const datos = {
+				tipo_cotizacion: "agendar_cotizacion_ia_preliminar",
+				nombre: nombre ==  ''? "cliente" : nombre, // Datos que se van a enviar
+				correo: correo ==  ''? "soporte@trasladista.com" : correo,
+				telefono:  telefono,
+				tipo_correo: "Envio",
+				guid: guid_envio_mod,
+				id: id_envio_mod,
+				precio_Combustible_mod: precio_Combustible_mod,
+				factor_mod: factor_mod,
+				kilometros_mod: kilometros_mod,
+				casetas_Peajes_mod: casetas_Peajes_mod,
+				transporte_Origen_mod:  transporte_Origen_mod,
+				transporte_Destino_mod: transporte_Destino_mod,
+				taxis_UBER_mod: taxis_UBER_mod,
+				material_Bono_Extra_mod: material_Bono_Extra_mod,
+				costo_ferry_mod: costo_ferry_mod,
+				traslado_peligroso: trasladoPeligroso
+
+			};
+
+			try {
+				halcoloaderActive();
+				// Realizar la solicitud POST
+				const response = await fetch(url, {
+					method: 'POST', // Especificar que es una solicitud POST
+					headers: {
+						'Content-Type': 'application/json', // Establecer el tipo de contenido que se enviará
+					},
+					body: JSON.stringify(datos), // Convertir los datos a formato JSON antes de enviarlos
+				});
+
+				// Verificar si la respuesta es exitosa (código de estado 2xx)
+				if (!response.ok) {
+					// Si la respuesta no es exitosa, lanzar un error con el código de estado
+					throw new Error(`Error HTTP: ${response.status}`);
+				}
+
+				// Convertir la respuesta a formato JSON (suponiendo que la API responde con JSON)
+				const responseData = await response.json();
+
+				// Mostrar la respuesta de la API
+				console.log('Respuesta de la API:', responseData);
+				if (responseData.valid) {  
+
+				            // Convertir Base64 a Blob
+				const base64Data = responseData.data;
+                const binaryString = atob(base64Data); // Decodifica Base64 a binario
+                const byteArray = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    byteArray[i] = binaryString.charCodeAt(i);
+                }
+                const pdfBlob = new Blob([byteArray], { type: 'application/pdf' });
+
+                // Crear enlace de descarga
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.download = 'documento.pdf';
+                document.body.appendChild(link);
+                link.click();
+
+                // Liberar memoria
+                URL.revokeObjectURL(pdfUrl);
+                document.body.removeChild(link);
+			
+				halcoloaderRemove();
+				DevExpress.ui.notify("Envio correcto", "success", { width: 450, displayTime: 8000 });
+					// Limpia los campos y elimina las clases de validación
+			for (let campo of campos) {
+				campo.value = '';
+				campo.classList.remove('is-valid');
+				campo.classList.remove('is-invalid');
+			}
+
+			document.getElementById('trasladoPeligroso').checked = false;
+
+			// Cierra el modal
+			const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
+			modal.hide();
+				} else {
+					let ms = responseData.data;
+					DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+				}
+
+			} catch (error) {
+				// Manejo de errores
+				if (error.name === 'TypeError') {
+					let ms = error.message;
+					// Esto ocurre si hay problemas de red o si la URL es incorrecta
+					DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+					console.error('Problema de red o URL incorrecta:', error.message);
+				} else if (error.message.startsWith('Error HTTP')) {
+					// Si hubo un error HTTP (código de estado no 2xx)
+					let ms = error.message;
+					// Esto ocurre si hay problemas de red o si la URL es incorrecta
+					DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+					console.error('Hubo un error al enviar los datos:', error.message);
+				} else {
+					let ms = error.message;
+					// Esto ocurre si hay problemas de red o si la URL es incorrecta
+					DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+					// Manejo de otros errores
+					console.error('Error desconocido:', error.message);
+				}
+				halcoloaderRemove();
+			}
+
+
+			
+		}
+	});
+
+
 
 	
 
-	</script>
+
+
+</script>
 
 </html>
