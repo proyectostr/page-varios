@@ -1297,7 +1297,7 @@
 				data.numero_ejes = parseInt(data.numero_ejes, 10); // Convertir a entero
 				data.precio_combustible = parseFloat(data.precio_combustible); // Convertir a decimal
 				data.factor = parseFloat(data.factor); // Convertir a decimal
-				data.consumo = parseInt(data.consumo); // Convertir a decimal
+				data.consumo = parseFloat(data.consumo) > 0 ? parseFloat(data.consumo): 0; // Convertir a decimal
 				console.log(data);
 				obtenerFacturasTemplate([data], 2);				
 			} else {
