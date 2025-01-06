@@ -941,7 +941,7 @@
 								"marca": objeto.marca,
 								"modelo": objeto.modelo,
 								"numero_cilindros": 0,
-								"consumo": objeto.consumo == "" ? -1 : objeto.consumo,
+								"consumo": objeto.consumo == "" || objeto.consumo == null  ? -1 : objeto.consumo,
 								"numero_ejes": objeto.numero_ejes,
 								"precio_combustible": tipo == 1 ? dtCombustible : objeto.precio_combustible,
 								"factor": tipo == 1 ? dtFactor : objeto.factor,
