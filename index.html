@@ -374,6 +374,10 @@
 					$(document).ready(() => {
 
 						halcoloaderActive();
+
+
+
+
 						// Obtener el user-agent del navegador
 						var userAgent = navigator.userAgent;
 						// Verificar si el user-agent indica un dispositivo móvil
@@ -435,6 +439,68 @@
 							closeOnOutsideClick: true // Cierra el popup si se hace clic fuera
 						});
 
+
+
+						const data = [
+							{ id: 1, nombre: "Juan Pérez", correo: "juan.perez@example.com", atendido: 1 },
+							{ id: 2, nombre: "María López", correo: "maria.lopez@example.com", atendido: 0 },
+							{ id: 3, nombre: "Carlos Díaz", correo: "carlos.diaz@example.com", atendido: 1 },
+							{ id: 4, nombre: "Ana Sánchez", correo: "ana.sanchez@example.com", atendido: 0 },
+						];
+
+						// Inicialización del DropDownBox
+						const dropdown = $("#dropdown").dxDropDownBox({
+							valueExpr: "id",
+							displayExpr: "nombre",
+							dataSource: data,
+							contentTemplate: function (e) {
+								const $list = $("<div>").dxList({
+									dataSource: data,
+									displayExpr: item => `${item.nombre} (${item.correo})`,
+									itemTemplate: function (itemData) {
+										// Crear contenedor para cada elemento
+										const $container = $("<div>")
+											.css("display", "flex")
+											.css("align-items", "center")
+											.css("padding", "5px")
+											.css("border-radius", "4px")
+											.css("cursor", "pointer")
+											.css("background-color", getBackgroundColor(itemData, 1))
+											.on("click", function () {
+												// Registrar el ID del elemento seleccionado
+												console.log(`ID seleccionado: ${itemData.id}`);
+												dropdown.dxDropDownBox("instance").close(); // Cierra el DropDownBox
+											});
+
+										// Checkbox con estado dinámico basado en la lógica
+										const $checkbox = $("<input>")
+											.attr("type", "checkbox")
+											.prop("checked", itemData.activo || itemData.atendido === 1) // Activo si `activo` es true o si `atendido === 1`
+											.css("margin-right", "10px")
+											.on("click", function (e) {
+												e.stopPropagation(); // Prevenir que el clic cierre el DropDownBox
+											})
+											.on("change", function () {
+												itemData.activo = $(this).is(":checked");
+												$container.css("background-color", getBackgroundColor(itemData, 2));
+												console.log(`Checkbox cambiado en ID: ${itemData.id}, Activo: ${itemData.activo}`);
+											});
+
+										// Texto del elemento
+										const $text = $("<span>")
+											.text(`${itemData.nombre} (${itemData.correo})`);
+
+										$container.append($checkbox).append($text);
+										return $container;
+									},
+								});
+								return $list;
+							},
+							placeholder: "Selecciona un registro",
+							dropDownOptions: {
+								width: "100%",
+							},
+						});
 						generarGridSiniestros([], [], [], "#gridContainerSiniestro", "Siniestro", (isMobile) ? 10 : 260, (isMobile) ? 30 : 30);
 
 
@@ -596,12 +662,12 @@
 										.addClass('btn btn-primary btn-sm ')
 										.html('<i class="fas fa-paper-plane icon"></i> Enviar correo') // Ícono y texto del botón
 										.on('click', function () {
-											
+
 											guid_envio_mod = options.data.Guid;
 											id_envio_mod = options.data.Id;
 											console.log(options.data);
 
-										    precio_Combustible_mod = options.data.Precio_Combustible;
+											precio_Combustible_mod = options.data.Precio_Combustible;
 											factor_mod = options.data.Factor;
 											kilometros_mod = options.data.Kilometros;
 											casetas_Peajes_mod = options.data.Casetas_Peajes;
@@ -705,7 +771,7 @@
 							let costoViolencia = e.newData.Costo_Violencia !== undefined ? e.newData.Costo_Violencia : e.oldData.Costo_Violencia;
 							let factor = e.newData.Factor !== undefined ? e.newData.Factor : e.oldData.Factor;
 
-							let utilidad = ((costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) * consumoUtilidad /*0.18*/ ) * factor;
+							let utilidad = ((costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) * consumoUtilidad /*0.18*/) * factor;
 							e.newData.Utilidad = utilidad;
 
 							let subTotal = (costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) + utilidad;
@@ -922,7 +988,7 @@
 					const obtenerFacturasTemplateAsync = async (excelData, tipo) => {
 						halcoloaderActive();
 						// URL de la API (ajústala a tu necesidad)
-						const urlAPI = urlEndPoint +'/ventas/generate-cotizacion-preliminar-camiones-automoviles';
+						const urlAPI = urlEndPoint + '/ventas/generate-cotizacion-preliminar-camiones-automoviles';
 
 						console.log(excelData);
 						// Array de promesas que contendrá las solicitudes HTTP
@@ -941,7 +1007,7 @@
 								"marca": objeto.marca,
 								"modelo": objeto.modelo,
 								"numero_cilindros": 0,
-								"consumo": objeto.consumo == "" || objeto.consumo == null  ? -1 : objeto.consumo,
+								"consumo": objeto.consumo == "" || objeto.consumo == null ? -1 : objeto.consumo,
 								"numero_ejes": objeto.numero_ejes,
 								"precio_combustible": tipo == 1 ? dtCombustible : objeto.precio_combustible,
 								"factor": tipo == 1 ? dtFactor : objeto.factor,
@@ -959,7 +1025,7 @@
 							}
 							try {
 								// Realizamos la solicitud POST enviando el objeto como cuerpo
-								const respuesta = await fetch(urlAPI, {
+								var respuesta = await fetch(urlAPI, {
 									method: 'POST',
 									headers: {
 										'Content-Type': 'application/json',
@@ -984,8 +1050,61 @@
 								console.log(`Respuesta para ${objeto.Origen} a ${objeto.Destino}:`, datos);
 
 							} catch (error) {
-								return obj_calculoReturn;
-								console.log(`Error al procesar la solicitud para ${objeto.Origen} a ${objeto.Destino}:`, error);
+
+								try {
+
+									var respuesta = await fetch(urlAPI, {
+										method: 'POST',
+										headers: {
+											'Content-Type': 'application/json',
+										},
+										body: JSON.stringify(obj_calculo), // Convertimos el objeto a JSON
+									});
+
+									// Comprobamos si la respuesta fue exitosa
+									if (!respuesta.ok) {
+
+										throw new Error(`Error al hacer la solicitud para ${objeto.Origen} a ${objeto.Destino}`);
+
+									}
+									// Si la respuesta es exitosa, obtenemos los datos
+									var datos = await respuesta.json();
+									var button = document.querySelector('button.btn.btn-secondary[data-bs-dismiss="modal"]');
+									// Simula un clic en el botón
+									button.click();
+									return datos;
+
+								} catch (error) {
+									try {
+
+										var respuesta = await fetch(urlAPI, {
+											method: 'POST',
+											headers: {
+												'Content-Type': 'application/json',
+											},
+											body: JSON.stringify(obj_calculo), // Convertimos el objeto a JSON
+										});
+
+										// Comprobamos si la respuesta fue exitosa
+										if (!respuesta.ok) {
+
+											throw new Error(`Error al hacer la solicitud para ${objeto.Origen} a ${objeto.Destino}`);
+
+										}
+										// Si la respuesta es exitosa, obtenemos los datos
+										var datos = await respuesta.json();
+										var button = document.querySelector('button.btn.btn-secondary[data-bs-dismiss="modal"]');
+										// Simula un clic en el botón
+										button.click();
+										return datos;
+
+									} catch (error) {
+										return obj_calculoReturn;
+									}
+
+								}
+
+								//console.log(`Error al procesar la solicitud para ${objeto.Origen} a ${objeto.Destino}:`, error);
 
 							}
 						});
@@ -1105,7 +1224,17 @@
 					<h5 class="modal-title w-100 text-center" id="exampleModalLabel">Formulario de Datos</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
+
+
 				<div class="modal-body">
+
+					<div class="mb-3" style="display: none;">
+						<input type="checkbox" class="form-check-input" id="usarIA">
+						<label class="form-check-label" for="usarIA">Usar IA</label>
+						<label for="formulario" class="form-label">Datos Formularios</label>
+						<div id="dropdown"></div>
+					</div>
+
 					<div class="mb-3">
 						<label for="origen" class="form-label">Origen</label>
 						<input type="text" class="form-control validar-campo-formulario-datos" id="origen" value="">
@@ -1215,8 +1344,8 @@
 						<div class="invalid-feedback">Por favor, ingresa tu teléfono.</div>
 					</div>
 
-					  <!-- Nuevo checkbox agregado -->
-					  <div class="mb-3 form-check">
+					<!-- Nuevo checkbox agregado -->
+					<div class="mb-3 form-check">
 						<input type="checkbox" class="form-check-input" id="trasladoPeligroso">
 						<label class="form-check-label" for="trasladoPeligroso">Traslado Peligroso</label>
 					</div>
@@ -1246,8 +1375,8 @@
 
 	<script>
 
-		var urlEndPoint = 'https://pasarelaconwait-response.onrender.com';
-		//var urlEndPoint = 'http://localhost:3001';
+		//var urlEndPoint = 'https://pasarelaconwait-response.onrender.com';
+		var urlEndPoint = 'http://localhost:3001';
 		document.getElementById('btnGenerar').addEventListener('click', function () {
 			let inputs = document.querySelectorAll('.modal-body .form-control, .modal-body .form-select');
 			let isValid = true;
@@ -1297,9 +1426,9 @@
 				data.numero_ejes = parseInt(data.numero_ejes, 10); // Convertir a entero
 				data.precio_combustible = parseFloat(data.precio_combustible); // Convertir a decimal
 				data.factor = parseFloat(data.factor); // Convertir a decimal
-				data.consumo = parseFloat(data.consumo) > 0 ? parseFloat(data.consumo): 0; // Convertir a decimal
+				data.consumo = parseFloat(data.consumo) > 0 ? parseFloat(data.consumo) : 0; // Convertir a decimal
 				console.log(data);
-				obtenerFacturasTemplate([data], 2);				
+				obtenerFacturasTemplate([data], 2);
 			} else {
 				let message = 'Por favor completa todos los campos correctamente.'
 				DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
@@ -1338,7 +1467,7 @@
 				const nombre = document.getElementById('nombre').value;
 				const correo = document.getElementById('correo').value;
 				const telefono = document.getElementById('telefono').value;
-// Obtener el checkbox por su id
+				// Obtener el checkbox por su id
 				const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
 
 				const url = urlEndPoint + '/ventas/envio-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
@@ -1346,7 +1475,7 @@
 					tipo_cotizacion: "agendar_cotizacion_ia_preliminar",
 					nombre: nombre, // Datos que se van a enviar
 					correo: correo,
-					telefono:  telefono,
+					telefono: telefono,
 					tipo_correo: "Envio",
 					guid: guid_envio_mod,
 					id: id_envio_mod,
@@ -1354,7 +1483,7 @@
 					factor_mod: factor_mod,
 					kilometros_mod: kilometros_mod,
 					casetas_Peajes_mod: casetas_Peajes_mod,
-					transporte_Origen_mod:  transporte_Origen_mod,
+					transporte_Origen_mod: transporte_Origen_mod,
 					transporte_Destino_mod: transporte_Destino_mod,
 					taxis_UBER_mod: taxis_UBER_mod,
 					material_Bono_Extra_mod: material_Bono_Extra_mod,
@@ -1386,22 +1515,22 @@
 					// Mostrar la respuesta de la API
 					console.log('Respuesta de la API:', responseData);
 					if (responseData.valid) {
-					halcoloaderRemove();
+						halcoloaderRemove();
 
-					let message = 'PEnvio correcto'
-				    DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
-						
-				for (let campo of campos) {
-					campo.value = '';
-					campo.classList.remove('is-valid');
-					campo.classList.remove('is-invalid');
-				}
+						let message = 'PEnvio correcto'
+						DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
 
-				document.getElementById('trasladoPeligroso').checked = false;
+						for (let campo of campos) {
+							campo.value = '';
+							campo.classList.remove('is-valid');
+							campo.classList.remove('is-invalid');
+						}
 
-				// Cierra el modal
-				const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
-				modal.hide();
+						document.getElementById('trasladoPeligroso').checked = false;
+
+						// Cierra el modal
+						const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
+						modal.hide();
 					} else {
 						let ms = responseData.data;
 						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
@@ -1433,7 +1562,7 @@
 				}
 
 
-				
+
 			}
 		});
 
@@ -1441,142 +1570,169 @@
 
 
 
-<script>
-	// Botón de envío
-	const btnGenerar = document.getElementById('btnGenerarPdf');
+	<script>
+		// Botón de envío
+		const btnGenerar = document.getElementById('btnGenerarPdf');
 
-	// Manejo del clic en el botón "Enviar"
-	btnGenerar.addEventListener('click', async () => {
-		const campos = document.querySelectorAll('.validar-campo'); // Selecciona todos los campos a validar
-		let esValido = true;
+		// Manejo del clic en el botón "Enviar"
+		btnGenerar.addEventListener('click', async () => {
+			const campos = document.querySelectorAll('.validar-campo'); // Selecciona todos los campos a validar
+			let esValido = true;
 
-		if (esValido) {
-			const nombre = document.getElementById('nombre').value;
-			const correo = document.getElementById('correo').value;
-			const telefono = document.getElementById('telefono').value;
-// Obtener el checkbox por su id
-			const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
+			if (esValido) {
+				const nombre = document.getElementById('nombre').value;
+				const correo = document.getElementById('correo').value;
+				const telefono = document.getElementById('telefono').value;
+				// Obtener el checkbox por su id
+				const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
 
-			const url = urlEndPoint +'/ventas/pdf-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
-			const datos = {
-				tipo_cotizacion: "agendar_cotizacion_ia_preliminar",
-				nombre: nombre ==  ''? "cliente" : nombre, // Datos que se van a enviar
-				correo: correo ==  ''? "soporte@trasladista.com" : correo,
-				telefono:  telefono,
-				tipo_correo: "Envio",
-				guid: guid_envio_mod,
-				id: id_envio_mod,
-				precio_Combustible_mod: precio_Combustible_mod,
-				factor_mod: factor_mod,
-				kilometros_mod: kilometros_mod,
-				casetas_Peajes_mod: casetas_Peajes_mod,
-				transporte_Origen_mod:  transporte_Origen_mod,
-				transporte_Destino_mod: transporte_Destino_mod,
-				taxis_UBER_mod: taxis_UBER_mod,
-				material_Bono_Extra_mod: material_Bono_Extra_mod,
-				costo_ferry_mod: costo_ferry_mod,
-				traslado_peligroso: trasladoPeligroso
+				const url = urlEndPoint + '/ventas/pdf-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
+				const datos = {
+					tipo_cotizacion: "agendar_cotizacion_ia_preliminar",
+					nombre: nombre == '' ? "cliente" : nombre, // Datos que se van a enviar
+					correo: correo == '' ? "soporte@trasladista.com" : correo,
+					telefono: telefono,
+					tipo_correo: "Envio",
+					guid: guid_envio_mod,
+					id: id_envio_mod,
+					precio_Combustible_mod: precio_Combustible_mod,
+					factor_mod: factor_mod,
+					kilometros_mod: kilometros_mod,
+					casetas_Peajes_mod: casetas_Peajes_mod,
+					transporte_Origen_mod: transporte_Origen_mod,
+					transporte_Destino_mod: transporte_Destino_mod,
+					taxis_UBER_mod: taxis_UBER_mod,
+					material_Bono_Extra_mod: material_Bono_Extra_mod,
+					costo_ferry_mod: costo_ferry_mod,
+					traslado_peligroso: trasladoPeligroso
 
-			};
+				};
 
-			try {
-				halcoloaderActive();
-				// Realizar la solicitud POST
-				const response = await fetch(url, {
-					method: 'POST', // Especificar que es una solicitud POST
-					headers: {
-						'Content-Type': 'application/json', // Establecer el tipo de contenido que se enviará
-					},
-					body: JSON.stringify(datos), // Convertir los datos a formato JSON antes de enviarlos
-				});
+				try {
+					halcoloaderActive();
+					// Realizar la solicitud POST
+					const response = await fetch(url, {
+						method: 'POST', // Especificar que es una solicitud POST
+						headers: {
+							'Content-Type': 'application/json', // Establecer el tipo de contenido que se enviará
+						},
+						body: JSON.stringify(datos), // Convertir los datos a formato JSON antes de enviarlos
+					});
 
-				// Verificar si la respuesta es exitosa (código de estado 2xx)
-				if (!response.ok) {
-					// Si la respuesta no es exitosa, lanzar un error con el código de estado
-					throw new Error(`Error HTTP: ${response.status}`);
+					// Verificar si la respuesta es exitosa (código de estado 2xx)
+					if (!response.ok) {
+						// Si la respuesta no es exitosa, lanzar un error con el código de estado
+						throw new Error(`Error HTTP: ${response.status}`);
+					}
+
+					// Convertir la respuesta a formato JSON (suponiendo que la API responde con JSON)
+					const responseData = await response.json();
+
+					// Mostrar la respuesta de la API
+					console.log('Respuesta de la API:', responseData);
+					if (responseData.valid) {
+
+						// Convertir Base64 a Blob
+						const base64Data = responseData.data;
+						const binaryString = atob(base64Data); // Decodifica Base64 a binario
+						const byteArray = new Uint8Array(binaryString.length);
+						for (let i = 0; i < binaryString.length; i++) {
+							byteArray[i] = binaryString.charCodeAt(i);
+						}
+						const pdfBlob = new Blob([byteArray], { type: 'application/pdf' });
+
+						// Crear enlace de descarga
+						const pdfUrl = URL.createObjectURL(pdfBlob);
+						const link = document.createElement('a');
+						link.href = pdfUrl;
+						link.download = 'documento.pdf';
+						document.body.appendChild(link);
+						link.click();
+
+						// Liberar memoria
+						URL.revokeObjectURL(pdfUrl);
+						document.body.removeChild(link);
+
+						halcoloaderRemove();
+						DevExpress.ui.notify("Envio correcto", "success", { width: 450, displayTime: 8000 });
+						// Limpia los campos y elimina las clases de validación
+						for (let campo of campos) {
+							campo.value = '';
+							campo.classList.remove('is-valid');
+							campo.classList.remove('is-invalid');
+						}
+
+						document.getElementById('trasladoPeligroso').checked = false;
+
+						// Cierra el modal
+						const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
+						modal.hide();
+					} else {
+						let ms = responseData.data;
+						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+					}
+
+				} catch (error) {
+					// Manejo de errores
+					if (error.name === 'TypeError') {
+						let ms = error.message;
+						// Esto ocurre si hay problemas de red o si la URL es incorrecta
+						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+						console.error('Problema de red o URL incorrecta:', error.message);
+					} else if (error.message.startsWith('Error HTTP')) {
+						// Si hubo un error HTTP (código de estado no 2xx)
+						let ms = error.message;
+						// Esto ocurre si hay problemas de red o si la URL es incorrecta
+						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+						console.error('Hubo un error al enviar los datos:', error.message);
+					} else {
+						let ms = error.message;
+						// Esto ocurre si hay problemas de red o si la URL es incorrecta
+						DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+						// Manejo de otros errores
+						console.error('Error desconocido:', error.message);
+					}
+					halcoloaderRemove();
 				}
 
-				// Convertir la respuesta a formato JSON (suponiendo que la API responde con JSON)
-				const responseData = await response.json();
 
-				// Mostrar la respuesta de la API
-				console.log('Respuesta de la API:', responseData);
-				if (responseData.valid) {  
 
-				            // Convertir Base64 a Blob
-				const base64Data = responseData.data;
-                const binaryString = atob(base64Data); // Decodifica Base64 a binario
-                const byteArray = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    byteArray[i] = binaryString.charCodeAt(i);
-                }
-                const pdfBlob = new Blob([byteArray], { type: 'application/pdf' });
+			}
+		});
 
-                // Crear enlace de descarga
-                const pdfUrl = URL.createObjectURL(pdfBlob);
-                const link = document.createElement('a');
-                link.href = pdfUrl;
-                link.download = 'documento.pdf';
-                document.body.appendChild(link);
-                link.click();
 
-                // Liberar memoria
-                URL.revokeObjectURL(pdfUrl);
-                document.body.removeChild(link);
-			
-				halcoloaderRemove();
-				DevExpress.ui.notify("Envio correcto", "success", { width: 450, displayTime: 8000 });
-					// Limpia los campos y elimina las clases de validación
-			for (let campo of campos) {
-				campo.value = '';
-				campo.classList.remove('is-valid');
-				campo.classList.remove('is-invalid');
+
+
+
+
+
+	</script>
+
+	<script>
+		// Función para obtener el color dinámico
+		function getBackgroundColor(item, cambio) {
+			console.log(item);
+
+
+			if (cambio == 1) {
+				// Si está activo, azul; si no, amarillo
+				if (item.activo || item.atendido == 1) {
+					return "lightgreen"; // Color para elementos seleccionados
+				} else {
+					return "lightyellow"; // Color para elementos desmarcados
+				}
 			}
 
-			document.getElementById('trasladoPeligroso').checked = false;
-
-			// Cierra el modal
-			const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
-			modal.hide();
+			if (cambio == 2) {
+				// Si está activo, azul; si no, amarillo
+				if (item.activo) {
+					return "lightgreen"; // Color para elementos seleccionados
 				} else {
-					let ms = responseData.data;
-					DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
+					return "lightyellow"; // Color para elementos desmarcados
 				}
-
-			} catch (error) {
-				// Manejo de errores
-				if (error.name === 'TypeError') {
-					let ms = error.message;
-					// Esto ocurre si hay problemas de red o si la URL es incorrecta
-					DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
-					console.error('Problema de red o URL incorrecta:', error.message);
-				} else if (error.message.startsWith('Error HTTP')) {
-					// Si hubo un error HTTP (código de estado no 2xx)
-					let ms = error.message;
-					// Esto ocurre si hay problemas de red o si la URL es incorrecta
-					DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
-					console.error('Hubo un error al enviar los datos:', error.message);
-				} else {
-					let ms = error.message;
-					// Esto ocurre si hay problemas de red o si la URL es incorrecta
-					DevExpress.ui.notify({ ms, width: 450, }, "error", 4000);
-					// Manejo de otros errores
-					console.error('Error desconocido:', error.message);
-				}
-				halcoloaderRemove();
 			}
 
-
-			
 		}
-	});
-
-
-
-	
-
-
-
-</script>
+	</script>
 
 </html>
