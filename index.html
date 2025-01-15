@@ -1023,37 +1023,16 @@
 								"factor": tipo == 1 ? dtFactor : objeto.factor,
 								"tipo_consumo": objeto.tipo_consumo
 							}
-							try {
-								// Realizamos la solicitud POST enviando el objeto como cuerpo
-								var respuesta = await fetch(urlAPI, {
-									method: 'POST',
-									headers: {
-										'Content-Type': 'application/json',
-									},
-									body: JSON.stringify(obj_calculo), // Convertimos el objeto a JSON
-								});
+							let intentos = 0; // Contador de intentos
+							const maxIntentos = 10; // Número máximo de intentos
+							let datos = null;
 
-								// Comprobamos si la respuesta fue exitosa
-								if (!respuesta.ok) {
-
-									throw new Error(`Error al hacer la solicitud para ${objeto.Origen} a ${objeto.Destino}`);
-
-								}
-								// Si la respuesta es exitosa, obtenemos los datos
-								const datos = await respuesta.json();
-
-								var button = document.querySelector('button.btn.btn-secondary[data-bs-dismiss="modal"]');
-								// Simula un clic en el botón
-								button.click();
-
-								return datos;
-								console.log(`Respuesta para ${objeto.Origen} a ${objeto.Destino}:`, datos);
-
-							} catch (error) {
-
+							while (intentos < maxIntentos) {
 								try {
+									console.log(`Intento ${intentos + 1} de ${maxIntentos}`);
 
-									var respuesta = await fetch(urlAPI, {
+									// Realizamos la solicitud POST enviando el objeto como cuerpo
+									const respuesta = await fetch(urlAPI, {
 										method: 'POST',
 										headers: {
 											'Content-Type': 'application/json',
@@ -1063,49 +1042,29 @@
 
 									// Comprobamos si la respuesta fue exitosa
 									if (!respuesta.ok) {
-
-										throw new Error(`Error al hacer la solicitud para ${objeto.Origen} a ${objeto.Destino}`);
-
+										throw new Error(`Error al hacer la solicitud para ${obj_calculo.drigen} a ${obj_calculo.destino}`);
 									}
+
 									// Si la respuesta es exitosa, obtenemos los datos
-									var datos = await respuesta.json();
+									datos = await respuesta.json();
+
 									var button = document.querySelector('button.btn.btn-secondary[data-bs-dismiss="modal"]');
-									// Simula un clic en el botón
-									button.click();
-									return datos;
+									if (button) {
+										button.click(); // Simula un clic en el botón
+									}
+
+									console.log(`Respuesta para ${obj_calculo.origen} a ${obj_calculo.destino}:`, datos);
+									return datos; // Retornamos los datos si la solicitud fue exitosa
 
 								} catch (error) {
-									try {
+									console.error(`Error en el intento ${intentos + 1}:`, error);
 
-										var respuesta = await fetch(urlAPI, {
-											method: 'POST',
-											headers: {
-												'Content-Type': 'application/json',
-											},
-											body: JSON.stringify(obj_calculo), // Convertimos el objeto a JSON
-										});
-
-										// Comprobamos si la respuesta fue exitosa
-										if (!respuesta.ok) {
-
-											throw new Error(`Error al hacer la solicitud para ${objeto.Origen} a ${objeto.Destino}`);
-
-										}
-										// Si la respuesta es exitosa, obtenemos los datos
-										var datos = await respuesta.json();
-										var button = document.querySelector('button.btn.btn-secondary[data-bs-dismiss="modal"]');
-										// Simula un clic en el botón
-										button.click();
-										return datos;
-
-									} catch (error) {
-										return obj_calculoReturn;
+									intentos++; // Incrementamos el contador de intentos
+									if (intentos >= maxIntentos) {
+										console.error("Número máximo de intentos alcanzado. Abortando solicitud.");
+										return obj_calculoReturn; // Devuelve un objeto de respaldo si se alcanzan los intentos máximos
 									}
-
 								}
-
-								//console.log(`Error al procesar la solicitud para ${objeto.Origen} a ${objeto.Destino}:`, error);
-
 							}
 						});
 
