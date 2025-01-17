@@ -439,68 +439,8 @@
 							closeOnOutsideClick: true // Cierra el popup si se hace clic fuera
 						});
 
+						cargarCorreosFormulario();
 
-
-						const data = [
-							{ id: 1, nombre: "Juan Pérez", correo: "juan.perez@example.com", atendido: 1 },
-							{ id: 2, nombre: "María López", correo: "maria.lopez@example.com", atendido: 0 },
-							{ id: 3, nombre: "Carlos Díaz", correo: "carlos.diaz@example.com", atendido: 1 },
-							{ id: 4, nombre: "Ana Sánchez", correo: "ana.sanchez@example.com", atendido: 0 },
-						];
-
-						// Inicialización del DropDownBox
-						const dropdown = $("#dropdown").dxDropDownBox({
-							valueExpr: "id",
-							displayExpr: "nombre",
-							dataSource: data,
-							contentTemplate: function (e) {
-								const $list = $("<div>").dxList({
-									dataSource: data,
-									displayExpr: item => `${item.nombre} (${item.correo})`,
-									itemTemplate: function (itemData) {
-										// Crear contenedor para cada elemento
-										const $container = $("<div>")
-											.css("display", "flex")
-											.css("align-items", "center")
-											.css("padding", "5px")
-											.css("border-radius", "4px")
-											.css("cursor", "pointer")
-											.css("background-color", getBackgroundColor(itemData, 1))
-											.on("click", function () {
-												// Registrar el ID del elemento seleccionado
-												console.log(`ID seleccionado: ${itemData.id}`);
-												dropdown.dxDropDownBox("instance").close(); // Cierra el DropDownBox
-											});
-
-										// Checkbox con estado dinámico basado en la lógica
-										const $checkbox = $("<input>")
-											.attr("type", "checkbox")
-											.prop("checked", itemData.activo || itemData.atendido === 1) // Activo si `activo` es true o si `atendido === 1`
-											.css("margin-right", "10px")
-											.on("click", function (e) {
-												e.stopPropagation(); // Prevenir que el clic cierre el DropDownBox
-											})
-											.on("change", function () {
-												itemData.activo = $(this).is(":checked");
-												$container.css("background-color", getBackgroundColor(itemData, 2));
-												console.log(`Checkbox cambiado en ID: ${itemData.id}, Activo: ${itemData.activo}`);
-											});
-
-										// Texto del elemento
-										const $text = $("<span>")
-											.text(`${itemData.nombre} (${itemData.correo})`);
-
-										$container.append($checkbox).append($text);
-										return $container;
-									},
-								});
-								return $list;
-							},
-							placeholder: "Selecciona un registro",
-							dropDownOptions: {
-								width: "100%",
-							},
-						});
 						generarGridSiniestros([], [], [], "#gridContainerSiniestro", "Siniestro", (isMobile) ? 10 : 260, (isMobile) ? 30 : 30);
 
 
@@ -530,7 +470,26 @@
 									campo.value = dtCombustible; // Asignar valor por defecto
 								}
 
+								if (campo.id === 'id_correo' || campo.name === 'id_correo') {
+									campo.value = -1; // Asignar valor por defecto
+								}
+
+
+
+
+
+								/*	const data = [
+									{ id: 1, nombre: "Juan Pérez", correo: "juan.perez@example.com", atendido: 1, marca: "a", modelo: "", origen: "or",destino: "des",datosVehiculo: "ddd",fecha: "fdd", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd" },
+									{ id: 2, nombre: "María López", correo: "maria.lopez@example.com", atendido: 0,  marca: "a", modelo: "", origen: "or",destino: "des", datosVehiculo: "ddd",fecha: "sdsd", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd" },
+									{ id: 3, nombre: "Carlos Díaz", correo: "carlos.diaz@example.com", atendido: 1,  marca: "a", modelo: "", origen: "or",destino: "des",datosVehiculo: "ddd",fecha: "sds", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd"},
+									{ id: 4, nombre: "Ana Sánchez", correo: "ana.sanchez@example.com", atendido: 0, marca: "a", modelo: "", origen: "or",destino: "des",datosVehiculo: "ddd",fecha: "sdd", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd"},
+								];
+											// Inicialización del DropDownBox
+								
+		*/
 							}
+							dataFormulario.style.display = "none";
+							document.getElementById("id_correo").value = -1;
 							var modalButton = document.getElementById('exampleModal');
 							var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
 							myModal.show();
@@ -604,7 +563,7 @@
 								allowEditing = true;
 							}
 
-							if (["Total_Porcentaje", "Consumo_Utilidad", "Salario_Operador_Por_Dia", "Hotel_Extra", "Dias_Extra_Calculo", "Ruta_Google_Maps", "Id", "Guid"].includes(columna)) {
+							if (["Total_Porcentaje", "Consumo_Utilidad", "Salario_Operador_Por_Dia", "Hotel_Extra", "Dias_Extra_Calculo", "Ruta_Google_Maps", "Id", "Guid", "Id_correo", "Correo", "Nombre", "Telefono"].includes(columna)) {
 								visible = false;
 							}
 
@@ -659,6 +618,11 @@
 								"allowHiding": true,
 								"cellTemplate": function (container, options) {
 									$('<button data-bs-toggle="modal" data-bs-target="#envioDeCorreo">')
+
+
+
+
+
 										.addClass('btn btn-primary btn-sm ')
 										.html('<i class="fas fa-paper-plane icon"></i> Enviar correo') // Ícono y texto del botón
 										.on('click', function () {
@@ -685,6 +649,21 @@
 												campo.classList.remove('is-invalid');
 											}
 											document.getElementById('trasladoPeligroso').checked = false;
+
+
+											document.getElementById("correo").value = options.data.Correo != undefined ? options.data.Correo : "";
+											document.getElementById("nombre").value = options.data.Nombre != undefined ? options.data.Nombre : "";
+											document.getElementById("telefono").value = options.data.Telefono != undefined ? options.data.Telefono : "";
+											document.getElementById("txtIdCorreoEnvio").value = options.data.Id_correo != undefined ? options.data.Id_correo : -1;
+
+
+											// Buscar el valor específico
+											//const itemCorreo = dataSource.find(item => options.data.id_correo === 4);
+
+											console.log("correo seleccionado");
+											//console.log(itemCorreo);
+
+
 										})
 										.appendTo(container);
 								}
@@ -1053,6 +1032,10 @@
 										button.click(); // Simula un clic en el botón
 									}
 
+									datos.Id_correo = objeto.id_correo;
+									datos.Correo = objeto.correo_frm;
+									datos.Nombre = objeto.nombre_frm;
+									datos.Telefono = objeto.telefono_frm;
 									console.log(`Respuesta para ${obj_calculo.origen} a ${obj_calculo.destino}:`, datos);
 									return datos; // Retornamos los datos si la solicitud fue exitosa
 
@@ -1117,7 +1100,11 @@
 									"Consumo_Utilidad",
 									"Salario_Operador_Por_Dia",
 									"Hotel_Extra",
-									"Dias_Extra_Calculo"
+									"Dias_Extra_Calculo",
+									"Id_correo",
+									"Correo",
+									"Nombre",
+									"Telefono"
 								]
 
 								//Object.keys(resultados[0]);
@@ -1187,31 +1174,48 @@
 
 				<div class="modal-body">
 
-					<div class="mb-3" style="display: none;">
-						<input type="checkbox" class="form-check-input" id="usarIA">
-						<label class="form-check-label" for="usarIA">Usar IA</label>
+					<div class="mb-3" style="display: initial;">
 						<label for="formulario" class="form-label">Datos Formularios</label>
 						<div id="dropdown"></div>
 					</div>
 
+					<div class="mb-3 p-3" id="dataFormulario"
+						style="display: none; margin-top: 10px; background-color: #f8f9fa; border: 2px solid #007bff; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+						<!-- Botón de cierre -->
+						<button type="button" id="btnCerrar" class="btn-close position-absolute" style="right: 7%;"
+							aria-label="Close"></button>
+
+						<label for="formulario" class="form-label text-center d-block"
+							style="font-weight: bold;">Información</label>
+						<p><b>Nombre:</b> <a style="text-decoration: none;" id="txtnombrefrm"></a></p>
+						<p><b>Correo:</b> <a style="text-decoration: none;" id="txtcorreofrm"></a></p>
+						<p><b>Teléfono:</b> <a style="text-decoration: none;" id="txttelefonofrm"></a></p>
+						<p><b>Datos vehículo:</b> <a style="text-decoration: none;" id="txtdatosvehiculofrm"></a></p>
+						<p><b>Origen:</b> <a style="text-decoration: none;" id="txtorigenfrm"></a></p>
+						<p><b>Destino:</b> <a style="text-decoration: none;" id="txtdestinofrm"></a></p>
+						<p><b>cilindros:</b> <a style="text-decoration: none;" id="txtcilindrosfrm"></a></p>
+						<p><b>Caracteristicas:</b> <a style="text-decoration: none;" id="txtcaracteristicasfrm"></a></p>
+						<p><b>Fecha:</b> <a style="text-decoration: none;" id="txtfechafrm"></a></p>
+					</div>
+
 					<div class="mb-3">
 						<label for="origen" class="form-label">Origen</label>
-						<input type="text" class="form-control validar-campo-formulario-datos" id="origen" value="">
+						<input type="text" class="form-control validar-campo-formulario-datos" id="origen" value="" autocomplete="off">
 						<div class="invalid-feedback">El origen debe contener una coma seguida de texto.</div>
 					</div>
 					<div class="mb-3">
 						<label for="destino" class="form-label">Destino</label>
-						<input type="text" class="form-control validar-campo-formulario-datos" id="destino" value="">
+						<input type="text" class="form-control validar-campo-formulario-datos" id="destino" value="" autocomplete="off">
 						<div class="invalid-feedback">El destino debe contener una coma seguida de texto.</div>
 					</div>
 					<div class="mb-3">
 						<label for="marca" class="form-label">Marca</label>
-						<input type="text" class="form-control validar-campo-formulario-datos" id="marca" value="">
+						<input type="text" class="form-control validar-campo-formulario-datos" id="marca" value="" autocomplete="off">
 						<div class="invalid-feedback">Por favor ingrese la marca.</div>
 					</div>
 					<div class="mb-3">
 						<label for="modelo" class="form-label">Modelo</label>
-						<input type="text" class="form-control validar-campo-formulario-datos" id="modelo" value="">
+						<input type="text" class="form-control validar-campo-formulario-datos" id="modelo" value="" autocomplete="off">
 						<div class="invalid-feedback">Por favor ingrese el modelo.</div>
 					</div>
 					<div class="mb-3" style="display: none;">
@@ -1261,6 +1265,28 @@
 						</select>
 						<div class="invalid-feedback">Por favor seleccione un tipo de consumo.</div>
 					</div>
+					<div class="mb-3" style="display: none;">
+						<label for="id_correo" class="form-label">Id correo</label>
+						<input type="number" class="form-control validar-campo-formulario-datos" id="id_correo"
+							value="-1">
+						<div class="invalid-feedback">Por favor ingrese un valor ID.</div>
+					</div>
+					<div class="mb-3" style="display: none;">
+						<label for="correo_frm" class="form-label">Correo</label>
+						<input type="text" class="form-control validar-campo-formulario-datos" id="correo_frm" value="">
+						<div class="invalid-feedback">Por favor ingrese un correo.</div>
+					</div>
+					<div class="mb-3" style="display: none;">
+						<label for="telefono_frm" class="form-label">telefono</label>
+						<input type="text" class="form-control validar-campo-formulario-datos" id="telefono_frm"
+							value="">
+						<div class="invalid-feedback">Por favor ingrese un telefono.</div>
+					</div>
+					<div class="mb-3" style="display: none;">
+						<label for="nombre_frm" class="form-label">nombre</label>
+						<input type="text" class="form-control validar-campo-formulario-datos" id="nombre_frm" value="">
+						<div class="invalid-feedback">Por favor ingrese un telefono.</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -1287,19 +1313,19 @@
 					<div class="mb-3">
 						<label for="nombre" class="form-label">Nombre</label>
 						<input type="text" class="form-control validar-campo" id="nombre"
-							placeholder="Ingresa tu nombre" data-error="Por favor, ingresa tu nombre.">
+							placeholder="Ingresa tu nombre" data-error="Por favor, ingresa tu nombre." autocomplete="off">
 						<div class="invalid-feedback">Por favor, ingresa tu nombre.</div>
 					</div>
 					<div class="mb-3">
 						<label for="correo" class="form-label">Correo Electrónico</label>
 						<input type="email" class="form-control validar-campo" id="correo"
-							placeholder="Ingresa tu correo" data-error="Por favor, ingresa un correo válido.">
+							placeholder="Ingresa tu correo" data-error="Por favor, ingresa un correo válido." autocomplete="off">
 						<div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
 					</div>
 					<div class="mb-3">
 						<label for="telefono" class="form-label">Teléfono</label>
-						<input type="tel" class="form-control validar-campo" id="telefono"
-							placeholder="Ingresa tu teléfono" data-error="Por favor, ingresa tu teléfono.">
+						<input type="text" class="form-control validar-campo" id="telefono"
+							placeholder="Ingresa tu teléfono" data-error="Por favor, ingresa tu teléfono." autocomplete="off">
 						<div class="invalid-feedback">Por favor, ingresa tu teléfono.</div>
 					</div>
 
@@ -1307,6 +1333,10 @@
 					<div class="mb-3 form-check">
 						<input type="checkbox" class="form-check-input" id="trasladoPeligroso">
 						<label class="form-check-label" for="trasladoPeligroso">Traslado Peligroso</label>
+					</div>
+					<div class="mb-3" style="display: none;">
+						<label for="txtIdCorreoEnvio" class="form-label">Id Correo</label>
+						<input type="number" class="form-control validar-campo" id="txtIdCorreoEnvio">
 					</div>
 
 				</div>
@@ -1334,7 +1364,7 @@
 
 	<script>
 
-		var urlEndPoint = 'https://pasarelaconwait-response.onrender.com';
+			var urlEndPoint = 'https://pasarelaconwait-response.onrender.com';
 		//var urlEndPoint = 'http://localhost:3001';
 		document.getElementById('btnGenerar').addEventListener('click', function () {
 			let inputs = document.querySelectorAll('.modal-body .form-control, .modal-body .form-select');
@@ -1386,6 +1416,7 @@
 				data.precio_combustible = parseFloat(data.precio_combustible); // Convertir a decimal
 				data.factor = parseFloat(data.factor); // Convertir a decimal
 				data.consumo = parseFloat(data.consumo) > 0 ? parseFloat(data.consumo) : 0; // Convertir a decimal
+				data.id_correo = parseInt(data.id_correo, 10);
 				console.log(data);
 				obtenerFacturasTemplate([data], 2);
 			} else {
@@ -1426,6 +1457,7 @@
 				const nombre = document.getElementById('nombre').value;
 				const correo = document.getElementById('correo').value;
 				const telefono = document.getElementById('telefono').value;
+				const idCorreoFormulario = parseInt(document.getElementById('txtIdCorreoEnvio').value);
 				// Obtener el checkbox por su id
 				const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
 
@@ -1447,7 +1479,8 @@
 					taxis_UBER_mod: taxis_UBER_mod,
 					material_Bono_Extra_mod: material_Bono_Extra_mod,
 					costo_ferry_mod: costo_ferry_mod,
-					traslado_peligroso: trasladoPeligroso
+					traslado_peligroso: trasladoPeligroso,
+					id_correo_formulario: idCorreoFormulario
 
 				};
 
@@ -1474,10 +1507,11 @@
 					// Mostrar la respuesta de la API
 					console.log('Respuesta de la API:', responseData);
 					if (responseData.valid) {
+						cargarCorreosFormulario();
 						halcoloaderRemove();
 
-						let message = 'PEnvio correcto'
-						DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+						let message = 'Envio correcto'
+						DevExpress.ui.notify({ message, width: 450, }, "success", 4000);
 
 						for (let campo of campos) {
 							campo.value = '';
@@ -1544,6 +1578,7 @@
 				const telefono = document.getElementById('telefono').value;
 				// Obtener el checkbox por su id
 				const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
+				const idCorreoFormulario = parseInt(document.getElementById('txtIdCorreoEnvio').value);
 
 				const url = urlEndPoint + '/ventas/pdf-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
 				const datos = {
@@ -1563,7 +1598,8 @@
 					taxis_UBER_mod: taxis_UBER_mod,
 					material_Bono_Extra_mod: material_Bono_Extra_mod,
 					costo_ferry_mod: costo_ferry_mod,
-					traslado_peligroso: trasladoPeligroso
+					traslado_peligroso: trasladoPeligroso,
+					id_correo_formulario: idCorreoFormulario
 
 				};
 
@@ -1613,7 +1649,7 @@
 						document.body.removeChild(link);
 
 						halcoloaderRemove();
-						DevExpress.ui.notify("Envio correcto", "success", { width: 450, displayTime: 8000 });
+						DevExpress.ui.notify("descarga correcta", "success", { width: 450, displayTime: 8000 });
 						// Limpia los campos y elimina las clases de validación
 						for (let campo of campos) {
 							campo.value = '';
@@ -1692,6 +1728,142 @@
 			}
 
 		}
+
+		// Obtener referencia al botón y al div
+		const btnCerrar = document.getElementById("btnCerrar");
+		const dataFormulario = document.getElementById("dataFormulario");
+
+		// Agregar evento de clic para cerrar el div
+		btnCerrar.addEventListener("click", () => {
+			dataFormulario.style.display = "none";
+			document.getElementById("id_correo").value = -1;
+			document.getElementById("correo_frm").value = "";
+			document.getElementById("nombre_frm").value = "";
+			document.getElementById("telefono_frm").value = "";
+
+			console.log("Formulario cerrado");
+		});
+
+		cargarCorreosFormulario = () => {
+			// Realizar una solicitud GET
+			fetch(urlEndPoint + '/ventas/get-data-form')
+				.then(response => {
+					if (!response.ok) {
+						throw new Error(`HTTP error! Status: ${response.status}`);
+					}
+					return response.json(); // Convertir la respuesta a JSON
+				})
+				.then(data => {
+					// Acceder al atributo 'data' de la respuesta
+					console.log(data); // Toda la respuesta
+					if (data.data) {
+						const dropdown = $("#dropdown").dxDropDownBox({
+							valueExpr: "id",
+							displayExpr: "nombre",
+							dataSource: data,
+							contentTemplate: function (e) {
+								const $list = $("<div>").dxList({
+									dataSource: data.data,
+									displayExpr: item => `${item.nombre} (${item.correo})`,
+									itemTemplate: function (itemData) {
+										// Crear contenedor para cada elemento
+										const $container = $("<div>")
+											.css("display", "flex")
+											.css("align-items", "center")
+											.css("padding", "5px")
+											.css("border-radius", "4px")
+											.css("cursor", "pointer")
+											.css("background-color", getBackgroundColor(itemData, 1))
+											.on("click", function () {
+												// Registrar el ID del elemento seleccionado
+
+												document.getElementById("txtnombrefrm").innerText = itemData.nombre;
+												document.getElementById("txtcorreofrm").innerText = itemData.correo;
+												document.getElementById("txttelefonofrm").innerText = itemData.telefono;
+												document.getElementById("txtdatosvehiculofrm").innerText = itemData.datosVehiculo;
+												document.getElementById("txtorigenfrm").innerText = itemData.origen;
+												document.getElementById("txtdestinofrm").innerText = itemData.destino;
+												document.getElementById("txtfechafrm").innerText = itemData.fecha;
+												document.getElementById("txtcilindrosfrm").innerText = itemData.cilindros;
+												document.getElementById("txtcaracteristicasfrm").innerText = itemData.caracteristicas;
+												document.getElementById("id_correo").value = itemData.id;
+												document.getElementById("correo_frm").value = itemData.correo;
+												document.getElementById("nombre_frm").value = itemData.nombre;
+												document.getElementById("telefono_frm").value = itemData.telefono;
+
+												// Mostrar el div si estaba oculto
+												document.getElementById("dataFormulario").style.display = "block";
+												console.log(`ID seleccionado: ${itemData.id}`);
+												dropdown.dxDropDownBox("instance").close(); // Cierra el DropDownBox
+
+											});
+
+										// Checkbox con estado dinámico basado en la lógica
+										const $checkbox = $("<input>")
+											.attr("type", "checkbox")
+											.prop("checked", itemData.activo || itemData.atendido == 1 || itemData.atendido == true) // Activo si `activo` es true o si `atendido === 1`
+											.css("margin-right", "10px")
+											.on("click", function (e) {
+												e.stopPropagation(); // Prevenir que el clic cierre el DropDownBox
+											})
+											.on("change", function () {
+												itemData.activo = $(this).is(":checked");
+												$container.css("background-color", getBackgroundColor(itemData, 2));
+
+													// Realizar una solicitud GET
+													fetch(urlEndPoint + '/ventas/update-data-form', {
+													method: 'PUT', // Cambiar el método a PUT
+													headers: {
+														'Content-Type': 'application/json' // Especificar que el cuerpo es JSON
+													},
+													body: JSON.stringify({
+														// Datos que deseas enviar en el cuerpo de la solicitud
+														id_correo_formulario: itemData.id
+													})
+												})
+													.then(response => {
+														if (!response.ok) {
+															throw new Error(`HTTP error! Status: ${response.status}`);
+														}
+														return response.json(); // Convertir la respuesta a JSON
+													})
+													.then(data => {
+														// Acceder al atributo 'data' de la respuesta
+														console.log(data); // Toda la respuesta
+													})
+													.catch(error => {
+														console.error("Error al obtener los datos:", error);
+													});
+												console.log(`Checkbox cambiado en ID: ${itemData.id}, Activo: ${itemData.activo}`);
+											});
+
+										// Texto del elemento
+										const $text = $("<span>")
+											.text(`${itemData.nombre} (${itemData.correo}) ${itemData.fecha} `);
+
+										$container.append($checkbox).append($text);
+										return $container;
+									},
+								});
+								return $list;
+							},
+							placeholder: "Selecciona un registro",
+							dropDownOptions: {
+								width: "100%",
+							},
+						});
+
+						console.log("Atributo 'data':", data.data); // Acceder a 'data'
+					} else {
+						console.log("'data' no se encuentra en la respuesta.");
+					}
+				})
+				.catch(error => {
+					console.error("Error al obtener los datos:", error);
+				});
+
+		}
+
 	</script>
 
 </html>
