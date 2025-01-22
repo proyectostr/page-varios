@@ -4,6 +4,7 @@
 <head>
 	<meta name="viewport" content="width=device-width" />
 	<!-- <link href="/Content/bootstrap.min.css" rel="stylesheet" /> -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
 		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -198,958 +199,177 @@
 
 <body>
 
-	<div id="ContainerBody" style="display: none;">
-		<div class="module-title">
-			<div class="line"></div>
-			<strong id="titleModule"> </strong>
-			<div class="line bottom"></div>
-		</div>
+	<div class="containers mt-5">
+		<!-- Pestañas de navegación -->
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<a class="nav-link active" id="calculo-tab" data-bs-toggle="tab" href="#calculo" role="tab"
+					aria-controls="calculo" aria-selected="true">
+					<i class="bi bi-calculator"></i> Cálculo
+				</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" id="consulta-tab" data-bs-toggle="tab" href="#consulta" role="tab"
+					aria-controls="consulta" aria-selected="false">
+					<i class="bi bi-search"></i> Consulta
+				</a>
+			</li>
+		</ul>
 
-		<div class="content">
+		<!-- Contenido de las pestañas -->
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="calculo" role="tabpanel" aria-labelledby="calculo-tab">
 
-			<div id="container-view" class="container-fluid">
-
-
-				<script src="https://ctrz.halconet.com.mx/Scripts/xlsx.full.min.js"></script>
-				<script src="https://ctrz.halconet.com.mx/Scripts/DevExtreme/exceljs.min.js"></script>
-				<fieldset class="p-3">
-					<legend> <span class="material-icons"> filter_list </span></legend>
-					<div class="row">
-						<div class="col-lg-2 col-sm-12 mb-2">
-							<b>Ingresa factor:</b>
-							<div id="dtFactor"></div>
-						</div>
-
-						<div class="col-lg-2 col-sm-12 mb-2">
-							<b>Costo Combustible:</b>
-							<div id="dtCombustible"></div>
-						</div>
-						<div class="col-lg-2 col-sm-12 mb-2" style="display: none;">
-							<b>Tipo Calculo:</b>
-							<div id="dtTipoCalculo"></div>
-						</div>
-						<div class="col-lg-3 col-sm-12 mb-2">
-							<b>Carga Documento:</b>
-							<div id="fileUploaderContainer" style="display: initial;"></div>
-						</div>
-						<div class="col-lg-1 col-sm-12 mb-2">
-							<div id="btnInfoTemplate"></div>
-						</div>
-						<div class="col-lg-3 col-sm-12 mb-3">
-							<div id="btnInfoCalculoUnitario"></div>
-						</div>
-
-
+				<div id="ContainerBody" style="display: none;">
+					<div class="module-title">
+						<div class="line"></div>
+						<strong id="titleModule"> </strong>
+						<div class="line bottom"></div>
 					</div>
-				</fieldset>
-				<div class="container-info">
-					<div id="gridContainerSiniestro" style="height: 230px !important;"></div>
+
+					<div class="content">
+
+						<div id="container-view" class="container-fluid">
+
+
+							<script src="https://ctrz.halconet.com.mx/Scripts/xlsx.full.min.js"></script>
+							<script src="https://ctrz.halconet.com.mx/Scripts/DevExtreme/exceljs.min.js"></script>
+							<fieldset class="p-3">
+								<legend> <span class="material-icons"> filter_list </span></legend>
+								<div class="row">
+									<div class="col-lg-2 col-sm-12 mb-2">
+										<b>Ingresa factor:</b>
+										<div id="dtFactor"></div>
+									</div>
+
+									<div class="col-lg-2 col-sm-12 mb-2">
+										<b>Costo Combustible:</b>
+										<div id="dtCombustible"></div>
+									</div>
+									<div class="col-lg-2 col-sm-12 mb-2" style="display: none;">
+										<b>Tipo Calculo:</b>
+										<div id="dtTipoCalculo"></div>
+									</div>
+									<div class="col-lg-3 col-sm-12 mb-2">
+										<b>Carga Documento:</b>
+										<div id="fileUploaderContainer" style="display: initial;"></div>
+									</div>
+									<div class="col-lg-1 col-sm-12 mb-2">
+										<br>
+										<div id="btnInfoTemplate"></div>
+									</div>
+									<div class="col-lg-3 col-sm-12 mb-3">
+										<br>
+										<div id="btnInfoCalculoUnitario"></div>
+									</div>
+
+
+								</div>
+							</fieldset>
+							<div class="container-info">
+								<div id="gridContainerSiniestro" style="height: 230px !important;"></div>
+							</div>
+							<div id="divInfoTemplate">
+								<table id="idtableTemplate">
+									<thead id="tableEncabezado">
+										<tr>
+											<th style="width: 10%;" class="valoresTabla">origen</th>
+											<th style="width: 10%;" class="valoresTabla">destino</th>
+											<th style="width: 10%;" class="valoresTabla">marca</th>
+											<th style="width: 10%;" class="valoresTabla">modelo</th>
+
+											<th style="width: 10%;" class="valoresTabla">consumo</th>
+											<th style="width: 20%;" class="valoresTabla">numero_ejes</th>
+											<th style="width: 20%;" class="valoresTabla">tipo_consumo</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="valoresTabla">Texto plano</td>
+											<td class="valoresTabla">Texto plano</td>
+											<td class="valoresTabla">Texto plano</td>
+											<td class="valoresTabla">Texto plano</td>
+											<td class="valoresTabla">Número decimal</td>
+											<td class="valoresTabla">Número entero</td>
+											<td class="valoresTabla" style="width: 20%;">texto plano</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<style>
+								.dx-popup-content {
+									overflow-y: auto;
+									overflow-x: auto;
+								}
+
+								#idtableTemplate {
+									width: 100%;
+									border-collapse: collapse;
+								}
+
+								#tableEncabezado {
+									background-color: aliceblue
+								}
+
+								.valoresTabla {
+									border: 1px solid black;
+									padding: 8px;
+									text-align: left;
+								}
+
+								.red {
+									color: red !important;
+								}
+							</style>
+
+
+						</div>
+					</div>
+
+
 				</div>
-				<div id="divInfoTemplate">
-					<table id="idtableTemplate">
-						<thead id="tableEncabezado">
-							<tr>
-								<th style="width: 10%;" class="valoresTabla">origen</th>
-								<th style="width: 10%;" class="valoresTabla">destino</th>
-								<th style="width: 10%;" class="valoresTabla">marca</th>
-								<th style="width: 10%;" class="valoresTabla">modelo</th>
 
-								<th style="width: 10%;" class="valoresTabla">consumo</th>
-								<th style="width: 20%;" class="valoresTabla">numero_ejes</th>
-								<th style="width: 20%;" class="valoresTabla">tipo_consumo</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="valoresTabla">Texto plano</td>
-								<td class="valoresTabla">Texto plano</td>
-								<td class="valoresTabla">Texto plano</td>
-								<td class="valoresTabla">Texto plano</td>
-								<td class="valoresTabla">Número decimal</td>
-								<td class="valoresTabla">Número entero</td>
-								<td class="valoresTabla" style="width: 20%;">texto plano</td>
-							</tr>
-						</tbody>
-					</table>
+
+
+			</div>
+			<div class="tab-pane fade" id="consulta" role="tabpanel" aria-labelledby="consulta-tab">
+
+
+				<div id="ContainerBody" style="display: initial;">
+					<div class="module-title">
+						<div class="line"></div>
+						<strong id="titleModuleConsulta">Consulta registro</strong>
+						<div class="line bottom"></div>
+					</div>
+
+					<div class="content">
+
+						<div id="container-view" class="container-fluid">
+
+							<fieldset class="p-3">
+								<legend> <span class="material-icons"> filter_list </span></legend>
+								<div class="row">
+									<div class="col-lg-3 col-sm-12 mb-3">
+										<b>Rango de fechas:</b>
+										<div id="rangoFechas"></div>
+									</div>
+
+
+									<div class="col-lg-4 col-sm-12 mb-4">
+										<br>
+										<div id="btnInfoConsultaRegistros"></div>
+									</div>
+								</div>
+							</fieldset>
+							<div class="container-info">
+								<div id="gridContainerConsultaRegistros" style="height: 230px !important;"></div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<style>
-					.dx-popup-content {
-						overflow-y: auto;
-						overflow-x: auto;
-					}
-
-					#idtableTemplate {
-						width: 100%;
-						border-collapse: collapse;
-					}
-
-					#tableEncabezado {
-						background-color: aliceblue
-					}
-
-					.valoresTabla {
-						border: 1px solid black;
-						padding: 8px;
-						text-align: left;
-					}
-
-					.red {
-						color: red !important;
-					}
-				</style>
-
-				<script>
-					/*-------- Variables globales data */
-					var guid_envio_mod = '';
-					var id_envio_mod = -1;
-					var precio_Combustible_mod = null;
-					var factor_mod = null;
-					var kilometros_mod = null;
-					var casetas_Peajes_mod = null;
-					var transporte_Origen_mod = null;
-					var transporte_Destino_mod = null;
-					var taxis_UBER_mod = null;
-					var total_Extra_mod = null;
-					var material_Bono_Extra_mod = null;
-					var costo_ferry_mod = null;
-
-
-
-					var dtTipoCalculo = null;
-					var dtFactor = 1;
-					var dtCombustible = null;
-
-					var dataEmpresasGlobal = [];
-					var dataAlmacenesGlobal = [];
-					var modalCargaTemplate;
-					var dataArchivosDescarga;
-					var dataPrincipal;
-					var empresaDescarga;
-					var isMobile = false;
-					var compUploadTemplate = {
-						multiple: false, // Permitir cargar un solo archivo a la vez
-						accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel", // Aceptar solo archivos Excel
-						onValueChanged: function (e) {
-							let dtFactor = $("#dtFactor").dxNumberBox("instance").option("value");
-							let dtCombustible = $("#dtCombustible").dxNumberBox("instance").option("value");
-							try {
-								// Obtener el valor seleccionado utilizando el método option
-
-								if (dtFactor === null || dtFactor <= 0) {
-									throw "Debes ingresar un factor mayor a 0";
-								}
-								if (dtCombustible === null || dtCombustible <= 0) {
-									throw "Debes ingresar un precio de combustible mayor a 0";
-								}
-							} catch (error) {
-								let message = error;
-								DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
-								//console.log(error);
-
-							}
-
-							if (dtFactor > 0 && dtCombustible > 0) {
-								var files = e.value;
-								if (files.length > 0) {
-									var reader = new FileReader();
-									reader.onload = function (e) {
-										var data = e.target.result;
-										// Convertir el contenido del archivo Excel a JSON
-										var workbook = XLSX.read(data, { type: 'binary' });
-										var sheetName = workbook.SheetNames[0];
-										var worksheet = workbook.Sheets[sheetName];
-										var excelData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-										let excelValido = validarArrayTemplate(excelData);
-										if (excelValido) {
-											obtenerFacturasTemplate(excelData, 1);
-										}
-									};
-									reader.readAsBinaryString(files[0]);
-
-								}
-							}
-						}
-					}
-
-					$(document).ready(() => {
-
-						halcoloaderActive();
-
-
-
-
-						// Obtener el user-agent del navegador
-						var userAgent = navigator.userAgent;
-						// Verificar si el user-agent indica un dispositivo móvil
-						isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-						//alert(isMobile);
-						$("#titleModule").text("Calculo Traslado");
-
-						$("#dtCombustible").dxNumberBox({
-							value: 0.00, // Valor inicial con decimales
-							min: 0.00, // Límite mínimo
-							max: 100.00, // Límite máximo
-							step: 0.01, // Incremento en pasos de 0.01
-							showSpinButtons: true, // Mostrar botones de incremento/decremento
-							format: "#,##0.00", // Formato con dos decimales
-							onValueChanged: function (e) {
-								console.log("Valor cambiado a: ", e.value);
-								dtCombustible = e.value;
-								//ocultarUpload();
-							}
-						});
-						$("#dtFactor").dxNumberBox({
-							value: 1.00, // Valor inicial con decimales
-							min: 1.00, // Límite mínimo
-							max: 100.00, // Límite máximo
-							step: 0.01, // Incremento en pasos de 0.01
-							showSpinButtons: true, // Mostrar botones de incremento/decremento
-							format: "#,##0.00", // Formato con dos decimales
-							onValueChanged: function (e) {
-								console.log("Valor cambiado a: ", e.value);
-								dtFactor = e.value;
-								//ocultarUpload();
-							}
-						});
-
-						$("#dtTipoCalculo").dxSelectBox({
-
-							valueExpr: 'value',
-							displayExpr: 'name',
-							dataSource: [
-								{ name: "Camiones", value: 1 },
-								{ name: "Automóviles", value: 2 },
-							], // Opciones de la lista
-							placeholder: "Selecciona una opción", // Texto por defecto
-							onValueChanged: function (e) {
-								dtTipoCalculo = e.value;
-								//ocultarUpload();
-
-							}
-						});
-
-						// Inicializamos el dxPopup para usarlo como modal
-						$("#myModal").dxPopup({
-							visible: false,  // El popup comienza oculto
-							showTitle: true,
-							title: "Ver URL",
-							width: "80%",
-							height: "80%",
-							dragEnabled: true, // Habilitar arrastre del modal
-							closeOnOutsideClick: true // Cierra el popup si se hace clic fuera
-						});
-
-						cargarCorreosFormulario();
-
-						generarGridSiniestros([], [], [], "#gridContainerSiniestro", "Siniestro", (isMobile) ? 10 : 260, (isMobile) ? 30 : 30);
-
-
-						$("#fileUploaderContainer").dxFileUploader(compUploadTemplate);
-						let confModalInfoTemplate = GeneratePopUp("Información estructura template");
-						confModalInfoTemplate.width = (isMobile) ? "90%" : "90%";
-						confModalInfoTemplate.height = (isMobile) ? "21%" : "30%";
-						var modalInfoTemplate = $("#divInfoTemplate").dxPopup(confModalInfoTemplate).dxPopup("instance");
-						let btnInfo = GenerateButton("+", "default");
-						btnInfo.onClick = (e) => {
-							modalInfoTemplate.show();
-						}
-						$("#btnInfoTemplate").dxButton(btnInfo);
-
-						let btnInfoCotizacionUnitaria = GenerateButton("Calculo Unitario", "default");
-						btnInfoCotizacionUnitaria.onClick = (e) => {
-							const campos = document.querySelectorAll('.validar-campo-formulario-datos'); // Selecciona todos los campos a validar
-							for (let campo of campos) {
-								campo.value = '';
-								campo.classList.remove('is-valid');
-								campo.classList.remove('is-invalid');
-								if (campo.id === 'factor' || campo.name === 'factor') {
-									campo.value = dtFactor; // Asignar valor por defecto
-								}
-
-								if (campo.id === 'precio_combustible' || campo.name === 'precio_combustible') {
-									campo.value = dtCombustible; // Asignar valor por defecto
-								}
-
-								if (campo.id === 'id_correo' || campo.name === 'id_correo') {
-									campo.value = -1; // Asignar valor por defecto
-								}
-
-
-
-
-
-								/*	const data = [
-									{ id: 1, nombre: "Juan Pérez", correo: "juan.perez@example.com", atendido: 1, marca: "a", modelo: "", origen: "or",destino: "des",datosVehiculo: "ddd",fecha: "fdd", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd" },
-									{ id: 2, nombre: "María López", correo: "maria.lopez@example.com", atendido: 0,  marca: "a", modelo: "", origen: "or",destino: "des", datosVehiculo: "ddd",fecha: "sdsd", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd" },
-									{ id: 3, nombre: "Carlos Díaz", correo: "carlos.diaz@example.com", atendido: 1,  marca: "a", modelo: "", origen: "or",destino: "des",datosVehiculo: "ddd",fecha: "sds", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd"},
-									{ id: 4, nombre: "Ana Sánchez", correo: "ana.sanchez@example.com", atendido: 0, marca: "a", modelo: "", origen: "or",destino: "des",datosVehiculo: "ddd",fecha: "sdd", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd"},
-								];
-											// Inicialización del DropDownBox
-								
-		*/
-							}
-							dataFormulario.style.display = "none";
-							document.getElementById("id_correo").value = -1;
-							var modalButton = document.getElementById('exampleModal');
-							var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-							myModal.show();
-						}
-						$("#btnInfoCalculoUnitario").dxButton(btnInfoCotizacionUnitaria);
-
-						//btnDescargarArchivos
-						let btnDescarga = GenerateButton("Descargar", "default");
-						btnDescarga.icon = "download";
-						btnDescarga.onClick = (e) => {
-							DescargarArchivo();
-						}
-
-						/* ----------- */
-						//getFiltros();
-						/* ----------- */
-						setTimeout(function () {
-							let miDiv = document.getElementById("ContainerBody");
-							miDiv.style.display = "initial"; // Esto restablecerá el display a su valor predeterminado (por ejemplo, "block" para un <div>)
-							// Restaurar el scroll
-
-							halcoloaderRemove();
-						}, 8000);  // 2000 milisegundos = 2 segundos
-
-					});
-					getFiltros = () => {
-						getFiltrosAsync();
-					}
-					getFiltrosAsync = async () => {
-						try {
-							halcoloaderActive();
-							let params = {}
-							let response = await postData('/Reportes/FiltrosReporteSiniestros', params);
-							dataEmpresasGlobal = response.Empresas;
-							dataAlmacenesGlobal = response.Almacenes;
-							$("#selectedBoxEmpresa").dxSelectBox("instance").option("dataSource", dataEmpresasGlobal);
-							$("#dtCombustible").dxSelectBox("instance").option("dataSource", dataAlmacenesGlobal);
-
-							halcoloaderRemove();
-						} catch (e) {
-							halcoloaderRemove();
-						}
-					}
-					generarGridSiniestros = (data, itemsColumn, itemsSum, nameGrid, nameExcel, MinusHeight = 250, MinusWidth = 30) => {
-						console.log(data);
-						let _OpcionesDataGrid = GenerateDataGrid(data, itemsColumn, nameExcel);
-						itemsSumGlobal = GridSumaryGenerator(itemsSum);
-						console.log(_OpcionesDataGrid.columns);
-						// Crear configuración de columnas para DevExtreme
-						let configuracionColumnas = _OpcionesDataGrid.columns.map(columna => {
-							// Especificar el tipo de dato y el formato para las columnas de cantidad
-							let tipoDato = "string";
-							let formato = "";
-							let alignment = "center"
-							let allowEditing = false;
-							let visible = true;
-							let fixed = false; // Fija esta columna
-							if (["Precio_Combustible", "Costo_Combustible", "Alimentos", "Salario_Operador", "Hotel", "Placas_Urbanos", "Casetas_Peajes", "Transporte_Origen", "Transporte_Destino", "Taxis_UBER", "Total_Extra", "Material_Bono_Extra", "Costo_Ferry", "Utilidad", "SubTotal", "IVA", "Retencion", "Total_Persona", "Total_Empresa", "Costo_Violencia"].includes(columna)) {
-								tipoDato = "number";
-								formato = {
-									type: "currency",
-									precision: 2,
-									currency: "MXN"
-								};
-								alignment = "right";
-							}
-							if (["Factor"].includes(columna)) {
-								tipoDato = "number";
-							}
-							if (columna == "Kilometros" || columna == "Precio_Combustible" || columna == "Factor" || columna == "Casetas_Peajes" || columna == "Transporte_Origen" || columna == "Transporte_Destino" || columna == "Taxis_UBER" || columna == "Total_Extra" || columna == "Material_Bono_Extra" || columna == "Costo_Ferry") {
-								allowEditing = true;
-							}
-
-							if (["Total_Porcentaje", "Consumo_Utilidad", "Salario_Operador_Por_Dia", "Hotel_Extra", "Dias_Extra_Calculo", "Ruta_Google_Maps", "Id", "Guid", "Id_correo", "Correo", "Nombre", "Telefono"].includes(columna)) {
-								visible = false;
-							}
-
-							if (["Origen", "Destino", "Automovil"].includes(columna)) {
-								fixed = true;
-							}
-
-							return {
-								dataField: columna,
-								caption: columna.replace(/_/g, " "),
-								width: 160,
-								dataType: tipoDato,
-								format: formato,
-								alignment: alignment,
-								allowEditing: allowEditing,
-								visible: visible,
-								fixed: fixed
-							};
-						});
-
-						if (data.length > 0) {
-							configuracionColumnas.push({
-								"caption": "Ruta",
-								"width": 150,
-								"datatype": "string",
-								"alignment": "center",
-								"allowEditing": false,
-								"allowHiding": true,
-								"cellTemplate": function (container, options) {
-									$('<button>')
-										.addClass('btn btn-primary btn-sm')
-										.html('<i class="fas fa-route icon"></i> Visualizar ruta') // Ícono y texto del botón
-										.on('click', function () {
-											const url = options.data.Ruta_Google_Maps;
-											if (url) {
-												// Abre el enlace en una nueva pestaña
-												window.open(url, '_blank');
-											} else {
-												alert("No se encontró la ruta.");
-											}
-										})
-										.appendTo(container);
-								}
-							});
-
-							configuracionColumnas.push({
-								"caption": "Ruta",
-								"width": 150,
-								"datatype": "string",
-								"alignment": "center",
-								"allowEditing": false,
-								"allowHiding": true,
-								"cellTemplate": function (container, options) {
-									$('<button data-bs-toggle="modal" data-bs-target="#envioDeCorreo">')
-
-
-
-
-
-										.addClass('btn btn-primary btn-sm ')
-										.html('<i class="fas fa-paper-plane icon"></i> Enviar correo') // Ícono y texto del botón
-										.on('click', function () {
-
-											guid_envio_mod = options.data.Guid;
-											id_envio_mod = options.data.Id;
-											console.log(options.data);
-
-											precio_Combustible_mod = options.data.Precio_Combustible;
-											factor_mod = options.data.Factor;
-											kilometros_mod = options.data.Kilometros;
-											casetas_Peajes_mod = options.data.Casetas_Peajes;
-											transporte_Origen_mod = options.data.Transporte_Origen;
-											transporte_Destino_mod = options.data.Transporte_Destino;
-											taxis_UBER_mod = options.data.Taxis_UBER;
-											total_Extra_mod = options.data.Total_Extra;
-											material_Bono_Extra_mod = options.data.Material_Bono_Extra;
-											costo_ferry_mod = options.data.Costo_Ferry;
-
-											const campos = document.querySelectorAll('.validar-campo'); // Selecciona todos los campos a validar
-											for (let campo of campos) {
-												campo.value = '';
-												campo.classList.remove('is-valid');
-												campo.classList.remove('is-invalid');
-											}
-											document.getElementById('trasladoPeligroso').checked = false;
-
-
-											document.getElementById("correo").value = options.data.Correo != undefined ? options.data.Correo : "";
-											document.getElementById("nombre").value = options.data.Nombre != undefined ? options.data.Nombre : "";
-											document.getElementById("telefono").value = options.data.Telefono != undefined ? options.data.Telefono : "";
-											document.getElementById("txtIdCorreoEnvio").value = options.data.Id_correo != undefined ? options.data.Id_correo : -1;
-
-
-											// Buscar el valor específico
-											//const itemCorreo = dataSource.find(item => options.data.id_correo === 4);
-
-											console.log("correo seleccionado");
-											//console.log(itemCorreo);
-
-
-										})
-										.appendTo(container);
-								}
-							});
-
-						}
-
-
-						_OpcionesDataGrid.columns = configuracionColumnas;
-
-
-						console.log(_OpcionesDataGrid);
-
-						_OpcionesDataGrid.onCellPrepared = function (e) {
-							try {
-
-								var facturaProveedorValue = e.data.Factura_Proveedor;
-								var dataField = e.column.dataField;
-
-								if (dataField == "Kilometros" || dataField == "Precio_Combustible" || dataField == "Factor" || dataField == "Casetas_Peajes" || dataField == "Transporte_Origen" || dataField == "Transporte_Destino" || dataField == "Taxis_UBER" || dataField == "Total_Extra" || dataField == "Material_Bono_Extra" || dataField == "Costo_Ferry") {
-
-									e.cellElement.css({
-										"background-color": "silver",
-										"color": "black"
-									});
-								}
-
-							} catch (e) {
-
-							}
-
-						}
-						/* _OpcionesDataGrid.onExporting = function (e) {
-							//exportToExcel(dataPrincipal, "Reporte_Siniestros.xlsx"); // Reemplaza con el nombre deseado
-							//e.cancel = true; // Cancelar la exportación predeterminada de DevExtreme
-						} */
-
-						_OpcionesDataGrid.onRowUpdating = function (e) {
-							console.log("Datos antes de la actualización:", e.oldData);
-							console.log("Datos nuevos:", e.newData);
-
-							// Obtener los valores actualizados o mantener los valores anteriores
-							let kilometros = e.newData.Kilometros !== undefined ? e.newData.Kilometros : e.oldData.Kilometros;
-							let precioCombustible = e.newData.Precio_Combustible !== undefined ? e.newData.Precio_Combustible : e.oldData.Precio_Combustible;
-							let consumo = e.newData.Consumo !== undefined ? e.newData.Consumo : e.oldData.Consumo;
-
-							let diasExtraCalculo = e.newData.Dias_Extra_Calculo !== undefined ? e.newData.Dias_Extra_Calculo : e.oldData.Dias_Extra_Calculo;
-
-							let hotelExtra = e.newData.Hotel_Extra !== undefined ? e.newData.Hotel_Extra : e.oldData.Hotel_Extra;
-
-							let totalPorcentaje = e.newData.Total_Porcentaje !== undefined ? e.newData.Total_Porcentaje : e.oldData.Total_Porcentaje;
-
-							let consumoUtilidad = e.newData.Consumo_Utilidad !== undefined ? e.newData.Consumo_Utilidad : e.oldData.Consumo_Utilidad;
-
-							let salarioOperadorPorDia = e.newData.Salario_Operador_Por_Dia !== undefined ? e.newData.Salario_Operador_Por_Dia : e.oldData.Salario_Operador_Por_Dia;
-
-
-							let costoCombustible = precioCombustible * (kilometros / consumo);
-							// Calcular el costo de combustible
-							e.newData.Costo_Combustible = costoCombustible
-
-							let diasTraslado = Math.ceil(kilometros / 650);
-							e.newData.Dias_Traslado = diasTraslado;
-
-							let alimentos = 300 * (diasTraslado + diasExtraCalculo /*1*/);
-							e.newData.Alimentos = alimentos;
-
-							let salarioOperador = /*450*/ salarioOperadorPorDia * (diasTraslado);
-							e.newData.Salario_Operador = salarioOperador;
-
-							let hotel = (diasTraslado > 1 ? (diasTraslado - 1) * 400 : 0) + hotelExtra/*800*/;
-							e.newData.Hotel = hotel;
-
-							let placasUrbanos = 50 + (40 * diasTraslado);
-							e.newData.Placas_Urbanos = placasUrbanos;
-
-							let casetasPeajes = e.newData.Casetas_Peajes !== undefined ? e.newData.Casetas_Peajes : e.oldData.Casetas_Peajes;
-							let transporteOrigen = e.newData.Transporte_Origen !== undefined ? e.newData.Transporte_Origen : e.oldData.Transporte_Origen;
-							let transporteDestino = e.newData.Transporte_Destino !== undefined ? e.newData.Transporte_Destino : e.oldData.Transporte_Destino;
-							let taxisUBER = e.newData.Taxis_UBER !== undefined ? e.newData.Taxis_UBER : e.oldData.Taxis_UBER;
-							let totalExtra = e.newData.Total_Extra !== undefined ? e.newData.Total_Extra : e.oldData.Total_Extra;
-							let materialBonoExtra = e.newData.Material_Bono_Extra !== undefined ? e.newData.Material_Bono_Extra : e.oldData.Material_Bono_Extra;
-							let costoFerry = e.newData.Costo_Ferry !== undefined ? e.newData.Costo_Ferry : e.oldData.Costo_Ferry;
-							let costoViolencia = e.newData.Costo_Violencia !== undefined ? e.newData.Costo_Violencia : e.oldData.Costo_Violencia;
-							let factor = e.newData.Factor !== undefined ? e.newData.Factor : e.oldData.Factor;
-
-							let utilidad = ((costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) * consumoUtilidad /*0.18*/) * factor;
-							e.newData.Utilidad = utilidad;
-
-							let subTotal = (costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) + utilidad;
-							e.newData.SubTotal = subTotal;
-
-							e.newData.IVA = subTotal * 0.16;
-
-							e.newData.Retencion = subTotal * 0.04;
-							e.newData.Total_Persona = (subTotal + (subTotal * 0.16)) * totalPorcentaje; /*1.1*/
-							e.newData.Total_Empresa = (subTotal + (subTotal * 0.16) - (subTotal * 0.04)) * totalPorcentaje; /*1.1*/
-							//console.log("Nuevo valor de Costo_Combustible:", e.newData.Costo_Combustible);
-
-							// Actualizar el registro en el DataGrid
-							e.component.getDataSource().store().update(e.key, e.newData)  // e.key es la clave primaria (ID)
-								.then(function () {
-									e.component.refresh();  // Refresca el DataGrid para reflejar los cambios
-									//alert('Registro actualizado con cálculo realizado');
-								})
-
-						}
-						$(nameGrid).dxDataGrid(_OpcionesDataGrid);
-						ResizeGridExtreme(nameGrid, MinusHeight, MinusWidth);
-					}
-
-					/* 	function exportToExcel(data, fileName) {
-							var headers = Object.keys(data[0]);
-							// Crear libro y hoja de trabajo con ExcelJS
-							var workbook = new ExcelJS.Workbook();
-							var worksheet = workbook.addWorksheet("Sheet1");
-							// Configurar ancho predeterminado de 100px para las primeras 16384 columnas
-							var defaultColumnWidth = 20;
-							var columnsToSetWidth = Math.min(headers.length, 16384);
-							for (var i = 1; i <= columnsToSetWidth; i++) {
-								worksheet.getColumn(i).width = defaultColumnWidth;
-							}
-							// Agregar encabezados de columna con color de fondo gris claro
-							var headerRow = worksheet.addRow(headers);
-							headerRow.eachCell({ includeEmpty: true }, function (cell) {
-								cell.fill = {
-									type: "pattern",
-									pattern: "solid",
-									fgColor: { argb: "DDDDDD" } // Gris claro
-								};
-							});
-							// Agregar datos al libro
-							data.forEach(function (rowData) {
-								var row = worksheet.addRow(Object.values(rowData));
-								// Obtener el índice de la columna "Articulo_proveedor"
-								var columnIndex = headers.indexOf("Articulo_proveedor") + 1;
-								// Verificar si Factura_Proveedor es null, undefined o vacío y aplicar estilo de fondo rojo a la celda
-								var facturaProveedorValue = rowData["Factura_Proveedor"];
-								if (!facturaProveedorValue || facturaProveedorValue.trim() === "") {
-									var cell = row.getCell(columnIndex);
-									cell.fill = {
-										type: "pattern",
-										pattern: "solid",
-										fgColor: { argb: "FF0000" } // Rojo
-									};
-								}
-							});
-							// Agregar filtros
-							worksheet.autoFilter = {
-								from: {
-									row: 1,
-									column: 1
-								},
-								to: {
-									row: 1,
-									column: headers.length
-								}
-							};
-							// Crear un blob y descargar el archivo
-							workbook.xlsx.writeBuffer().then(function (buffer) {
-								var blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-								var link = document.createElement("a");
-								link.href = URL.createObjectURL(blob);
-								link.download = fileName || "ExportedData.xlsx"; // Nombre del archivo predeterminado si no se proporciona
-								link.click();
-							});
-						}
-			 */
-
-					/* 	validarArrayTemplate = (array) => {
-							try {
-	
-								console.log(array)
-								// Definimos la estructura esperada para cada objeto
-								const estructuraEsperada = {
-									"origen": "string",
-									"destino": "string",
-									"marca": "string",
-									"modelo": "string",
-									"consumo": "number",
-									"numero_ejes": "number",
-									"tipo_consumo": "string"
-								};
-								 // Validamos que el array tenga solo 6 columnas
-								 if (Object.keys(estructuraEsperada).length !== 7) {
-									throw "El template debe tener solo 7 columnas";
-									return false;
-								}
-	
-								// Recorremos cada objeto del array
-								for (let i = 0; i < array.length; i++) {
-									const obj = array[i];
-	
-									// Validamos que el objeto tenga las claves correctas
-									for (let clave in estructuraEsperada) {
-										if (!(clave in obj)) {
-											throw `Falta la clave '${clave}' en el registro ${i}`;
-											return false;
-										}
-	
-										// Validamos que el tipo de cada valor sea el correcto
-										if (typeof obj[clave] !== estructuraEsperada[clave]) {
-											throw `El tipo de dato de la clave '${clave}' en el registro ${i} es incorrecto. Se esperaba '${estructuraEsperada[clave]}', pero se obtuvo '${typeof obj[clave]}'`;
-											return false;
-										}
-	
-										// Validamos que "Origen" tenga una coma
-										if (!obj["Origen"].includes(",")) {
-											throw `El campo 'Origen' en el registro ${i} debe contener esta estructura (municipio, estado)`;
-											return false;
-										}
-	
-										// Validamos que "Destino" tenga una coma
-										if (!obj["Destino"].includes(",")) {
-											throw `El campo 'Destino' en el registro ${i} debe contener esta estructura (municipio, estado)`;
-											return false;
-										}
-	
-									}
-								}
-								// Si todos los objetos son válidos
-								//console.log("Todos los objetos son válidos.");
-	
-								return true;
-							} catch (error) {
-								let message = error;
-								DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
-								return false;
-							}
-						}
-	 */
-
-
-					validarArrayTemplate = (array) => {
-						try {
-							console.log(array);
-
-							// Definimos la estructura esperada para cada objeto
-							const estructuraEsperada = {
-								"origen": "string",
-								"destino": "string",
-								"marca": "string",
-								"modelo": "string",
-								"consumo": "number",
-								"numero_ejes": "number",
-								"tipo_consumo": "string"
-							};
-
-							// Validamos que el template tenga exactamente 7 columnas
-							if (Object.keys(estructuraEsperada).length !== 7) {
-								throw "El template debe tener solo 7 columnas";
-							}
-
-							// Recorremos cada objeto del array
-							for (let i = 0; i < array.length; i++) {
-								const obj = array[i];
-
-								// Normalizamos las claves del objeto (convirtiéndolas a minúsculas)
-								const objNormalizado = Object.keys(obj).reduce((acumulador, clave) => {
-									acumulador[clave.toLowerCase()] = obj[clave];
-									return acumulador;
-								}, {});
-
-								// Validamos que el objeto tenga las claves correctas
-								for (let clave in estructuraEsperada) {
-									if (!(clave in objNormalizado)) {
-										throw `Falta la clave '${clave}' en el registro ${i}`;
-									}
-
-									// Validamos que el tipo de cada valor sea el correcto
-									if (typeof objNormalizado[clave] !== estructuraEsperada[clave]) {
-										throw `El tipo de dato de la clave '${clave}' en el registro ${i} es incorrecto. Se esperaba '${estructuraEsperada[clave]}', pero se obtuvo '${typeof objNormalizado[clave]}'`;
-									}
-
-									// Validamos que "origen" tenga una coma
-									if (clave === "origen" && !objNormalizado[clave].includes(",")) {
-										throw `El campo 'origen' en el registro ${i} debe contener esta estructura (municipio, estado)`;
-									}
-
-									// Validamos que "destino" tenga una coma
-									if (clave === "destino" && !objNormalizado[clave].includes(",")) {
-										throw `El campo 'destino' en el registro ${i} debe contener esta estructura (municipio, estado)`;
-									}
-								}
-							}
-
-							// Si todos los objetos son válidos
-							return true;
-						} catch (error) {
-							let message = error;
-							DevExpress.ui.notify({ message, width: 450 }, "error", 4000);
-							return false;
-						}
-					};
-
-					obtenerFacturasTemplate = (excelData, tipo) => {
-						obtenerFacturasTemplateAsync(excelData, tipo);
-					}
-
-
-					const obtenerFacturasTemplateAsync = async (excelData, tipo) => {
-						halcoloaderActive();
-						// URL de la API (ajústala a tu necesidad)
-						const urlAPI = urlEndPoint + '/ventas/generate-cotizacion-preliminar-camiones-automoviles';
-
-						console.log(excelData);
-						// Array de promesas que contendrá las solicitudes HTTP
-						const promesas = excelData.map(async (objeto) => {
-
-
-							console.log("conslsssssss", objeto);
-							objeto = Object.keys(objeto).reduce((acc, key) => {
-								acc[key.toLowerCase()] = objeto[key];
-								return acc;
-							}, {});
-
-							let obj_calculo = {
-								"origen": objeto.origen,
-								"destino": objeto.destino,
-								"marca": objeto.marca,
-								"modelo": objeto.modelo,
-								"numero_cilindros": 0,
-								"consumo": objeto.consumo == "" || objeto.consumo == null ? -1 : objeto.consumo,
-								"numero_ejes": objeto.numero_ejes,
-								"precio_combustible": tipo == 1 ? dtCombustible : objeto.precio_combustible,
-								"factor": tipo == 1 ? dtFactor : objeto.factor,
-								"tipo_consumo": objeto.tipo_consumo
-							}
-							let obj_calculoReturn = {
-								"Origen": objeto.origen,
-								"Destino": objeto.destino,
-								"Automovil": objeto.marca + ' ' + objeto.modelo,
-								"Consumo": objeto.consumo,
-								"Ejes": objeto.numero_ejes,
-								"Precio_Combustible": tipo == 1 ? dtCombustible : objeto.precio_combustible,
-								"factor": tipo == 1 ? dtFactor : objeto.factor,
-								"tipo_consumo": objeto.tipo_consumo
-							}
-							let intentos = 0; // Contador de intentos
-							const maxIntentos = 10; // Número máximo de intentos
-							let datos = null;
-
-							while (intentos < maxIntentos) {
-								try {
-									console.log(`Intento ${intentos + 1} de ${maxIntentos}`);
-
-									// Realizamos la solicitud POST enviando el objeto como cuerpo
-									const respuesta = await fetch(urlAPI, {
-										method: 'POST',
-										headers: {
-											'Content-Type': 'application/json',
-										},
-										body: JSON.stringify(obj_calculo), // Convertimos el objeto a JSON
-									});
-
-									// Comprobamos si la respuesta fue exitosa
-									if (!respuesta.ok) {
-										throw new Error(`Error al hacer la solicitud para ${obj_calculo.drigen} a ${obj_calculo.destino}`);
-									}
-
-									// Si la respuesta es exitosa, obtenemos los datos
-									datos = await respuesta.json();
-
-									var button = document.querySelector('button.btn.btn-secondary[data-bs-dismiss="modal"]');
-									if (button) {
-										button.click(); // Simula un clic en el botón
-									}
-
-									datos.Id_correo = objeto.id_correo;
-									datos.Correo = objeto.correo_frm;
-									datos.Nombre = objeto.nombre_frm;
-									datos.Telefono = objeto.telefono_frm;
-									console.log(`Respuesta para ${obj_calculo.origen} a ${obj_calculo.destino}:`, datos);
-									return datos; // Retornamos los datos si la solicitud fue exitosa
-
-								} catch (error) {
-									console.error(`Error en el intento ${intentos + 1}:`, error);
-
-									intentos++; // Incrementamos el contador de intentos
-									if (intentos >= maxIntentos) {
-										console.error("Número máximo de intentos alcanzado. Abortando solicitud.");
-										return obj_calculoReturn; // Devuelve un objeto de respaldo si se alcanzan los intentos máximos
-									}
-								}
-							}
-						});
-
-						// Usamos Promise.all para esperar que todas las promesas se resuelvan
-						try {
-
-							console.log(promesas);
-
-							const resultados = await Promise.all(promesas);
-
-							if (resultados.length > 0) {
-								$("#fileUploaderContainer").dxFileUploader("dispose");
-								$("#fileUploaderContainer").dxFileUploader(compUploadTemplate);
-								console.log('Resultados de todas las peticiones:', resultados);
-
-								let llaves = [
-									"Id",
-									"Guid",
-									"Origen",
-									"Destino",
-									"Automovil",
-									"Puntos_Intermedios_Asignados",
-									"Precio_Combustible",
-									"Factor",
-									"Kilometros",
-									"Consumo",
-									"Tipo_Consumo",
-									"Dias_Traslado",
-									"Costo_Combustible",
-									"Alimentos",
-									"Salario_Operador",
-									"Hotel",
-									"Placas_Urbanos",
-									"Casetas_Peajes",
-									"Transporte_Origen",
-									"Transporte_Destino",
-									"Taxis_UBER",
-									"Total_Extra",
-									"Material_Bono_Extra",
-									"Costo_Ferry",
-									"Costo_Violencia",
-									"Utilidad",
-									"SubTotal",
-									"IVA",
-									"Retencion",
-									"Total_Persona",
-									"Total_Empresa",
-									"Ruta_Google_Maps",
-									"Total_Porcentaje",
-									"Consumo_Utilidad",
-									"Salario_Operador_Por_Dia",
-									"Hotel_Extra",
-									"Dias_Extra_Calculo",
-									"Id_correo",
-									"Correo",
-									"Nombre",
-									"Telefono"
-								]
-
-								//Object.keys(resultados[0]);
-
-								//console.log(llaves);
-								let columnsSum = []
-
-								generarGridSiniestros(resultados, llaves, columnsSum, "#gridContainerSiniestro", "Reporte Descarga", (isMobile) ? 10 : 350, (isMobile) ? 30 : 30);
-
-							}
-
-							halcoloaderRemove();
-
-						} catch (error) {
-							generarGridSiniestros([], [], [], "#gridContainerSiniestro", "Siniestro", (isMobile) ? 10 : 260, (isMobile) ? 30 : 30);
-							$("#fileUploaderContainer").dxFileUploader("dispose");
-							$("#fileUploaderContainer").dxFileUploader(compUploadTemplate);
-							halcoloaderRemove();
-							console.error('Hubo un error al realizar las peticiones:', error);
-
-						}
-					};
-
-					ocultarUpload = () => {
-						if (dtFactor >= 1 && dtTipoCalculo == 1 && dtCombustible > 0) {
-							// Mostrar una alerta con el valor seleccionado
-							let miDiv = document.getElementById("fileUploaderContainer");
-							miDiv.style.display = "initial"; // Esto restablecerá el display a su valor predeterminado (por ejemplo, "block" para un <div>)
-							// Restaurar el scroll
-						} else {
-							let miDiv = document.getElementById("fileUploaderContainer");
-							miDiv.style.display = "none"; // Esto restablecerá el display a su valor predeterminado (por ejemplo, "block" para un <div>)
-						}
-					}
-					/* DescargarArchivo = () => {
-						download();
-					}
-					download = async () => {
-						$(location).attr('href', '/Reportes/DownloadArchivosSiniestros');
-					} */
-				</script>
 			</div>
 		</div>
 	</div>
-
 
 	<div class="halcoloader h-letras"></div>
 
@@ -1200,22 +420,26 @@
 
 					<div class="mb-3">
 						<label for="origen" class="form-label">Origen</label>
-						<input type="text" class="form-control validar-campo-formulario-datos" id="origen" value="" autocomplete="off">
+						<input type="text" class="form-control validar-campo-formulario-datos" id="origen" value=""
+							autocomplete="off">
 						<div class="invalid-feedback">El origen debe contener una coma seguida de texto.</div>
 					</div>
 					<div class="mb-3">
 						<label for="destino" class="form-label">Destino</label>
-						<input type="text" class="form-control validar-campo-formulario-datos" id="destino" value="" autocomplete="off">
+						<input type="text" class="form-control validar-campo-formulario-datos" id="destino" value=""
+							autocomplete="off">
 						<div class="invalid-feedback">El destino debe contener una coma seguida de texto.</div>
 					</div>
 					<div class="mb-3">
 						<label for="marca" class="form-label">Marca</label>
-						<input type="text" class="form-control validar-campo-formulario-datos" id="marca" value="" autocomplete="off">
+						<input type="text" class="form-control validar-campo-formulario-datos" id="marca" value=""
+							autocomplete="off">
 						<div class="invalid-feedback">Por favor ingrese la marca.</div>
 					</div>
 					<div class="mb-3">
 						<label for="modelo" class="form-label">Modelo</label>
-						<input type="text" class="form-control validar-campo-formulario-datos" id="modelo" value="" autocomplete="off">
+						<input type="text" class="form-control validar-campo-formulario-datos" id="modelo" value=""
+							autocomplete="off">
 						<div class="invalid-feedback">Por favor ingrese el modelo.</div>
 					</div>
 					<div class="mb-3" style="display: none;">
@@ -1313,19 +537,22 @@
 					<div class="mb-3">
 						<label for="nombre" class="form-label">Nombre</label>
 						<input type="text" class="form-control validar-campo" id="nombre"
-							placeholder="Ingresa tu nombre" data-error="Por favor, ingresa tu nombre." autocomplete="off">
+							placeholder="Ingresa tu nombre" data-error="Por favor, ingresa tu nombre."
+							autocomplete="off">
 						<div class="invalid-feedback">Por favor, ingresa tu nombre.</div>
 					</div>
 					<div class="mb-3">
 						<label for="correo" class="form-label">Correo Electrónico</label>
 						<input type="email" class="form-control validar-campo" id="correo"
-							placeholder="Ingresa tu correo" data-error="Por favor, ingresa un correo válido." autocomplete="off">
+							placeholder="Ingresa tu correo" data-error="Por favor, ingresa un correo válido."
+							autocomplete="off">
 						<div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
 					</div>
 					<div class="mb-3">
 						<label for="telefono" class="form-label">Teléfono</label>
 						<input type="text" class="form-control validar-campo" id="telefono"
-							placeholder="Ingresa tu teléfono" data-error="Por favor, ingresa tu teléfono." autocomplete="off">
+							placeholder="Ingresa tu teléfono" data-error="Por favor, ingresa tu teléfono."
+							autocomplete="off">
 						<div class="invalid-feedback">Por favor, ingresa tu teléfono.</div>
 					</div>
 
@@ -1364,8 +591,8 @@
 
 	<script>
 
-			var urlEndPoint = 'https://pasarelaconwait-response.onrender.com';
-		//var urlEndPoint = 'http://localhost:3001';
+		//var urlEndPoint = 'https://pasarelaconwait-response.onrender.com';
+		var urlEndPoint = 'http://localhost:3001';
 		document.getElementById('btnGenerar').addEventListener('click', function () {
 			let inputs = document.querySelectorAll('.modal-body .form-control, .modal-body .form-select');
 			let isValid = true;
@@ -1640,7 +867,7 @@
 						const pdfUrl = URL.createObjectURL(pdfBlob);
 						const link = document.createElement('a');
 						link.href = pdfUrl;
-						link.download = 'documento.pdf';
+						link.download = 'cotizacion- IA - '+ nombre + '.pdf';
 						document.body.appendChild(link);
 						link.click();
 
@@ -1810,8 +1037,8 @@
 												itemData.activo = $(this).is(":checked");
 												$container.css("background-color", getBackgroundColor(itemData, 2));
 
-													// Realizar una solicitud GET
-													fetch(urlEndPoint + '/ventas/update-data-form', {
+												// Realizar una solicitud GET
+												fetch(urlEndPoint + '/ventas/update-data-form', {
 													method: 'PUT', // Cambiar el método a PUT
 													headers: {
 														'Content-Type': 'application/json' // Especificar que el cuerpo es JSON
@@ -1864,6 +1091,1010 @@
 
 		}
 
+	</script>
+
+	<script>
+		/*-------- Variables globales data */
+		var guid_envio_mod = '';
+		var id_envio_mod = -1;
+		var precio_Combustible_mod = null;
+		var factor_mod = null;
+		var kilometros_mod = null;
+		var casetas_Peajes_mod = null;
+		var transporte_Origen_mod = null;
+		var transporte_Destino_mod = null;
+		var taxis_UBER_mod = null;
+		var total_Extra_mod = null;
+		var material_Bono_Extra_mod = null;
+		var costo_ferry_mod = null;
+
+
+
+		var dtTipoCalculo = null;
+		var dtFactor = 1;
+		var dtCombustible = null;
+
+		var dataEmpresasGlobal = [];
+		var dataAlmacenesGlobal = [];
+		var modalCargaTemplate;
+		var dataArchivosDescarga;
+		var dataPrincipal;
+		var empresaDescarga;
+		var isMobile = false;
+		var compUploadTemplate = {
+			multiple: false, // Permitir cargar un solo archivo a la vez
+			accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel", // Aceptar solo archivos Excel
+			onValueChanged: function (e) {
+				let dtFactor = $("#dtFactor").dxNumberBox("instance").option("value");
+				let dtCombustible = $("#dtCombustible").dxNumberBox("instance").option("value");
+				try {
+					// Obtener el valor seleccionado utilizando el método option
+
+					if (dtFactor === null || dtFactor <= 0) {
+						throw "Debes ingresar un factor mayor a 0";
+					}
+					if (dtCombustible === null || dtCombustible <= 0) {
+						throw "Debes ingresar un precio de combustible mayor a 0";
+					}
+				} catch (error) {
+					let message = error;
+					DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+					//console.log(error);
+
+				}
+
+				if (dtFactor > 0 && dtCombustible > 0) {
+					var files = e.value;
+					if (files.length > 0) {
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							var data = e.target.result;
+							// Convertir el contenido del archivo Excel a JSON
+							var workbook = XLSX.read(data, { type: 'binary' });
+							var sheetName = workbook.SheetNames[0];
+							var worksheet = workbook.Sheets[sheetName];
+							var excelData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+							let excelValido = validarArrayTemplate(excelData);
+							if (excelValido) {
+								obtenerFacturasTemplate(excelData, 1);
+							}
+						};
+						reader.readAsBinaryString(files[0]);
+
+					}
+				}
+			}
+		}
+
+		$(document).ready(() => {
+
+			halcoloaderActive();
+
+			$("#rangoFechas").dxDateRangeBox({
+					startDate: new Date(), // Fecha inicial
+					endDate: new Date(),   // Fecha final
+					displayFormat: "yyyy-MM-dd", // Formato de las fechas mostradas
+					startDateLabel: "Desde", // Etiqueta para la fecha inicial
+					endDateLabel: "Hasta",   // Etiqueta para la fecha final
+					onValueChanged: function (e) {
+						console.log("Rango seleccionado:", e.value);
+					}
+				});
+
+			// Obtener el user-agent del navegador
+			var userAgent = navigator.userAgent;
+			// Verificar si el user-agent indica un dispositivo móvil
+			isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+			//alert(isMobile);
+			$("#titleModule").text("Calculo Traslado");
+
+			$("#dtCombustible").dxNumberBox({
+				value: 0.00, // Valor inicial con decimales
+				min: 0.00, // Límite mínimo
+				max: 100.00, // Límite máximo
+				step: 0.01, // Incremento en pasos de 0.01
+				showSpinButtons: true, // Mostrar botones de incremento/decremento
+				format: "#,##0.00", // Formato con dos decimales
+				onValueChanged: function (e) {
+					console.log("Valor cambiado a: ", e.value);
+					dtCombustible = e.value;
+					//ocultarUpload();
+				}
+			});
+			$("#dtFactor").dxNumberBox({
+				value: 1.00, // Valor inicial con decimales
+				min: 1.00, // Límite mínimo
+				max: 100.00, // Límite máximo
+				step: 0.01, // Incremento en pasos de 0.01
+				showSpinButtons: true, // Mostrar botones de incremento/decremento
+				format: "#,##0.00", // Formato con dos decimales
+				onValueChanged: function (e) {
+					console.log("Valor cambiado a: ", e.value);
+					dtFactor = e.value;
+					//ocultarUpload();
+				}
+			});
+
+			$("#dtTipoCalculo").dxSelectBox({
+
+				valueExpr: 'value',
+				displayExpr: 'name',
+				dataSource: [
+					{ name: "Camiones", value: 1 },
+					{ name: "Automóviles", value: 2 },
+				], // Opciones de la lista
+				placeholder: "Selecciona una opción", // Texto por defecto
+				onValueChanged: function (e) {
+					dtTipoCalculo = e.value;
+					//ocultarUpload();
+
+				}
+			});
+
+			// Inicializamos el dxPopup para usarlo como modal
+			$("#myModal").dxPopup({
+				visible: false,  // El popup comienza oculto
+				showTitle: true,
+				title: "Ver URL",
+				width: "80%",
+				height: "80%",
+				dragEnabled: true, // Habilitar arrastre del modal
+				closeOnOutsideClick: true // Cierra el popup si se hace clic fuera
+			});
+
+			cargarCorreosFormulario();
+
+			generarGridSiniestros([], [], [], "#gridContainerSiniestro", "Siniestro", (isMobile) ? 10 : 260, (isMobile) ? 30 : 30);
+
+			generarGridSiniestros([], [], [], "#gridContainerConsultaRegistros", "Registros", (isMobile) ? 10 : 260, (isMobile) ? 30 : 30);
+
+
+			$("#fileUploaderContainer").dxFileUploader(compUploadTemplate);
+			let confModalInfoTemplate = GeneratePopUp("Información estructura template");
+			confModalInfoTemplate.width = (isMobile) ? "90%" : "90%";
+			confModalInfoTemplate.height = (isMobile) ? "21%" : "30%";
+			var modalInfoTemplate = $("#divInfoTemplate").dxPopup(confModalInfoTemplate).dxPopup("instance");
+			let btnInfo = GenerateButton("+", "default");
+			btnInfo.onClick = (e) => {
+				modalInfoTemplate.show();
+			}
+			$("#btnInfoTemplate").dxButton(btnInfo);
+
+
+			let btnInfoConsulta = GenerateButton("Consultar", "default");
+			btnInfoConsulta.onClick = (e) => {
+				obtenerFacturasTemplateConsulta();
+			}
+			$("#btnInfoConsultaRegistros").dxButton(btnInfoConsulta);
+
+			let btnInfoCotizacionUnitaria = GenerateButton("Calculo Unitario", "default");
+			btnInfoCotizacionUnitaria.onClick = (e) => {
+				const campos = document.querySelectorAll('.validar-campo-formulario-datos'); // Selecciona todos los campos a validar
+				for (let campo of campos) {
+					campo.value = '';
+					campo.classList.remove('is-valid');
+					campo.classList.remove('is-invalid');
+					if (campo.id === 'factor' || campo.name === 'factor') {
+						campo.value = dtFactor; // Asignar valor por defecto
+					}
+
+					if (campo.id === 'precio_combustible' || campo.name === 'precio_combustible') {
+						campo.value = dtCombustible; // Asignar valor por defecto
+					}
+
+					if (campo.id === 'id_correo' || campo.name === 'id_correo') {
+						campo.value = -1; // Asignar valor por defecto
+					}
+
+
+
+
+
+					/*	const data = [
+						{ id: 1, nombre: "Juan Pérez", correo: "juan.perez@example.com", atendido: 1, marca: "a", modelo: "", origen: "or",destino: "des",datosVehiculo: "ddd",fecha: "fdd", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd" },
+						{ id: 2, nombre: "María López", correo: "maria.lopez@example.com", atendido: 0,  marca: "a", modelo: "", origen: "or",destino: "des", datosVehiculo: "ddd",fecha: "sdsd", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd" },
+						{ id: 3, nombre: "Carlos Díaz", correo: "carlos.diaz@example.com", atendido: 1,  marca: "a", modelo: "", origen: "or",destino: "des",datosVehiculo: "ddd",fecha: "sds", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd"},
+						{ id: 4, nombre: "Ana Sánchez", correo: "ana.sanchez@example.com", atendido: 0, marca: "a", modelo: "", origen: "or",destino: "des",datosVehiculo: "ddd",fecha: "sdd", telefono:"3423432434",cilindros: "dd", caracteristicas: "ddd"},
+					];
+								// Inicialización del DropDownBox
+					
+	*/
+				}
+				dataFormulario.style.display = "none";
+				document.getElementById("id_correo").value = -1;
+				var modalButton = document.getElementById('exampleModal');
+				var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+				myModal.show();
+			}
+			$("#btnInfoCalculoUnitario").dxButton(btnInfoCotizacionUnitaria);
+
+			//btnDescargarArchivos
+			let btnDescarga = GenerateButton("Descargar", "default");
+			btnDescarga.icon = "download";
+			btnDescarga.onClick = (e) => {
+				DescargarArchivo();
+			}
+
+			/* ----------- */
+			//getFiltros();
+			/* ----------- */
+			setTimeout(function () {
+				let miDiv = document.getElementById("ContainerBody");
+				miDiv.style.display = "initial"; // Esto restablecerá el display a su valor predeterminado (por ejemplo, "block" para un <div>)
+				// Restaurar el scroll
+
+				halcoloaderRemove();
+			}, 8000);  // 2000 milisegundos = 2 segundos
+
+		});
+		getFiltros = () => {
+			getFiltrosAsync();
+		}
+		getFiltrosAsync = async () => {
+			try {
+				halcoloaderActive();
+				let params = {}
+				let response = await postData('/Reportes/FiltrosReporteSiniestros', params);
+				dataEmpresasGlobal = response.Empresas;
+				dataAlmacenesGlobal = response.Almacenes;
+				$("#selectedBoxEmpresa").dxSelectBox("instance").option("dataSource", dataEmpresasGlobal);
+				$("#dtCombustible").dxSelectBox("instance").option("dataSource", dataAlmacenesGlobal);
+
+				halcoloaderRemove();
+			} catch (e) {
+				halcoloaderRemove();
+			}
+		}
+		generarGridSiniestros = (data, itemsColumn, itemsSum, nameGrid, nameExcel, MinusHeight = 250, MinusWidth = 30) => {
+			console.log(data);
+			let _OpcionesDataGrid = GenerateDataGrid(data, itemsColumn, nameExcel);
+			itemsSumGlobal = GridSumaryGenerator(itemsSum);
+			console.log(_OpcionesDataGrid.columns);
+			// Crear configuración de columnas para DevExtreme
+			let configuracionColumnas = _OpcionesDataGrid.columns.map(columna => {
+				// Especificar el tipo de dato y el formato para las columnas de cantidad
+				let tipoDato = "string";
+				let formato = "";
+				let alignment = "center"
+				let allowEditing = false;
+				let visible = true;
+				let fixed = false; // Fija esta columna
+				if (["Precio_Combustible", "Costo_Combustible", "Alimentos", "Salario_Operador", "Hotel", "Placas_Urbanos", "Casetas_Peajes", "Transporte_Origen", "Transporte_Destino", "Taxis_UBER", "Total_Extra", "Material_Bono_Extra", "Costo_Ferry", "Utilidad", "SubTotal", "IVA", "Retencion", "Total_Persona", "Total_Empresa", "Costo_Violencia"].includes(columna)) {
+					tipoDato = "number";
+					formato = {
+						type: "currency",
+						precision: 2,
+						currency: "MXN"
+					};
+					alignment = "right";
+				}
+				if (["Factor"].includes(columna)) {
+					tipoDato = "number";
+				}
+				if (columna == "Kilometros" || columna == "Precio_Combustible" || columna == "Factor" || columna == "Casetas_Peajes" || columna == "Transporte_Origen" || columna == "Transporte_Destino" || columna == "Taxis_UBER" || columna == "Total_Extra" || columna == "Material_Bono_Extra" || columna == "Costo_Ferry") {
+					allowEditing = true;
+				}
+
+				if (["Total_Porcentaje", "Consumo_Utilidad", "Salario_Operador_Por_Dia", "Hotel_Extra", "Dias_Extra_Calculo", "Ruta_Google_Maps", "Id", "Guid", "Id_correo", "Correo", "Nombre", "Telefono"].includes(columna)) {
+					visible = false;
+				}
+
+				if (["Origen", "Destino", "Automovil"].includes(columna)) {
+					fixed = true;
+				}
+				if (["Fecha_Creacion"].includes(columna)) {
+					tipoDato = "date";
+				}
+				return {
+					dataField: columna,
+					caption: columna.replace(/_/g, " "),
+					width: 160,
+					dataType: tipoDato,
+					format: formato,
+					alignment: alignment,
+					allowEditing: allowEditing,
+					visible: visible,
+					fixed: fixed
+				};
+			});
+
+			if (data.length > 0) {
+				configuracionColumnas.push({
+					"caption": "Ruta",
+					"width": 150,
+					"datatype": "string",
+					"alignment": "center",
+					"allowEditing": false,
+					"allowHiding": true,
+					"cellTemplate": function (container, options) {
+						$('<button>')
+							.addClass('btn btn-primary btn-sm')
+							.html('<i class="fas fa-route icon"></i> Visualizar ruta') // Ícono y texto del botón
+							.on('click', function () {
+								const url = options.data.Ruta_Google_Maps;
+								if (url) {
+									// Abre el enlace en una nueva pestaña
+									window.open(url, '_blank');
+								} else {
+									alert("No se encontró la ruta.");
+								}
+							})
+							.appendTo(container);
+					}
+				});
+
+				configuracionColumnas.push({
+					"caption": "Ruta",
+					"width": 150,
+					"datatype": "string",
+					"alignment": "center",
+					"allowEditing": false,
+					"allowHiding": true,
+					"cellTemplate": function (container, options) {
+						$('<button data-bs-toggle="modal" data-bs-target="#envioDeCorreo">')
+
+
+
+
+
+							.addClass('btn btn-primary btn-sm ')
+							.html('<i class="fas fa-paper-plane icon"></i> Enviar correo') // Ícono y texto del botón
+							.on('click', function () {
+
+								guid_envio_mod = options.data.Guid;
+								id_envio_mod = options.data.Id;
+								console.log(options.data);
+
+								precio_Combustible_mod = options.data.Precio_Combustible;
+								factor_mod = options.data.Factor;
+								kilometros_mod = options.data.Kilometros;
+								casetas_Peajes_mod = options.data.Casetas_Peajes;
+								transporte_Origen_mod = options.data.Transporte_Origen;
+								transporte_Destino_mod = options.data.Transporte_Destino;
+								taxis_UBER_mod = options.data.Taxis_UBER;
+								total_Extra_mod = options.data.Total_Extra;
+								material_Bono_Extra_mod = options.data.Material_Bono_Extra;
+								costo_ferry_mod = options.data.Costo_Ferry;
+
+								const campos = document.querySelectorAll('.validar-campo'); // Selecciona todos los campos a validar
+								for (let campo of campos) {
+									campo.value = '';
+									campo.classList.remove('is-valid');
+									campo.classList.remove('is-invalid');
+								}
+								document.getElementById('trasladoPeligroso').checked = false;
+
+
+								document.getElementById("correo").value = options.data.Correo != undefined ? options.data.Correo : "";
+								document.getElementById("nombre").value = options.data.Nombre != undefined ? options.data.Nombre : "";
+								document.getElementById("telefono").value = options.data.Telefono != undefined ? options.data.Telefono : "";
+								document.getElementById("txtIdCorreoEnvio").value = options.data.Id_correo != undefined ? options.data.Id_correo : -1;
+
+
+								// Buscar el valor específico
+								//const itemCorreo = dataSource.find(item => options.data.id_correo === 4);
+
+								console.log("correo seleccionado");
+								//console.log(itemCorreo);
+
+
+							})
+							.appendTo(container);
+					}
+				});
+
+			}
+
+
+			_OpcionesDataGrid.columns = configuracionColumnas;
+
+
+			console.log(_OpcionesDataGrid);
+
+			_OpcionesDataGrid.onCellPrepared = function (e) {
+				try {
+
+					var facturaProveedorValue = e.data.Factura_Proveedor;
+					var dataField = e.column.dataField;
+
+					if (dataField == "Kilometros" || dataField == "Precio_Combustible" || dataField == "Factor" || dataField == "Casetas_Peajes" || dataField == "Transporte_Origen" || dataField == "Transporte_Destino" || dataField == "Taxis_UBER" || dataField == "Total_Extra" || dataField == "Material_Bono_Extra" || dataField == "Costo_Ferry") {
+
+						e.cellElement.css({
+							"background-color": "silver",
+							"color": "black"
+						});
+					}
+
+				} catch (e) {
+
+				}
+
+			}
+			/* _OpcionesDataGrid.onExporting = function (e) {
+				//exportToExcel(dataPrincipal, "Reporte_Siniestros.xlsx"); // Reemplaza con el nombre deseado
+				//e.cancel = true; // Cancelar la exportación predeterminada de DevExtreme
+			} */
+
+			_OpcionesDataGrid.onRowUpdating = function (e) {
+				console.log("Datos antes de la actualización:", e.oldData);
+				console.log("Datos nuevos:", e.newData);
+
+				// Obtener los valores actualizados o mantener los valores anteriores
+				let kilometros = e.newData.Kilometros !== undefined ? e.newData.Kilometros : e.oldData.Kilometros;
+				let precioCombustible = e.newData.Precio_Combustible !== undefined ? e.newData.Precio_Combustible : e.oldData.Precio_Combustible;
+				let consumo = e.newData.Consumo !== undefined ? e.newData.Consumo : e.oldData.Consumo;
+
+				let diasExtraCalculo = e.newData.Dias_Extra_Calculo !== undefined ? e.newData.Dias_Extra_Calculo : e.oldData.Dias_Extra_Calculo;
+
+				let hotelExtra = e.newData.Hotel_Extra !== undefined ? e.newData.Hotel_Extra : e.oldData.Hotel_Extra;
+
+				let totalPorcentaje = e.newData.Total_Porcentaje !== undefined ? e.newData.Total_Porcentaje : e.oldData.Total_Porcentaje;
+
+				let consumoUtilidad = e.newData.Consumo_Utilidad !== undefined ? e.newData.Consumo_Utilidad : e.oldData.Consumo_Utilidad;
+
+				let salarioOperadorPorDia = e.newData.Salario_Operador_Por_Dia !== undefined ? e.newData.Salario_Operador_Por_Dia : e.oldData.Salario_Operador_Por_Dia;
+
+
+				let costoCombustible = precioCombustible * (kilometros / consumo);
+				// Calcular el costo de combustible
+				e.newData.Costo_Combustible = costoCombustible
+
+				let diasTraslado = Math.ceil(kilometros / 650);
+				e.newData.Dias_Traslado = diasTraslado;
+
+				let alimentos = 300 * (diasTraslado + diasExtraCalculo /*1*/);
+				e.newData.Alimentos = alimentos;
+
+				let salarioOperador = /*450*/ salarioOperadorPorDia * (diasTraslado);
+				e.newData.Salario_Operador = salarioOperador;
+
+				let hotel = (diasTraslado > 1 ? (diasTraslado - 1) * 400 : 0) + hotelExtra/*800*/;
+				e.newData.Hotel = hotel;
+
+				let placasUrbanos = 50 + (40 * diasTraslado);
+				e.newData.Placas_Urbanos = placasUrbanos;
+
+				let casetasPeajes = e.newData.Casetas_Peajes !== undefined ? e.newData.Casetas_Peajes : e.oldData.Casetas_Peajes;
+				let transporteOrigen = e.newData.Transporte_Origen !== undefined ? e.newData.Transporte_Origen : e.oldData.Transporte_Origen;
+				let transporteDestino = e.newData.Transporte_Destino !== undefined ? e.newData.Transporte_Destino : e.oldData.Transporte_Destino;
+				let taxisUBER = e.newData.Taxis_UBER !== undefined ? e.newData.Taxis_UBER : e.oldData.Taxis_UBER;
+				let totalExtra = e.newData.Total_Extra !== undefined ? e.newData.Total_Extra : e.oldData.Total_Extra;
+				let materialBonoExtra = e.newData.Material_Bono_Extra !== undefined ? e.newData.Material_Bono_Extra : e.oldData.Material_Bono_Extra;
+				let costoFerry = e.newData.Costo_Ferry !== undefined ? e.newData.Costo_Ferry : e.oldData.Costo_Ferry;
+				let costoViolencia = e.newData.Costo_Violencia !== undefined ? e.newData.Costo_Violencia : e.oldData.Costo_Violencia;
+				let factor = e.newData.Factor !== undefined ? e.newData.Factor : e.oldData.Factor;
+
+				let utilidad = ((costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) * consumoUtilidad /*0.18*/) * factor;
+				e.newData.Utilidad = utilidad;
+
+				let subTotal = (costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) + utilidad;
+				e.newData.SubTotal = subTotal;
+
+				e.newData.IVA = subTotal * 0.16;
+
+				e.newData.Retencion = subTotal * 0.04;
+				e.newData.Total_Persona = (subTotal + (subTotal * 0.16)) * totalPorcentaje; /*1.1*/
+				e.newData.Total_Empresa = (subTotal + (subTotal * 0.16) - (subTotal * 0.04)) * totalPorcentaje; /*1.1*/
+				//console.log("Nuevo valor de Costo_Combustible:", e.newData.Costo_Combustible);
+
+				// Actualizar el registro en el DataGrid
+				e.component.getDataSource().store().update(e.key, e.newData)  // e.key es la clave primaria (ID)
+					.then(function () {
+						e.component.refresh();  // Refresca el DataGrid para reflejar los cambios
+						//alert('Registro actualizado con cálculo realizado');
+					})
+
+			}
+			$(nameGrid).dxDataGrid(_OpcionesDataGrid);
+			ResizeGridExtreme(nameGrid, MinusHeight, MinusWidth);
+		}
+
+		/* 	function exportToExcel(data, fileName) {
+				var headers = Object.keys(data[0]);
+				// Crear libro y hoja de trabajo con ExcelJS
+				var workbook = new ExcelJS.Workbook();
+				var worksheet = workbook.addWorksheet("Sheet1");
+				// Configurar ancho predeterminado de 100px para las primeras 16384 columnas
+				var defaultColumnWidth = 20;
+				var columnsToSetWidth = Math.min(headers.length, 16384);
+				for (var i = 1; i <= columnsToSetWidth; i++) {
+					worksheet.getColumn(i).width = defaultColumnWidth;
+				}
+				// Agregar encabezados de columna con color de fondo gris claro
+				var headerRow = worksheet.addRow(headers);
+				headerRow.eachCell({ includeEmpty: true }, function (cell) {
+					cell.fill = {
+						type: "pattern",
+						pattern: "solid",
+						fgColor: { argb: "DDDDDD" } // Gris claro
+					};
+				});
+				// Agregar datos al libro
+				data.forEach(function (rowData) {
+					var row = worksheet.addRow(Object.values(rowData));
+					// Obtener el índice de la columna "Articulo_proveedor"
+					var columnIndex = headers.indexOf("Articulo_proveedor") + 1;
+					// Verificar si Factura_Proveedor es null, undefined o vacío y aplicar estilo de fondo rojo a la celda
+					var facturaProveedorValue = rowData["Factura_Proveedor"];
+					if (!facturaProveedorValue || facturaProveedorValue.trim() === "") {
+						var cell = row.getCell(columnIndex);
+						cell.fill = {
+							type: "pattern",
+							pattern: "solid",
+							fgColor: { argb: "FF0000" } // Rojo
+						};
+					}
+				});
+				// Agregar filtros
+				worksheet.autoFilter = {
+					from: {
+						row: 1,
+						column: 1
+					},
+					to: {
+						row: 1,
+						column: headers.length
+					}
+				};
+				// Crear un blob y descargar el archivo
+				workbook.xlsx.writeBuffer().then(function (buffer) {
+					var blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+					var link = document.createElement("a");
+					link.href = URL.createObjectURL(blob);
+					link.download = fileName || "ExportedData.xlsx"; // Nombre del archivo predeterminado si no se proporciona
+					link.click();
+				});
+			}
+	*/
+
+		/* 	validarArrayTemplate = (array) => {
+				try {
+	
+					console.log(array)
+					// Definimos la estructura esperada para cada objeto
+					const estructuraEsperada = {
+						"origen": "string",
+						"destino": "string",
+						"marca": "string",
+						"modelo": "string",
+						"consumo": "number",
+						"numero_ejes": "number",
+						"tipo_consumo": "string"
+					};
+					 // Validamos que el array tenga solo 6 columnas
+					 if (Object.keys(estructuraEsperada).length !== 7) {
+						throw "El template debe tener solo 7 columnas";
+						return false;
+					}
+	
+					// Recorremos cada objeto del array
+					for (let i = 0; i < array.length; i++) {
+						const obj = array[i];
+	
+						// Validamos que el objeto tenga las claves correctas
+						for (let clave in estructuraEsperada) {
+							if (!(clave in obj)) {
+								throw `Falta la clave '${clave}' en el registro ${i}`;
+								return false;
+							}
+	
+							// Validamos que el tipo de cada valor sea el correcto
+							if (typeof obj[clave] !== estructuraEsperada[clave]) {
+								throw `El tipo de dato de la clave '${clave}' en el registro ${i} es incorrecto. Se esperaba '${estructuraEsperada[clave]}', pero se obtuvo '${typeof obj[clave]}'`;
+								return false;
+							}
+	
+							// Validamos que "Origen" tenga una coma
+							if (!obj["Origen"].includes(",")) {
+								throw `El campo 'Origen' en el registro ${i} debe contener esta estructura (municipio, estado)`;
+								return false;
+							}
+	
+							// Validamos que "Destino" tenga una coma
+							if (!obj["Destino"].includes(",")) {
+								throw `El campo 'Destino' en el registro ${i} debe contener esta estructura (municipio, estado)`;
+								return false;
+							}
+	
+						}
+					}
+					// Si todos los objetos son válidos
+					//console.log("Todos los objetos son válidos.");
+	
+					return true;
+				} catch (error) {
+					let message = error;
+					DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+					return false;
+				}
+			}
+	*/
+
+
+		validarArrayTemplate = (array) => {
+			try {
+				console.log(array);
+
+				// Definimos la estructura esperada para cada objeto
+				const estructuraEsperada = {
+					"origen": "string",
+					"destino": "string",
+					"marca": "string",
+					"modelo": "string",
+					"consumo": "number",
+					"numero_ejes": "number",
+					"tipo_consumo": "string"
+				};
+
+				// Validamos que el template tenga exactamente 7 columnas
+				if (Object.keys(estructuraEsperada).length !== 7) {
+					throw "El template debe tener solo 7 columnas";
+				}
+
+				// Recorremos cada objeto del array
+				for (let i = 0; i < array.length; i++) {
+					const obj = array[i];
+
+					// Normalizamos las claves del objeto (convirtiéndolas a minúsculas)
+					const objNormalizado = Object.keys(obj).reduce((acumulador, clave) => {
+						acumulador[clave.toLowerCase()] = obj[clave];
+						return acumulador;
+					}, {});
+
+					// Validamos que el objeto tenga las claves correctas
+					for (let clave in estructuraEsperada) {
+						if (!(clave in objNormalizado)) {
+							throw `Falta la clave '${clave}' en el registro ${i}`;
+						}
+
+						// Validamos que el tipo de cada valor sea el correcto
+						if (typeof objNormalizado[clave] !== estructuraEsperada[clave]) {
+							throw `El tipo de dato de la clave '${clave}' en el registro ${i} es incorrecto. Se esperaba '${estructuraEsperada[clave]}', pero se obtuvo '${typeof objNormalizado[clave]}'`;
+						}
+
+						// Validamos que "origen" tenga una coma
+						if (clave === "origen" && !objNormalizado[clave].includes(",")) {
+							throw `El campo 'origen' en el registro ${i} debe contener esta estructura (municipio, estado)`;
+						}
+
+						// Validamos que "destino" tenga una coma
+						if (clave === "destino" && !objNormalizado[clave].includes(",")) {
+							throw `El campo 'destino' en el registro ${i} debe contener esta estructura (municipio, estado)`;
+						}
+					}
+				}
+
+				// Si todos los objetos son válidos
+				return true;
+			} catch (error) {
+				let message = error;
+				DevExpress.ui.notify({ message, width: 450 }, "error", 4000);
+				return false;
+			}
+		};
+
+		obtenerFacturasTemplate = (excelData, tipo) => {
+			obtenerFacturasTemplateAsync(excelData, tipo);
+		}
+
+		obtenerFacturasTemplateConsulta = () => {
+			obtenerFacturasTemplateconsultaAsync();
+		}
+
+
+		const obtenerFacturasTemplateconsultaAsync = async () => {
+			halcoloaderActive(); // Activa el loader
+			// Construcción del objeto de consulta
+
+			var range = $("#rangoFechas").dxDateRangeBox("instance").option("value");
+			var desde;
+			var hasta;
+			// Verificar si hay fechas seleccionadas
+			if (range && range.length === 2) {
+				var startDate = range[0]; // Fecha de inicio
+				var endDate = range[1];   // Fecha de fin
+
+				// Mostrar las fechas en el formato deseado
+				var desde = formatDate(startDate);
+				var hasta = formatDate(endDate);
+
+				// Mostrar las fechas en el HTML
+				const obj_consulta = {
+				origen: desde,
+				destino: hasta,
+			};
+			const urlAPI = urlEndPoint + `/ventas/get_data_registro_cotizaciones?desde=${desde}&hasta=${hasta}`;
+
+			try {
+				// Realizamos la solicitud POST
+				const respuesta = await fetch(urlAPI, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
+
+				// Verificamos si la respuesta fue exitosa
+				if (!respuesta.ok) {
+					throw new Error(`Error al hacer la solicitud`);
+				}
+
+				// Si la respuesta es exitosa, obtenemos los datos
+				const resultados = await respuesta.json();
+				console.log(resultados);
+
+				if (resultados.data.length > 0) {
+
+					let llaves = [
+						"Id",
+						"Guid",
+						"Origen",
+						"Destino",
+						"Automovil",
+						"Puntos_Intermedios_Asignados",
+						"Precio_Combustible",
+						"Factor",
+						"Kilometros",
+						"Consumo",
+						"Tipo_Consumo",
+						"Dias_Traslado",
+						"Costo_Combustible",
+						"Alimentos",
+						"Salario_Operador",
+						"Hotel",
+						"Placas_Urbanos",
+						"Casetas_Peajes",
+						"Transporte_Origen",
+						"Transporte_Destino",
+						"Taxis_UBER",
+						"Total_Extra",
+						"Material_Bono_Extra",
+						"Costo_Ferry",
+						"Costo_Violencia",
+						"Utilidad",
+						"SubTotal",
+						"IVA",
+						"Retencion",
+						"Total_Persona",
+						"Total_Empresa",
+						"Ruta_Google_Maps",
+						"Total_Porcentaje",
+						"Consumo_Utilidad",
+						"Salario_Operador_Por_Dia",
+						"Hotel_Extra",
+						"Dias_Extra_Calculo",
+						"Id_correo",
+						"Correo",
+						"Nombre",
+						"Telefono",
+						"Fecha_Creacion"
+					]
+
+					//Object.keys(resultados[0]);
+
+					//console.log(llaves);
+					let columnsSum = []
+
+					generarGridSiniestros(resultados.data, llaves, columnsSum, "#gridContainerConsultaRegistros", "Reporte Descarga - Registros", (isMobile) ? 10 : 350, (isMobile) ? 30 : 30);
+					
+				
+				}else {
+					generarGridSiniestros([], [], [], "#gridContainerConsultaRegistros", "Reporte Descarga - Registros", (isMobile) ? 10 : 350, (isMobile) ? 30 : 30);
+					
+				}
+				halcoloaderRemove(); // Desactiva el loader
+
+			} catch (error) {
+				console.error("Error en la solicitud:", error);
+
+				halcoloaderRemove(); // Desactiva el loader
+				return { error: true, message: "Ocurrió un error al realizar la solicitud." };
+			}
+			} else {
+				halcoloaderRemove(); // Desactiva el loader
+				let message = 'favor selecciona una fecha valida'
+				DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+			}
+
+		
+		};
+
+		const obtenerFacturasTemplateAsync = async (excelData, tipo) => {
+			halcoloaderActive();
+			// URL de la API (ajústala a tu necesidad)
+			const urlAPI = urlEndPoint + '/ventas/generate-cotizacion-preliminar-camiones-automoviles';
+
+			console.log(excelData);
+			// Array de promesas que contendrá las solicitudes HTTP
+			const promesas = excelData.map(async (objeto) => {
+
+
+				console.log("conslsssssss", objeto);
+				objeto = Object.keys(objeto).reduce((acc, key) => {
+					acc[key.toLowerCase()] = objeto[key];
+					return acc;
+				}, {});
+
+				let obj_calculo = {
+					"origen": objeto.origen,
+					"destino": objeto.destino,
+					"marca": objeto.marca,
+					"modelo": objeto.modelo,
+					"numero_cilindros": 0,
+					"consumo": objeto.consumo == "" || objeto.consumo == null ? -1 : objeto.consumo,
+					"numero_ejes": objeto.numero_ejes,
+					"precio_combustible": tipo == 1 ? dtCombustible : objeto.precio_combustible,
+					"factor": tipo == 1 ? dtFactor : objeto.factor,
+					"tipo_consumo": objeto.tipo_consumo
+				}
+				let obj_calculoReturn = {
+					"Origen": objeto.origen,
+					"Destino": objeto.destino,
+					"Automovil": objeto.marca + ' ' + objeto.modelo,
+					"Consumo": objeto.consumo,
+					"Ejes": objeto.numero_ejes,
+					"Precio_Combustible": tipo == 1 ? dtCombustible : objeto.precio_combustible,
+					"factor": tipo == 1 ? dtFactor : objeto.factor,
+					"tipo_consumo": objeto.tipo_consumo
+				}
+				let intentos = 0; // Contador de intentos
+				const maxIntentos = 10; // Número máximo de intentos
+				let datos = null;
+
+				while (intentos < maxIntentos) {
+					try {
+						console.log(`Intento ${intentos + 1} de ${maxIntentos}`);
+
+						// Realizamos la solicitud POST enviando el objeto como cuerpo
+						const respuesta = await fetch(urlAPI, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(obj_calculo), // Convertimos el objeto a JSON
+						});
+
+						// Comprobamos si la respuesta fue exitosa
+						if (!respuesta.ok) {
+							throw new Error(`Error al hacer la solicitud para ${obj_calculo.drigen} a ${obj_calculo.destino}`);
+						}
+
+						// Si la respuesta es exitosa, obtenemos los datos
+						datos = await respuesta.json();
+
+						var button = document.querySelector('button.btn.btn-secondary[data-bs-dismiss="modal"]');
+						if (button) {
+							button.click(); // Simula un clic en el botón
+						}
+
+						datos.Id_correo = objeto.id_correo;
+						datos.Correo = objeto.correo_frm;
+						datos.Nombre = objeto.nombre_frm;
+						datos.Telefono = objeto.telefono_frm;
+						console.log(`Respuesta para ${obj_calculo.origen} a ${obj_calculo.destino}:`, datos);
+						return datos; // Retornamos los datos si la solicitud fue exitosa
+
+					} catch (error) {
+						console.error(`Error en el intento ${intentos + 1}:`, error);
+
+						intentos++; // Incrementamos el contador de intentos
+						if (intentos >= maxIntentos) {
+							console.error("Número máximo de intentos alcanzado. Abortando solicitud.");
+							return obj_calculoReturn; // Devuelve un objeto de respaldo si se alcanzan los intentos máximos
+						}
+					}
+				}
+			});
+
+			// Usamos Promise.all para esperar que todas las promesas se resuelvan
+			try {
+
+				console.log(promesas);
+
+				const resultados = await Promise.all(promesas);
+
+				if (resultados.length > 0) {
+					$("#fileUploaderContainer").dxFileUploader("dispose");
+					$("#fileUploaderContainer").dxFileUploader(compUploadTemplate);
+					console.log('Resultados de todas las peticiones:', resultados);
+
+					let llaves = [
+						"Id",
+						"Guid",
+						"Origen",
+						"Destino",
+						"Automovil",
+						"Puntos_Intermedios_Asignados",
+						"Precio_Combustible",
+						"Factor",
+						"Kilometros",
+						"Consumo",
+						"Tipo_Consumo",
+						"Dias_Traslado",
+						"Costo_Combustible",
+						"Alimentos",
+						"Salario_Operador",
+						"Hotel",
+						"Placas_Urbanos",
+						"Casetas_Peajes",
+						"Transporte_Origen",
+						"Transporte_Destino",
+						"Taxis_UBER",
+						"Total_Extra",
+						"Material_Bono_Extra",
+						"Costo_Ferry",
+						"Costo_Violencia",
+						"Utilidad",
+						"SubTotal",
+						"IVA",
+						"Retencion",
+						"Total_Persona",
+						"Total_Empresa",
+						"Ruta_Google_Maps",
+						"Total_Porcentaje",
+						"Consumo_Utilidad",
+						"Salario_Operador_Por_Dia",
+						"Hotel_Extra",
+						"Dias_Extra_Calculo",
+						"Id_correo",
+						"Correo",
+						"Nombre",
+						"Telefono"
+					]
+
+					//Object.keys(resultados[0]);
+
+					//console.log(llaves);
+					let columnsSum = []
+
+					generarGridSiniestros(resultados, llaves, columnsSum, "#gridContainerSiniestro", "Reporte Descarga", (isMobile) ? 10 : 350, (isMobile) ? 30 : 30);
+
+				}
+
+				halcoloaderRemove();
+
+			} catch (error) {
+				generarGridSiniestros([], [], [], "#gridContainerSiniestro", "Siniestro", (isMobile) ? 10 : 260, (isMobile) ? 30 : 30);
+				$("#fileUploaderContainer").dxFileUploader("dispose");
+				$("#fileUploaderContainer").dxFileUploader(compUploadTemplate);
+				halcoloaderRemove();
+				console.error('Hubo un error al realizar las peticiones:', error);
+
+			}
+		};
+
+		ocultarUpload = () => {
+			if (dtFactor >= 1 && dtTipoCalculo == 1 && dtCombustible > 0) {
+				// Mostrar una alerta con el valor seleccionado
+				let miDiv = document.getElementById("fileUploaderContainer");
+				miDiv.style.display = "initial"; // Esto restablecerá el display a su valor predeterminado (por ejemplo, "block" para un <div>)
+				// Restaurar el scroll
+			} else {
+				let miDiv = document.getElementById("fileUploaderContainer");
+				miDiv.style.display = "none"; // Esto restablecerá el display a su valor predeterminado (por ejemplo, "block" para un <div>)
+			}
+		}
+		/* DescargarArchivo = () => {
+			download();
+		}
+		download = async () => {
+			$(location).attr('href', '/Reportes/DownloadArchivosSiniestros');
+		} */
+
+		// Función para formatear las fechas en el formato deseado (yyyy-MM-dd)
+		function formatDate(date) {
+			 try {
+				var year = date.getFullYear();
+                var month = ("0" + (date.getMonth() + 1)).slice(-2); // Mes con dos dígitos
+                var day = ("0" + date.getDate()).slice(-2); // Día con dos dígitos
+                return year + "-" + month + "-" + day;
+			 } catch (error) {
+				halcoloaderRemove();
+				let message = 'favor selecciona una fecha valida'
+				DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
+			 }
+              
+            }
 	</script>
 
 </html>
