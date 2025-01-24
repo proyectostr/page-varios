@@ -195,6 +195,82 @@
 		}
 	</style>
 
+
+	<style>
+		/* Estilo para el switch compacto */
+		.custom-switch {
+			position: relative;
+			display: inline-block;
+			width: 50px;
+			/* Ancho más pequeño */
+			height: 25px;
+			/* Altura más pequeña */
+		}
+
+		/* Ocultar el input original */
+		.custom-switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+		/* Estilo de la pista del switch */
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #dee2e6;
+			/* Fondo desactivado */
+			transition: 0.3s;
+			border-radius: 25px;
+		}
+
+		/* Círculo dentro del switch */
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 18px;
+			/* Tamaño del círculo reducido */
+			width: 18px;
+			left: 3px;
+			bottom: 3px;
+			background-color: white;
+			transition: 0.3s;
+			border-radius: 50%;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			/* Sombra del círculo */
+		}
+
+		/* Cambio de color al activarse */
+		input:checked+.slider {
+			background-color: #0d6efd;
+			/* Azul Bootstrap */
+		}
+
+		/* Movimiento del círculo al activarse */
+		input:checked+.slider:before {
+			transform: translateX(25px);
+			/* Movimiento del círculo ajustado */
+		}
+
+		/* Etiqueta personalizada */
+		.switch-label {
+			font-size: 1rem;
+			/* Tamaño de texto ajustado */
+			margin-left: 10px;
+			vertical-align: middle;
+		}
+	</style>
+
+	<style>
+		.btn-danger:hover {
+			background-color: #dc3545 !important;
+			border-color: #dc3545 !important;
+		}
+	</style>
 </head>
 
 <body>
@@ -354,6 +430,11 @@
 										<div id="rangoFechas"></div>
 									</div>
 
+									<div class="col-lg-2 col-sm-12 mb-2">
+										<b>Busqueda por nombre:</b>
+										<input type="text" id="txtBusquedaNombre" class="form-control">
+									</div>
+
 
 									<div class="col-lg-4 col-sm-12 mb-4">
 										<br>
@@ -393,6 +474,19 @@
 
 
 				<div class="modal-body">
+
+					<div class="mb-3">
+
+						<div class="d-flex justify-content-end">
+							<!-- Switch personalizado -->
+							<label class="custom-switch">
+								<input type="checkbox" checked="true" id="chkLlenadoAutomatico"
+									onchange="checkSwitchValue()">
+								<span class="slider"></span>
+							</label>
+							<span class="switch-label ms-2">prellenado automático</span>
+						</div>
+					</div>
 
 					<div class="mb-3" style="display: initial;">
 						<label for="formulario" class="form-label">Datos Formularios</label>
@@ -513,6 +607,10 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+					<div class="text-start">
+						<button type="button" id="btnRechazarAntiguedad" class="btn btn-danger">Rechazar por
+							antiguedad</button>
+					</div>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 					<button type="button" class="btn btn-primary" id="btnGenerar">Generar</button>
 
@@ -653,6 +751,39 @@
 			}
 		});
 
+
+
+
+
+		$("#btnRechazarAntiguedad").dxButton({
+			text: "Mostrar Confirmación",
+			onClick: function () {
+				DevExpress.ui.dialog.confirm("¿Estás seguro de realizar esta acción?", "Confirmación")
+					.then(function (dialogResult) {
+						if (dialogResult) {
+							//  DevExpress.ui.notify("¡Confirmado!", "success", 2000);
+							fetch(urlEndPoint+'/ventas/data-form-send-rechazar', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json', // Indicamos que el cuerpo de la solicitud es JSON
+								},
+								body: JSON.stringify({
+									id_correo: parseInt(document.getElementById('id_correo').value) // Datos que deseas enviar en el cuerpo de la solicitud
+								}),
+							})
+								.then(response => response.json()) // Convertimos la respuesta a JSON
+								.then(data => {
+									cargarCorreosFormulario();
+									DevExpress.ui.notify("¡Respuesta enviada!", "success", 2000);
+									console.log('Respuesta del servidor:', data); // Maneja la respuesta del servidor
+								})
+								.catch(error => {
+									console.error('Error en la petición:', error); // Maneja errores si ocurren
+								});
+						}
+					});
+			}
+		});
 
 
 	</script>
@@ -867,7 +998,7 @@
 						const pdfUrl = URL.createObjectURL(pdfBlob);
 						const link = document.createElement('a');
 						link.href = pdfUrl;
-						link.download = 'cotizacion- IA - '+ nombre + '.pdf';
+						link.download = 'cotizacion- IA - ' + nombre + '.pdf';
 						document.body.appendChild(link);
 						link.click();
 
@@ -968,6 +1099,10 @@
 			document.getElementById("nombre_frm").value = "";
 			document.getElementById("telefono_frm").value = "";
 
+			document.getElementById("origen").value = "";
+			document.getElementById("destino").value = "";
+			document.getElementById("marca").value = "";
+			document.getElementById("modelo").value = "";
 			console.log("Formulario cerrado");
 		});
 
@@ -1017,6 +1152,25 @@
 												document.getElementById("correo_frm").value = itemData.correo;
 												document.getElementById("nombre_frm").value = itemData.nombre;
 												document.getElementById("telefono_frm").value = itemData.telefono;
+
+												const switchElement = document.getElementById('chkLlenadoAutomatico').checked;
+
+												origenchk = itemData.origen;
+												destinochk = itemData.destino;
+												marcachk = itemData.marca;
+												modelochk = itemData.modelo;
+
+												if (switchElement) {
+													document.getElementById("origen").value = origenchk
+													document.getElementById("destino").value = destinochk;
+													document.getElementById("marca").value = marcachk;
+													document.getElementById("modelo").value = modelochk;
+												} else {
+													document.getElementById("origen").value = "";
+													document.getElementById("destino").value = "";
+													document.getElementById("marca").value = "";
+													document.getElementById("modelo").value = "";
+												}
 
 												// Mostrar el div si estaba oculto
 												document.getElementById("dataFormulario").style.display = "block";
@@ -1121,6 +1275,14 @@
 		var dataPrincipal;
 		var empresaDescarga;
 		var isMobile = false;
+
+
+
+		var origenchk = "";
+		var destinochk = "";
+		var marcachk = "";
+		var modelochk = "";
+
 		var compUploadTemplate = {
 			multiple: false, // Permitir cargar un solo archivo a la vez
 			accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel", // Aceptar solo archivos Excel
@@ -1171,15 +1333,15 @@
 			halcoloaderActive();
 
 			$("#rangoFechas").dxDateRangeBox({
-					startDate: new Date(), // Fecha inicial
-					endDate: new Date(),   // Fecha final
-					displayFormat: "yyyy-MM-dd", // Formato de las fechas mostradas
-					startDateLabel: "Desde", // Etiqueta para la fecha inicial
-					endDateLabel: "Hasta",   // Etiqueta para la fecha final
-					onValueChanged: function (e) {
-						console.log("Rango seleccionado:", e.value);
-					}
-				});
+				startDate: new Date(), // Fecha inicial
+				endDate: new Date(),   // Fecha final
+				displayFormat: "yyyy-MM-dd", // Formato de las fechas mostradas
+				startDateLabel: "Desde", // Etiqueta para la fecha inicial
+				endDateLabel: "Hasta",   // Etiqueta para la fecha final
+				onValueChanged: function (e) {
+					console.log("Rango seleccionado:", e.value);
+				}
+			});
 
 			// Obtener el user-agent del navegador
 			var userAgent = navigator.userAgent;
@@ -1385,10 +1547,21 @@
 				if (["Fecha_Creacion"].includes(columna)) {
 					tipoDato = "date";
 				}
+				if (["Correo", "Nombre", "Telefono"].includes(columna) && nameGrid == "#gridContainerConsultaRegistros") {
+					visible = true;
+				}
+
+				let width;
+				if (["Tipo_Cotizacion"].includes(columna) && nameGrid == "#gridContainerConsultaRegistros") {
+					width = 220;
+				} else {
+					width = 160;
+				}
+
 				return {
 					dataField: columna,
 					caption: columna.replace(/_/g, " "),
-					width: 160,
+					width: width,
 					dataType: tipoDato,
 					format: formato,
 					alignment: alignment,
@@ -1501,6 +1674,31 @@
 
 						e.cellElement.css({
 							"background-color": "silver",
+							"color": "black"
+						});
+					}
+
+
+					// Verificar si el valor de la columna es "cotización preliminar"
+					if (e.value === "cotizacion manual automoviles") {
+						e.cellElement.css({
+							"background-color": "green",
+							"color": "white"
+						});
+					}
+
+					// Verificar si el valor de la columna es "cotización preliminar"
+					if (e.value === "cotizacion preliminar (sin envio de correo)") {
+						e.cellElement.css({
+							"background-color": "yellow",
+							"color": "black"
+						});
+					}
+
+					// Verificar si el valor de la columna es "cotización preliminar"
+					if (e.value === "cotizacion preliminar") {
+						e.cellElement.css({
+							"background-color": "#cce5ff",
 							"color": "black"
 						});
 					}
@@ -1786,117 +1984,120 @@
 			halcoloaderActive(); // Activa el loader
 			// Construcción del objeto de consulta
 
-			var range = $("#rangoFechas").dxDateRangeBox("instance").option("value");
-			var desde;
-			var hasta;
+			let range = $("#rangoFechas").dxDateRangeBox("instance").option("value");
+			let desde;
+			let hasta;
+			let nombreBusqueda = document.getElementById("txtBusquedaNombre").value;
 			// Verificar si hay fechas seleccionadas
 			if (range && range.length === 2) {
 				var startDate = range[0]; // Fecha de inicio
 				var endDate = range[1];   // Fecha de fin
 
 				// Mostrar las fechas en el formato deseado
-				var desde = formatDate(startDate);
-				var hasta = formatDate(endDate);
+				desde = formatDate(startDate);
+				hasta = formatDate(endDate);
+
 
 				// Mostrar las fechas en el HTML
 				const obj_consulta = {
-				origen: desde,
-				destino: hasta,
-			};
-			const urlAPI = urlEndPoint + `/ventas/get_data_registro_cotizaciones?desde=${desde}&hasta=${hasta}`;
+					origen: desde,
+					destino: hasta,
+				};
+				const urlAPI = urlEndPoint + `/ventas/get_data_registro_cotizaciones?desde=${desde}&hasta=${hasta}&nombre_busqueda=${nombreBusqueda}`;
 
-			try {
-				// Realizamos la solicitud POST
-				const respuesta = await fetch(urlAPI, {
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				try {
+					// Realizamos la solicitud POST
+					const respuesta = await fetch(urlAPI, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					});
 
-				// Verificamos si la respuesta fue exitosa
-				if (!respuesta.ok) {
-					throw new Error(`Error al hacer la solicitud`);
+					// Verificamos si la respuesta fue exitosa
+					if (!respuesta.ok) {
+						throw new Error(`Error al hacer la solicitud`);
+					}
+
+					// Si la respuesta es exitosa, obtenemos los datos
+					const resultados = await respuesta.json();
+					console.log(resultados);
+
+					if (resultados.data.length > 0) {
+
+						let llaves = [
+							"Id",
+							"Guid",
+							"Origen",
+							"Destino",
+							"Automovil",
+							"Puntos_Intermedios_Asignados",
+							"Precio_Combustible",
+							"Factor",
+							"Kilometros",
+							"Consumo",
+							"Tipo_Consumo",
+							"Dias_Traslado",
+							"Costo_Combustible",
+							"Alimentos",
+							"Salario_Operador",
+							"Hotel",
+							"Placas_Urbanos",
+							"Casetas_Peajes",
+							"Transporte_Origen",
+							"Transporte_Destino",
+							"Taxis_UBER",
+							"Total_Extra",
+							"Material_Bono_Extra",
+							"Costo_Ferry",
+							"Costo_Violencia",
+							"Utilidad",
+							"SubTotal",
+							"IVA",
+							"Retencion",
+							"Total_Persona",
+							"Total_Empresa",
+							"Ruta_Google_Maps",
+							"Total_Porcentaje",
+							"Consumo_Utilidad",
+							"Salario_Operador_Por_Dia",
+							"Hotel_Extra",
+							"Dias_Extra_Calculo",
+							"Id_correo",
+							"Correo",
+							"Nombre",
+							"Telefono",
+							"Fecha_Creacion",
+							"Tipo_Cotizacion"
+						]
+
+						//Object.keys(resultados[0]);
+
+						//console.log(llaves);
+						let columnsSum = []
+
+						generarGridSiniestros(resultados.data, llaves, columnsSum, "#gridContainerConsultaRegistros", "Reporte Descarga - Registros", (isMobile) ? 10 : 350, (isMobile) ? 30 : 30);
+
+
+					} else {
+						generarGridSiniestros([], [], [], "#gridContainerConsultaRegistros", "Reporte Descarga - Registros", (isMobile) ? 10 : 350, (isMobile) ? 30 : 30);
+
+					}
+					halcoloaderRemove(); // Desactiva el loader
+
+				} catch (error) {
+					console.error("Error en la solicitud:", error);
+
+					halcoloaderRemove(); // Desactiva el loader
+					return { error: true, message: "Ocurrió un error al realizar la solicitud." };
 				}
-
-				// Si la respuesta es exitosa, obtenemos los datos
-				const resultados = await respuesta.json();
-				console.log(resultados);
-
-				if (resultados.data.length > 0) {
-
-					let llaves = [
-						"Id",
-						"Guid",
-						"Origen",
-						"Destino",
-						"Automovil",
-						"Puntos_Intermedios_Asignados",
-						"Precio_Combustible",
-						"Factor",
-						"Kilometros",
-						"Consumo",
-						"Tipo_Consumo",
-						"Dias_Traslado",
-						"Costo_Combustible",
-						"Alimentos",
-						"Salario_Operador",
-						"Hotel",
-						"Placas_Urbanos",
-						"Casetas_Peajes",
-						"Transporte_Origen",
-						"Transporte_Destino",
-						"Taxis_UBER",
-						"Total_Extra",
-						"Material_Bono_Extra",
-						"Costo_Ferry",
-						"Costo_Violencia",
-						"Utilidad",
-						"SubTotal",
-						"IVA",
-						"Retencion",
-						"Total_Persona",
-						"Total_Empresa",
-						"Ruta_Google_Maps",
-						"Total_Porcentaje",
-						"Consumo_Utilidad",
-						"Salario_Operador_Por_Dia",
-						"Hotel_Extra",
-						"Dias_Extra_Calculo",
-						"Id_correo",
-						"Correo",
-						"Nombre",
-						"Telefono",
-						"Fecha_Creacion"
-					]
-
-					//Object.keys(resultados[0]);
-
-					//console.log(llaves);
-					let columnsSum = []
-
-					generarGridSiniestros(resultados.data, llaves, columnsSum, "#gridContainerConsultaRegistros", "Reporte Descarga - Registros", (isMobile) ? 10 : 350, (isMobile) ? 30 : 30);
-					
-				
-				}else {
-					generarGridSiniestros([], [], [], "#gridContainerConsultaRegistros", "Reporte Descarga - Registros", (isMobile) ? 10 : 350, (isMobile) ? 30 : 30);
-					
-				}
-				halcoloaderRemove(); // Desactiva el loader
-
-			} catch (error) {
-				console.error("Error en la solicitud:", error);
-
-				halcoloaderRemove(); // Desactiva el loader
-				return { error: true, message: "Ocurrió un error al realizar la solicitud." };
-			}
 			} else {
 				halcoloaderRemove(); // Desactiva el loader
 				let message = 'favor selecciona una fecha valida'
 				DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
 			}
 
-		
+
 		};
 
 		const obtenerFacturasTemplateAsync = async (excelData, tipo) => {
@@ -2083,18 +2284,37 @@
 
 		// Función para formatear las fechas en el formato deseado (yyyy-MM-dd)
 		function formatDate(date) {
-			 try {
+			try {
 				var year = date.getFullYear();
-                var month = ("0" + (date.getMonth() + 1)).slice(-2); // Mes con dos dígitos
-                var day = ("0" + date.getDate()).slice(-2); // Día con dos dígitos
-                return year + "-" + month + "-" + day;
-			 } catch (error) {
+				var month = ("0" + (date.getMonth() + 1)).slice(-2); // Mes con dos dígitos
+				var day = ("0" + date.getDate()).slice(-2); // Día con dos dígitos
+				return year + "-" + month + "-" + day;
+			} catch (error) {
 				halcoloaderRemove();
 				let message = 'favor selecciona una fecha valida'
 				DevExpress.ui.notify({ message, width: 450, }, "error", 4000);
-			 }
-              
-            }
+			}
+
+		}
+
+
+		// Función para obtener el valor del switch
+		function checkSwitchValue() {
+			const switchElement = document.getElementById('chkLlenadoAutomatico').checked;
+
+
+			if (switchElement) {
+				document.getElementById("origen").value = origenchk;
+				document.getElementById("destino").value = destinochk;
+				document.getElementById("marca").value = marcachk;
+				document.getElementById("modelo").value = modelochk;
+			} else {
+				document.getElementById("origen").value = "";
+				document.getElementById("destino").value = "";
+				document.getElementById("marca").value = "";
+				document.getElementById("modelo").value = "";
+			}
+		}
 	</script>
 
 </html>
