@@ -655,9 +655,13 @@
 					</div>
 
 					<!-- Nuevo checkbox agregado -->
-					<div class="mb-3 form-check">
+					<div class="mb-3 form-check" style="display: none;">
 						<input type="checkbox" class="form-check-input" id="trasladoPeligroso">
 						<label class="form-check-label" for="trasladoPeligroso">Traslado Peligroso</label>
+					</div>
+					<div class="mb-3 form-check">
+						<input type="checkbox" class="form-check-input" id="trasladoFlex">
+						<label class="form-check-label" for="trasladoFlex">Traslado Flex</label>
 					</div>
 					<div class="mb-3" style="display: none;">
 						<label for="txtIdCorreoEnvio" class="form-label">Id Correo</label>
@@ -689,7 +693,7 @@
 
 	<script>
 
-		var urlEndPoint = 'https://pasarelaconwait-response.onrender.com';
+		var urlEndPoint = 'https://pasarelaconwait-response-1.onrender.com';
 		//var urlEndPoint = 'http://localhost:3001';
 		document.getElementById('btnGenerar').addEventListener('click', function () {
 			let inputs = document.querySelectorAll('.modal-body .form-control, .modal-body .form-select');
@@ -818,6 +822,8 @@
 				const idCorreoFormulario = parseInt(document.getElementById('txtIdCorreoEnvio').value);
 				// Obtener el checkbox por su id
 				const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
+				const trasladoFlex = document.getElementById('trasladoFlex').checked;
+
 
 				const url = urlEndPoint + '/ventas/envio-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
 				const datos = {
@@ -838,7 +844,8 @@
 					material_Bono_Extra_mod: material_Bono_Extra_mod,
 					costo_ferry_mod: costo_ferry_mod,
 					traslado_peligroso: trasladoPeligroso,
-					id_correo_formulario: idCorreoFormulario
+					id_correo_formulario: idCorreoFormulario,
+					traslado_flex: trasladoFlex
 
 				};
 
@@ -878,7 +885,7 @@
 						}
 
 						document.getElementById('trasladoPeligroso').checked = false;
-
+						document.getElementById('trasladoFlex').checked = false;
 						// Cierra el modal
 						const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
 						modal.hide();
@@ -936,6 +943,7 @@
 				const telefono = document.getElementById('telefono').value;
 				// Obtener el checkbox por su id
 				const trasladoPeligroso = document.getElementById('trasladoPeligroso').checked;
+				const trasladoFlex = document.getElementById('trasladoFlex').checked;
 				const idCorreoFormulario = parseInt(document.getElementById('txtIdCorreoEnvio').value);
 
 				const url = urlEndPoint + '/ventas/pdf-cotizacion-preliminar-camiones-automoviles'; // URL de la API donde se enviarán los datos
@@ -957,7 +965,8 @@
 					material_Bono_Extra_mod: material_Bono_Extra_mod,
 					costo_ferry_mod: costo_ferry_mod,
 					traslado_peligroso: trasladoPeligroso,
-					id_correo_formulario: idCorreoFormulario
+					id_correo_formulario: idCorreoFormulario,
+					traslado_flex: trasladoFlex
 
 				};
 
@@ -1016,7 +1025,7 @@
 						}
 
 						document.getElementById('trasladoPeligroso').checked = false;
-
+						document.getElementById('trasladoFlex').checked = false;
 						// Cierra el modal
 						const modal = bootstrap.Modal.getInstance(document.getElementById('envioDeCorreo'));
 						modal.hide();
@@ -1636,13 +1645,14 @@
 									campo.classList.remove('is-invalid');
 								}
 								document.getElementById('trasladoPeligroso').checked = false;
+								document.getElementById('trasladoFlex').checked = false;
 
 
 								document.getElementById("correo").value = options.data.Correo != undefined ? options.data.Correo : "";
 								document.getElementById("nombre").value = options.data.Nombre != undefined ? options.data.Nombre : "";
 								document.getElementById("telefono").value = options.data.Telefono != undefined ? options.data.Telefono : "";
 								document.getElementById("txtIdCorreoEnvio").value = options.data.Id_correo != undefined ? options.data.Id_correo : -1;
-
+								document.getElementById("trasladoFlex").checked = options.data.Traslado_Flex;
 
 								// Buscar el valor específico
 								//const itemCorreo = dataSource.find(item => options.data.id_correo === 4);
@@ -2068,7 +2078,8 @@
 							"Nombre",
 							"Telefono",
 							"Fecha_Creacion",
-							"Tipo_Cotizacion"
+							"Tipo_Cotizacion",
+							"Traslado_Flex"
 						]
 
 						//Object.keys(resultados[0]);
@@ -2240,7 +2251,8 @@
 						"Id_correo",
 						"Correo",
 						"Nombre",
-						"Telefono"
+						"Telefono",
+						"Traslado_Flex"
 					]
 
 					//Object.keys(resultados[0]);
