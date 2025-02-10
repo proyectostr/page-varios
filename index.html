@@ -1546,7 +1546,7 @@
 					allowEditing = true;
 				}
 
-				if (["Total_Porcentaje", "Consumo_Utilidad", "Salario_Operador_Por_Dia", "Hotel_Extra", "Dias_Extra_Calculo", "Ruta_Google_Maps", "Id", "Guid", "Id_correo", "Correo", "Nombre", "Telefono"].includes(columna)) {
+				if (["Total_Porcentaje", "Consumo_Utilidad", "Salario_Operador_Por_Dia", "Hotel_Extra", "Dias_Extra_Calculo", "Ruta_Google_Maps", "Id", "Guid", "Id_correo", "Correo", "Nombre", "Telefono","Porcentaje_Iva"].includes(columna)) {
 					visible = false;
 				}
 
@@ -1614,11 +1614,6 @@
 					"allowHiding": true,
 					"cellTemplate": function (container, options) {
 						$('<button data-bs-toggle="modal" data-bs-target="#envioDeCorreo">')
-
-
-
-
-
 							.addClass('btn btn-primary btn-sm ')
 							.html('<i class="fas fa-paper-plane icon"></i> Enviar correo') // Ícono y texto del botón
 							.on('click', function () {
@@ -1731,6 +1726,7 @@
 				let kilometros = e.newData.Kilometros !== undefined ? e.newData.Kilometros : e.oldData.Kilometros;
 				let precioCombustible = e.newData.Precio_Combustible !== undefined ? e.newData.Precio_Combustible : e.oldData.Precio_Combustible;
 				let consumo = e.newData.Consumo !== undefined ? e.newData.Consumo : e.oldData.Consumo;
+				let porcentaje_iva = e.newData.Porcentaje_Iva !== undefined ? e.newData.Porcentaje_Iva : e.oldData.Porcentaje_Iva;
 
 				let diasExtraCalculo = e.newData.Dias_Extra_Calculo !== undefined ? e.newData.Dias_Extra_Calculo : e.oldData.Dias_Extra_Calculo;
 
@@ -1772,10 +1768,15 @@
 				let costoViolencia = e.newData.Costo_Violencia !== undefined ? e.newData.Costo_Violencia : e.oldData.Costo_Violencia;
 				let factor = e.newData.Factor !== undefined ? e.newData.Factor : e.oldData.Factor;
 
-				let utilidad = ((costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) * consumoUtilidad /*0.18*/) * factor;
+				//let utilidad = ((costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) * consumoUtilidad /*0.18*/) * factor;
+				//e.newData.Utilidad = utilidad;
+
+				//let subTotal = (costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) + utilidad;
+				//e.newData.SubTotal = subTotal;
+				let utilidad = (((costoCombustible * porcentaje_iva) + alimentos + salarioOperador + hotel + placasUrbanos + (casetasPeajes * porcentaje_iva) + (transporteOrigen * porcentaje_iva) + (transporteDestino * porcentaje_iva) + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) * consumoUtilidad /*0.18*/) * factor;
 				e.newData.Utilidad = utilidad;
 
-				let subTotal = (costoCombustible + alimentos + salarioOperador + hotel + placasUrbanos + casetasPeajes + transporteOrigen + transporteDestino + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) + utilidad;
+				let subTotal = ((costoCombustible * porcentaje_iva) + alimentos + salarioOperador + hotel + placasUrbanos + (casetasPeajes * porcentaje_iva) + (transporteOrigen * porcentaje_iva) + (transporteDestino * porcentaje_iva) + taxisUBER + totalExtra + materialBonoExtra + costoFerry + costoViolencia) + utilidad;
 				e.newData.SubTotal = subTotal;
 
 				e.newData.IVA = subTotal * 0.16;
@@ -2079,7 +2080,8 @@
 							"Telefono",
 							"Fecha_Creacion",
 							"Tipo_Cotizacion",
-							"Traslado_Flex"
+							"Traslado_Flex",
+							"Porcentaje_Iva"
 						]
 
 						//Object.keys(resultados[0]);
@@ -2252,7 +2254,8 @@
 						"Correo",
 						"Nombre",
 						"Telefono",
-						"Traslado_Flex"
+						"Traslado_Flex",
+						"Porcentaje_Iva"
 					]
 
 					//Object.keys(resultados[0]);
