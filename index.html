@@ -34,6 +34,91 @@
 	<script src="https://ctrz.halconet.com.mx/JS/Fetch.js"></script>
 	<script src="https://ctrz.halconet.com.mx/JS/DX_GenericFunctions.js"></script>
 
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+	<style>
+		body {
+			background-color: #f0f2f5;
+		}
+
+		.chat-box {
+			max-height: 400px;
+			overflow-y: auto;
+			padding: 10px;
+			background: #ffffff;
+			border-radius: 10px;
+		}
+
+		.chat-message {
+			display: flex;
+			align-items: flex-end;
+			margin-bottom: 5px;
+			width: 100%;
+		}
+
+		.chat-message.bot {
+			justify-content: flex-start;
+		}
+
+		.chat-message.user {
+			justify-content: flex-end;
+		}
+
+		.chat-bubble {
+			padding: 12px;
+			border-radius: 18px;
+			max-width: 70%;
+			font-size: 14px;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+			position: relative;
+		}
+
+		.bot .chat-bubble {
+			background-image: linear-gradient(to right, #88b9ed, #0d437d);
+			/* Degradado azul */
+			color: white;
+		}
+
+		.user .chat-bubble {
+			background-image: linear-gradient(to right, #62161e, #cc2030);
+			/* Degradado rojo */
+			color: white;
+		}
+
+		.chat-icon {
+			width: 40px;
+			height: 40px;
+			background: #e4e6eb;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 18px;
+			margin: 0 10px;
+		}
+
+		.chat-message.user .chat-icon {
+			background: #dc3545;
+			color: white;
+		}
+
+		.chat-message.bot .chat-icon {
+			background: #007bff;
+			color: white;
+		}
+
+		.modal-title {
+			width: 100%;
+			text-align: center;
+		}
+
+		.small-date {
+			font-size: 10px;
+			color: white;
+			/* Color blanco para la fecha */
+		}
+	</style>
+
 	<style>
 		/* Establece el estilo a los encabezados de la tabla */
 		.dx-datagrid-headers .dx-datagrid-table .dx-row>td {
@@ -274,6 +359,26 @@
 </head>
 
 <body>
+
+	<!-- Modal -->
+	<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true"
+		data-bs-backdrop="static" data-bs-keyboard="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="chatModalLabel">Chat</h5>
+					<!-- Botón de cierre con control manual -->
+					<button type="button" class="btn-close" id="chatCloseButton" aria-label="Close"></button>
+				</div>
+				<div class="modal-body chat-box" id="chatContainer">
+				</div>
+				<div class="modal-footer">
+					<!-- Botón para cerrar el modal -->
+					<button type="button" class="btn btn-secondary" id="chatCloseFooterButton">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div class="containers mt-5">
 		<!-- Pestañas de navegación -->
@@ -766,7 +871,7 @@
 					.then(function (dialogResult) {
 						if (dialogResult) {
 							//  DevExpress.ui.notify("¡Confirmado!", "success", 2000);
-							fetch(urlEndPoint+'/ventas/data-form-send-rechazar', {
+							fetch(urlEndPoint + '/ventas/data-form-send-rechazar', {
 								method: 'POST',
 								headers: {
 									'Content-Type': 'application/json', // Indicamos que el cuerpo de la solicitud es JSON
@@ -1546,7 +1651,7 @@
 					allowEditing = true;
 				}
 
-				if (["Total_Porcentaje", "Consumo_Utilidad", "Salario_Operador_Por_Dia", "Hotel_Extra", "Dias_Extra_Calculo", "Ruta_Google_Maps", "Id", "Guid", "Id_correo", "Correo", "Nombre", "Telefono","Porcentaje_Iva"].includes(columna)) {
+				if (["Total_Porcentaje", "Consumo_Utilidad", "Salario_Operador_Por_Dia", "Hotel_Extra", "Dias_Extra_Calculo", "Ruta_Google_Maps", "Id", "Guid", "Id_correo", "Correo", "Nombre", "Telefono", "Porcentaje_Iva"].includes(columna)) {
 					visible = false;
 				}
 
@@ -1658,6 +1763,68 @@
 
 							})
 							.appendTo(container);
+					}
+				});
+
+				configuracionColumnas.push({
+					"caption": "Chat",
+					"width": 150,
+					"datatype": "string",
+					"alignment": "center",
+					"allowEditing": false,
+					"allowHiding": true,
+					"cellTemplate": function (container, options) {
+						if (options.data.Chat != null) {
+							$('<button data-bs-toggle="modal" data-bs-target="#chatModal">')
+							.addClass('btn btn-primary btn-sm ')
+							.html('<i class="fas fa-message icon"></i> Ver chat') // Ícono y texto del botón
+							.on('click', function () {
+
+								console.log(options.data.Chat)
+
+								//JSON.parse(options.data.Chat);
+
+								let chat = options.data.Chat; // Reemplazar los valores excepto 'sql'
+								chat = chat.replace(/`/g, ''); // Eliminar los backticks
+								chat = chat.replace(/\n/g, '<br>'); // Reemplazar saltos de línea con <br>
+								chat = chat.replace(/\r/g, ''); // Eliminar retornos de carro
+								chat = chat.replace(/\t/g, '&nbsp;&nbsp;'); // Reemplazar tabulaciones con espacios no rompibles
+								chat = chat.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+								const chatData = JSON.parse(chat); /*[
+									{ sender: "bot", message: "Hola, ¿en qué puedo ayudarte?", time: "2025-02-21 10:00 AM" },
+									{ sender: "bot", message: "Tenemos varias opciones para ti.", time: "2025-02-21 10:00 AM" },
+									{ sender: "user", message: "Quiero saber más sobre sus servicios", time: "2025-02-21 10:01 AM" },
+									{ sender: "user", message: "¿Tienen soporte técnico?", time: "2025-02-21 10:02 AM" },
+									{ sender: "bot", message: "Sí, contamos con soporte técnico 24/7", time: "2025-02-21 10:03 AM" },
+									{ sender: "bot", message: "También tenemos chat en vivo.", time: "2025-02-21 10:04 AM" },
+									{ sender: "user", message: "¡Genial! ¿Cómo puedo contactarlos?", time: "2025-02-21 10:05 AM" }
+								];*/
+
+								const chatContainer = document.getElementById("chatContainer");
+								chatContainer.innerHTML = "";
+
+								chatData.forEach((chat) => {
+									const chatMessage = document.createElement("div");
+									chatMessage.classList.add("chat-message", chat.sender);
+
+									const iconHTML = `<div class='chat-icon'><i class='fas ${chat.sender === "bot" ? "fa-robot" : "fa-user"}'></i></div>`;
+
+									chatMessage.innerHTML = `
+										${chat.sender === "bot" ? iconHTML : ""}
+										<div class="chat-bubble">
+											<p>${chat.message}</p>
+											<small class="small-date">${chat.time}</small>
+										</div>
+										${chat.sender === "user" ? iconHTML : ""}
+									`;
+
+									chatContainer.appendChild(chatMessage);
+								});
+							})
+							.appendTo(container);
+						}
+					
 					}
 				});
 
@@ -2081,7 +2248,8 @@
 							"Fecha_Creacion",
 							"Tipo_Cotizacion",
 							"Traslado_Flex",
-							"Porcentaje_Iva"
+							"Porcentaje_Iva",
+							"Chat"
 						]
 
 						//Object.keys(resultados[0]);
@@ -2330,6 +2498,21 @@
 				document.getElementById("modelo").value = "";
 			}
 		}
+
+
+		// Control de cierre del modal
+		const chatModal = new bootstrap.Modal(document.getElementById("chatModal"));
+		const chatCloseButton = document.getElementById("chatCloseButton");
+		const chatCloseFooterButton = document.getElementById("chatCloseFooterButton");
+
+		// No permitir cerrar al hacer clic fuera del modal
+		chatCloseButton.addEventListener("click", function () {
+			chatModal.hide();
+		});
+
+		chatCloseFooterButton.addEventListener("click", function () {
+			chatModal.hide();
+		});
 	</script>
 
 </html>
